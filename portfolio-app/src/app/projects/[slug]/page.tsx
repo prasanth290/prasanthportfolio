@@ -32,9 +32,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
-  const project = await prisma.project.findUnique({
-    where: { slug },
-  });
+  let project = null;
+  try {
+    project = await prisma.project.findUnique({
+      where: { slug },
+    });
+  } catch (e) {
+    console.error("Error fetching project slug:", e);
+  }
 
   if (!project || project.status === "DRAFT") {
     notFound();

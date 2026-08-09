@@ -66,9 +66,14 @@ export default async function CampaignLandingPage({ params }: { params: Promise<
   const config = campaignConfigs[campaign] || campaignConfigs["custom-web-apps"];
 
   // Fetch relevant project for showcase
-  const project = await prisma.project.findFirst({
-    where: { slug: config.demoSlug },
-  });
+  let project = null;
+  try {
+    project = await prisma.project.findFirst({
+      where: { slug: config.demoSlug },
+    });
+  } catch (e) {
+    console.error("Error fetching campaign project:", e);
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
