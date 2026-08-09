@@ -1,0 +1,63 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Project {
+  id              String   @id @default(uuid())
+  title           String
+  slug            String   @unique
+  category        String   // "Rental", "Inventory", "Booking", "CRM", "Other"
+  businessType    String?  // e.g. "Residential Property Management Firm (45+ Units)"
+  problemSolved   String?  // e.g. "Lost rent payments and manual Excel lease tracking"
+  keyResults      String?  // e.g. "Automated 95% of monthly rent collection & cut tenant maintenance response time in half"
+  shortDesc       String
+  fullDesc        String
+  techStack       String   // JSON string or comma separated tags
+  demoUrl         String?
+  demoCredentials String?  // Optional demo login notes (e.g. "demo / pass")
+  status          String   @default("PUBLISHED") // "DRAFT", "PUBLISHED"
+  isFeatured      Boolean  @default(false)
+  coverImage      String
+  galleryImages   String   // JSON string of array of image URLs
+  displayOrder    Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Lead {
+  id          String   @id @default(uuid())
+  name        String
+  email       String
+  phone       String?
+  projectType String   // "Rental Management", "Inventory System", "Custom Web App", "Other"
+  budgetRange String?  // "$1,000 - $3,000", "$3,000 - $5,000", "$5,000+"
+  message     String
+  utmSource   String?
+  utmCampaign String?
+  status      String   @default("NEW") // "NEW", "CONTACTED", "CLOSED"
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SiteSetting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}
