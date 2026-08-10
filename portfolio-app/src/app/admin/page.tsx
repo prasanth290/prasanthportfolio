@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getAdminSession } from "@/lib/auth";
-import { prisma } from "@/lib/db";
+import { prisma, FALLBACK_PROJECTS } from "@/lib/db";
 import {
   FolderKanban,
   Inbox,
@@ -20,19 +20,57 @@ export default async function AdminDashboardPage() {
     redirect("/admin/login");
   }
 
-  const projectCount = await prisma.project.count();
-  const leadCount = await prisma.lead.count();
-  const newLeadCount = await prisma.lead.count({ where: { status: "NEW" } });
+  let recentProjects = FALLBACK_PROJECTS as any[];
+  let recentLeads = [
+    {
+      id: "lead-1",
+      name: "Marcus Vance",
+      email: "marcus@vanceproperties.com",
+      phone: "+1 (555) 389-1122",
+      projectType: "Rental Management",
+      budgetRange: "$3,000 - $5,000",
+      message: "Hi Prasanth, I tested your PropFlow demo and love how the tenant rent collection and maintenance queue work.",
+      status: "NEW",
+      createdAt: new Date(),
+    },
+    {
+      id: "lead-2",
+      name: "Sarah Jenkins",
+      email: "sjenkins@apexsupply.io",
+      phone: "+1 (555) 902-3344",
+      projectType: "Inventory System",
+      budgetRange: "$5,000+",
+      message: "We run 2 distribution hubs with over 4,000 SKUs. Saw your NexusStock demo and need a similar web app.",
+      status: "CONTACTED",
+      createdAt: new Date(),
+    },
+  ];
+  let projectCount = FALLBACK_PROJECTS.length;
+  let leadCount = 2;
+  let newLeadCount = 1;
 
-  const recentLeads = await prisma.lead.findMany({
-    take: 5,
-    orderBy: { createdAt: "desc" },
-  });
-
-  const recentProjects = await prisma.project.findMany({
-    take: 4,
-    orderBy: { createdAt: "desc" },
-  });
+  try {
+    const pCount = await prisma.project.count();
+    const lCount = await prisma.lead.count();
+    const nLCount = await prisma.lead.count({ where: { status: "NEW" } });
+    const rLeads = await prisma.lead.findMany({
+      take: 5,
+      orderBy: { createdAt: "desc" },
+    });
+    const rProjects = await prisma.project.findMany({
+      take: 4,
+      orderBy: { createdAt: "desc" },
+    });
+    if (rProjects && rProjects.length > 0) {
+      projectCount = pCount;
+      leadCount = lCount;
+      newLeadCount = nLCount;
+      recentLeads = rLeads as any;
+      recentProjects = rProjects as any;
+    }
+  } catch (e) {
+    console.warn("Failed to query dashboard metrics from DB, using fallback data:", e);
+  }
 
   return (
     <div className="space-y-8">

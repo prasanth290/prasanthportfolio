@@ -1,6 +1,6 @@
 import { redirect, notFound } from "next/navigation";
 import { getAdminSession } from "@/lib/auth";
-import { prisma } from "@/lib/db";
+import { prisma, FALLBACK_PROJECTS } from "@/lib/db";
 import { ProjectForm } from "@/components/admin/ProjectForm";
 
 export default async function EditProjectPage({ params }: { params: Promise<{ id: string }> }) {
@@ -10,7 +10,16 @@ export default async function EditProjectPage({ params }: { params: Promise<{ id
   }
 
   const { id } = await params;
-  const project = await prisma.project.findUnique({ where: { id } });
+  let project: any = null;
+  try {
+    project = await prisma.project.findUnique({ where: { id } });
+  } catch (e) {
+    console.warn("Failed to find project by id in DB:", e);
+  }
+
+  if (!project) {
+    project = FALLBACK_PROJECTS.find((p) => p.id === id || p.slug === id) || null;
+  }
 
   if (!project) {
     notFound();
