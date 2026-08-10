@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Upload, X, Save, Loader2, AlertCircle } from "lucide-react";
+import { Upload, X, Save, Loader2, AlertCircle, Wand2, Link2, CheckCircle2 } from "lucide-react";
 
 export function ProjectForm({ initialData }: { initialData?: any }) {
   const router = useRouter();
@@ -32,6 +32,11 @@ export function ProjectForm({ initialData }: { initialData?: any }) {
   const parsedGallery = initialData?.galleryImages ? JSON.parse(initialData.galleryImages) : [];
   const [galleryImages, setGalleryImages] = useState<string[]>(parsedGallery);
 
+  // Auto-Fill URL input state
+  const [inputUrl, setInputUrl] = useState("");
+  const [autoFilling, setAutoFilling] = useState(false);
+  const [autoFillSuccess, setAutoFillSuccess] = useState(false);
+
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -44,6 +49,48 @@ export function ProjectForm({ initialData }: { initialData?: any }) {
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/(^-|-$)/g, "");
       setSlug(generatedSlug);
+    }
+  };
+
+  const handleAutoFill = async () => {
+    if (!inputUrl.trim()) {
+      setError("Please paste a URL to auto-fill.");
+      return;
+    }
+
+    setAutoFilling(true);
+    setError("");
+    setAutoFillSuccess(false);
+
+    try {
+      const res = await fetch("/api/projects/autofill", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: inputUrl }),
+      });
+
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Auto-fill failed.");
+
+      const data = json.data;
+      if (data.title) setTitle(data.title);
+      if (data.slug) setSlug(data.slug);
+      if (data.category) setCategory(data.category);
+      if (data.businessType) setBusinessType(data.businessType);
+      if (data.problemSolved) setProblemSolved(data.problemSolved);
+      if (data.keyResults) setKeyResults(data.keyResults);
+      if (data.shortDesc) setShortDesc(data.shortDesc);
+      if (data.fullDesc) setFullDesc(data.fullDesc);
+      if (data.techStack && data.techStack.length > 0) setTechStack(data.techStack);
+      if (data.demoUrl) setDemoUrl(data.demoUrl);
+      if (data.coverImage) setCoverImage(data.coverImage);
+
+      setAutoFillSuccess(true);
+      setTimeout(() => setAutoFillSuccess(false), 5000);
+    } catch (err: any) {
+      setError(err.message || "Failed to auto-fill details from URL.");
+    } finally {
+      setAutoFilling(false);
     }
   };
 
@@ -137,6 +184,61 @@ export function ProjectForm({ initialData }: { initialData?: any }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8 glass-card p-8 rounded-3xl border border-slate-800">
+      {/* Magic URL Auto-Fill Widget */}
+      <div className="p-6 rounded-2xl bg-gradient-to-r from-emerald-950/40 via-slate-900 to-cyan-950/40 border border-emerald-500/30 space-y-4 shadow-xl">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Wand2 className="w-5 h-5 text-emerald-400" />
+            <h3 className="font-bold text-white text-base">Magic URL Auto-Fill Engine</h3>
+          </div>
+          <span className="text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">
+            Paste & Fill
+          </span>
+        </div>
+        <p className="text-xs text-slate-300">
+          Paste your website or demo URL below. Our AI auto-fill engine will extract the title, description, category, tech stack, and case study details automatically!
+        </p>
+
+        <div className="flex flex-col sm:flex-row items-center gap-3">
+          <div className="relative w-full">
+            <Link2 className="w-4 h-4 absolute left-4 top-3 text-slate-400" />
+            <input
+              type="text"
+              value={inputUrl}
+              onChange={(e) => setInputUrl(e.target.value)}
+              placeholder="e.g. https://demo.propflow.com or https://my-project.vercel.app"
+              className="w-full bg-slate-900/90 border border-slate-700 rounded-xl pl-11 pr-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 font-mono"
+            />
+          </div>
+
+          <button
+            type="button"
+            onClick={handleAutoFill}
+            disabled={autoFilling}
+            className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:opacity-95 text-slate-950 font-bold text-xs shrink-0 transition-all flex items-center justify-center gap-2 disabled:opacity-50 shadow-md"
+          >
+            {autoFilling ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Extracting Details...</span>
+              </>
+            ) : (
+              <>
+                <Wand2 className="w-4 h-4" />
+                <span>Auto-Fill Details ✨</span>
+              </>
+            )}
+          </button>
+        </div>
+
+        {autoFillSuccess && (
+          <div className="p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <span>Successfully auto-filled title, slug, category, tech stack, and case study from URL!</span>
+          </div>
+        )}
+      </div>
+
       {error && (
         <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
           <AlertCircle className="w-4 h-4 shrink-0" />
