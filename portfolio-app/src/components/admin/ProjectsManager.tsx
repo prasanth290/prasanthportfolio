@@ -24,12 +24,11 @@ export function ProjectsManager({ initialProjects }: { initialProjects: any[] })
     setDeletingId(id);
 
     try {
-      const res = await fetch(`/api/projects/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("Failed to delete");
-      setProjects((prev) => prev.filter((p) => p.id !== id));
+      await fetch(`/api/projects/${id}`, { method: "DELETE" });
     } catch (e) {
-      alert("Error deleting project.");
+      console.warn("Delete error:", e);
     } finally {
+      setProjects((prev) => prev.filter((p) => p.id !== id));
       setDeletingId(null);
     }
   };

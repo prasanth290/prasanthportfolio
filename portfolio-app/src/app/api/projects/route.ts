@@ -65,13 +65,23 @@ export async function POST(req: Request) {
       galleryImages,
     } = body;
 
-    if (!title || !slug || !category || !shortDesc || !fullDesc || !coverImage) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    if (!title || !title.trim()) {
+      return NextResponse.json({ error: "Project Title is required." }, { status: 400 });
     }
+
+    const finalTitle = title.trim();
+    const finalSlug = (slug || finalTitle)
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "") || `project-${Date.now()}`;
+    const finalCategory = category || "Rental";
+    const finalShortDesc = shortDesc || `${finalTitle} — Custom business web application.`;
+    const finalFullDesc = fullDesc || `### Product Case Study: ${finalTitle}\n\n${finalShortDesc}`;
+    const finalCoverImage = coverImage || "/images/booking.png";
 
     let existing = null;
     try {
-      existing = await prisma.project.findUnique({ where: { slug } });
+      existing = await prisma.project.findUnique({ where: { slug: finalSlug } });
     } catch (e) {
       console.warn("Prisma slug check failed, proceeding:", e);
     }
@@ -84,20 +94,20 @@ export async function POST(req: Request) {
     try {
       project = await prisma.project.create({
         data: {
-          title,
-          slug,
-          category,
+          title: finalTitle,
+          slug: finalSlug,
+          category: finalCategory,
           businessType: businessType || null,
           problemSolved: problemSolved || null,
           keyResults: keyResults || null,
-          shortDesc,
-          fullDesc,
+          shortDesc: finalShortDesc,
+          fullDesc: finalFullDesc,
           techStack: typeof techStack === "string" ? techStack : JSON.stringify(techStack || []),
           demoUrl: demoUrl || null,
           demoCredentials: demoCredentials || null,
           status: status || "PUBLISHED",
           isFeatured: Boolean(isFeatured),
-          coverImage,
+          coverImage: finalCoverImage,
           galleryImages: typeof galleryImages === "string" ? galleryImages : JSON.stringify(galleryImages || []),
         },
       });
@@ -105,20 +115,20 @@ export async function POST(req: Request) {
       console.warn("Prisma project.create failed on serverless runtime, returning fallback project payload:", createErr);
       project = {
         id: `proj-${Date.now()}`,
-        title,
-        slug,
-        category,
+        title: finalTitle,
+        slug: finalSlug,
+        category: finalCategory,
         businessType: businessType || null,
         problemSolved: problemSolved || null,
         keyResults: keyResults || null,
-        shortDesc,
-        fullDesc,
+        shortDesc: finalShortDesc,
+        fullDesc: finalFullDesc,
         techStack: typeof techStack === "string" ? techStack : JSON.stringify(techStack || []),
         demoUrl: demoUrl || null,
         demoCredentials: demoCredentials || null,
         status: status || "PUBLISHED",
         isFeatured: Boolean(isFeatured),
-        coverImage,
+        coverImage: finalCoverImage,
         galleryImages: typeof galleryImages === "string" ? galleryImages : JSON.stringify(galleryImages || []),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -126,8 +136,8 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ success: true, project });
-  } catch (error) {
+  } catch (error: any) {
     console.error("POST /api/projects error:", error);
-    return NextResponse.json({ error: "Failed to create project" }, { status: 500 });
+    return NextResponse.json({ error: error?.message || "Failed to create project" }, { status: 500 });
   }
 }
