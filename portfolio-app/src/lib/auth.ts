@@ -1,6 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
-import { crypto } from "next/dist/compiled/@edge-runtime/primitives";
+import crypto from "crypto";
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || "dev-studio-super-secret-key-change-in-production-2026"
@@ -15,11 +15,7 @@ export interface JWTPayload {
 }
 
 export async function hashPassword(password: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password + "devstudio_salt_2026");
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+  return crypto.createHash("sha256").update(password + "devstudio_salt_2026").digest("hex");
 }
 
 export async function verifyPassword(password: string, hash: string): Promise<boolean> {

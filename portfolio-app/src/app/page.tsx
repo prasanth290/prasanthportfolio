@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { prisma } from "@/lib/db";
+import { getSafeProjects } from "@/lib/db";
 import {
   ArrowRight,
   ExternalLink,
@@ -21,15 +21,7 @@ import { EstimatorWidget } from "@/components/home/EstimatorWidget";
 export const revalidate = 0;
 
 export default async function HomePage() {
-  let featuredProjects: any[] = [];
-  try {
-    featuredProjects = await prisma.project.findMany({
-      where: { status: "PUBLISHED", isFeatured: true },
-      orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
-    });
-  } catch (e) {
-    console.error("Failed to fetch featured projects:", e);
-  }
+  const featuredProjects = await getSafeProjects();
 
   const flagshipRental = featuredProjects.find((p) => p.category === "Rental") || featuredProjects[0];
   const flagshipInventory = featuredProjects.find((p) => p.category === "Inventory") || featuredProjects[1];
