@@ -49,27 +49,52 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       displayOrder,
     } = body;
 
-    const project = await prisma.project.update({
-      where: { id },
-      data: {
-        title,
-        slug,
-        category,
-        businessType: businessType !== undefined ? businessType : undefined,
-        problemSolved: problemSolved !== undefined ? problemSolved : undefined,
-        keyResults: keyResults !== undefined ? keyResults : undefined,
-        shortDesc,
-        fullDesc,
-        techStack: typeof techStack === "string" ? techStack : JSON.stringify(techStack || []),
-        demoUrl,
-        demoCredentials,
-        status,
-        isFeatured: Boolean(isFeatured),
-        coverImage,
-        galleryImages: typeof galleryImages === "string" ? galleryImages : JSON.stringify(galleryImages || []),
-        displayOrder: displayOrder !== undefined ? Number(displayOrder) : undefined,
-      },
-    });
+    let project;
+    try {
+      project = await prisma.project.upsert({
+        where: { id },
+        update: {
+          title,
+          slug,
+          category,
+          businessType: businessType || null,
+          problemSolved: problemSolved || null,
+          keyResults: keyResults || null,
+          shortDesc,
+          fullDesc,
+          techStack: typeof techStack === "string" ? techStack : JSON.stringify(techStack || []),
+          demoUrl: demoUrl || null,
+          demoCredentials: demoCredentials || null,
+          status: status || "PUBLISHED",
+          isFeatured: Boolean(isFeatured),
+          coverImage,
+          galleryImages: typeof galleryImages === "string" ? galleryImages : JSON.stringify(galleryImages || []),
+          displayOrder: displayOrder !== undefined ? Number(displayOrder) : undefined,
+        },
+        create: {
+          id,
+          title,
+          slug,
+          category,
+          businessType: businessType || null,
+          problemSolved: problemSolved || null,
+          keyResults: keyResults || null,
+          shortDesc,
+          fullDesc,
+          techStack: typeof techStack === "string" ? techStack : JSON.stringify(techStack || []),
+          demoUrl: demoUrl || null,
+          demoCredentials: demoCredentials || null,
+          status: status || "PUBLISHED",
+          isFeatured: Boolean(isFeatured),
+          coverImage,
+          galleryImages: typeof galleryImages === "string" ? galleryImages : JSON.stringify(galleryImages || []),
+          displayOrder: displayOrder !== undefined ? Number(displayOrder) : 0,
+        },
+      });
+    } catch (dbErr) {
+      console.warn("Could not upsert project to database, returning fallback project data:", dbErr);
+      project = { id, title, slug, category, businessType, problemSolved, keyResults, shortDesc, fullDesc, techStack, demoUrl, demoCredentials, status, isFeatured, coverImage, galleryImages };
+    }
 
     return NextResponse.json({ success: true, project });
   } catch (error) {

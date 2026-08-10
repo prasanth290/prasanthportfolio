@@ -130,9 +130,19 @@ export async function POST(req: Request) {
       coverImage = category === "Rental" ? "/images/rental.png" : category === "Inventory" ? "/images/inventory.png" : "/images/booking.png";
     }
 
-    const businessType = `${category} & Digital Operations Firm (${parsedUrl.hostname})`;
-    const problemSolved = `Manual data entry, fragmented workflows, and lack of real-time operational visibility for ${title}.`;
-    const keyResults = `Automated 90%+ of core routine tasks and provided sub-second real-time system synchronization.`;
+    const siteName = getMetaContent("og:site_name") || parsedUrl.hostname.replace(/^www\./, "");
+    
+    let businessType = `${category} & Business Operations (${siteName})`;
+    if (category === "Rental") businessType = `Property Operations & Real Estate (${siteName})`;
+    else if (category === "Inventory") businessType = `E-Commerce & Warehouse Supply Chain (${siteName})`;
+    else if (category === "Booking") businessType = `Service Clinic & Appointment Business (${siteName})`;
+    else if (category === "CRM") businessType = `B2B Enterprise & Client Management (${siteName})`;
+
+    const problemSolved = rawDesc
+      ? `Eliminated operational friction: "${rawDesc.length > 120 ? rawDesc.substring(0, 117) + "..." : rawDesc}"`
+      : `Manual tracking, inefficient paper workflows, and operational visibility gaps for ${title}.`;
+
+    const keyResults = `Automated core workflows for ${siteName}, cutting manual processing time by over 80% and delivering real-time data sync.`;
 
     const fullDesc = `### Product Case Study: ${title}
 
