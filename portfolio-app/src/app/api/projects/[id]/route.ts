@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
+import { prisma, registerDeletedProject, registerDynamicProject } from "@/lib/db";
 import { getAdminSession } from "@/lib/auth";
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -96,6 +96,8 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       project = { id, title, slug, category, businessType, problemSolved, keyResults, shortDesc, fullDesc, techStack, demoUrl, demoCredentials, status, isFeatured, coverImage, galleryImages };
     }
 
+    registerDynamicProject(project);
+
     return NextResponse.json({ success: true, project });
   } catch (error) {
     console.error("PUT /api/projects/[id] error:", error);
@@ -111,6 +113,8 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
     }
 
     const { id } = await params;
+    registerDeletedProject(id);
+
     try {
       await prisma.project.delete({ where: { id } });
     } catch (e) {

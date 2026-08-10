@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
+import { prisma, getFilteredFallbackProjects, registerDynamicProject } from "@/lib/db";
 import { getAdminSession } from "@/lib/auth";
 
 // GET /api/projects
@@ -26,15 +26,23 @@ export async function GET(req: Request) {
       where.isFeatured = true;
     }
 
-    const projects = await prisma.project.findMany({
-      where,
-      orderBy: [{ isFeatured: "desc" }, { displayOrder: "asc" }, { createdAt: "desc" }],
-    });
+    try {
+      const projects = await prisma.project.findMany({
+        where,
+        orderBy: [{ isFeatured: "desc" }, { displayOrder: "asc" }, { createdAt: "desc" }],
+      });
+      if (projects && projects.length > 0) {
+        return NextResponse.json({ projects });
+      }
+    } catch (e) {
+      console.warn("Prisma GET projects failed, using fallback store:", e);
+    }
 
-    return NextResponse.json({ projects });
+    const fallbackProjects = getFilteredFallbackProjects();
+    return NextResponse.json({ projects: fallbackProjects });
   } catch (error) {
     console.error("GET /api/projects error:", error);
-    return NextResponse.json({ error: "Failed to fetch projects" }, { status: 500 });
+    return NextResponse.json({ projects: getFilteredFallbackProjects() });
   }
 }
 
@@ -134,6 +142,8 @@ export async function POST(req: Request) {
         updatedAt: new Date(),
       };
     }
+
+    registerDynamicProject(project);
 
     return NextResponse.json({ success: true, project });
   } catch (error: any) {

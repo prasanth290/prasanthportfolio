@@ -99,6 +99,43 @@ export const FALLBACK_PROJECTS = [
   },
 ];
 
+const globalForStore = globalThis as unknown as {
+  deletedProjectIds: Set<string>;
+  dynamicProjects: any[];
+};
+
+if (!globalForStore.deletedProjectIds) {
+  globalForStore.deletedProjectIds = new Set<string>();
+}
+if (!globalForStore.dynamicProjects) {
+  globalForStore.dynamicProjects = [];
+}
+
+export function registerDeletedProject(id: string) {
+  globalForStore.deletedProjectIds.add(id);
+  globalForStore.dynamicProjects = globalForStore.dynamicProjects.filter((p) => p.id !== id);
+}
+
+export function registerDynamicProject(project: any) {
+  const index = globalForStore.dynamicProjects.findIndex((p) => p.id === project.id || p.slug === project.slug);
+  if (index >= 0) {
+    globalForStore.dynamicProjects[index] = project;
+  } else {
+    globalForStore.dynamicProjects.unshift(project);
+  }
+}
+
+export function getFilteredFallbackProjects() {
+  const combined = [...globalForStore.dynamicProjects, ...FALLBACK_PROJECTS];
+  const uniqueMap = new Map();
+  for (const p of combined) {
+    if (!globalForStore.deletedProjectIds.has(p.id) && !uniqueMap.has(p.id)) {
+      uniqueMap.set(p.id, p);
+    }
+  }
+  return Array.from(uniqueMap.values());
+}
+
 export async function getSafeProjects() {
   try {
     const projects = await prisma.project.findMany({
@@ -109,7 +146,7 @@ export async function getSafeProjects() {
   } catch (e) {
     console.warn("Prisma query failed, returning fallback projects:", e);
   }
-  return FALLBACK_PROJECTS;
+  return getFilteredFallbackProjects();
 }
 
 export async function getSafeProjectBySlug(slug: string) {
@@ -121,5 +158,5 @@ export async function getSafeProjectBySlug(slug: string) {
   } catch (e) {
     console.warn("Prisma query failed for slug:", slug, e);
   }
-  return FALLBACK_PROJECTS.find((p) => p.slug === slug) || null;
+  return getFilteredFallbackProjects().find((p) => p.slug === slug) || null;
 }
