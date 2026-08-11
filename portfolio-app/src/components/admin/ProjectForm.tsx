@@ -12,6 +12,8 @@ export function ProjectForm({ initialData }: { initialData?: any }) {
   const [title, setTitle] = useState(initialData?.title || "");
   const [slug, setSlug] = useState(initialData?.slug || "");
   const [category, setCategory] = useState(initialData?.category || "Rental");
+  const [customCategory, setCustomCategory] = useState("");
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
   const [businessType, setBusinessType] = useState(initialData?.businessType || "");
   const [problemSolved, setProblemSolved] = useState(initialData?.problemSolved || "");
   const [keyResults, setKeyResults] = useState(initialData?.keyResults || "");
@@ -143,10 +145,12 @@ export function ProjectForm({ initialData }: { initialData?: any }) {
     setSaving(true);
     setError("");
 
+    const finalCategory = isCustomCategory && customCategory.trim() ? customCategory.trim() : category;
+
     const payload = {
       title,
       slug,
-      category,
+      category: finalCategory,
       businessType,
       problemSolved,
       keyResults,
@@ -174,11 +178,9 @@ export function ProjectForm({ initialData }: { initialData?: any }) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to save project.");
 
-      router.push("/admin/projects");
-      router.refresh();
+      window.location.href = "/admin/projects";
     } catch (err: any) {
       setError(err.message || "Error saving project.");
-    } finally {
       setSaving(false);
     }
   };
@@ -324,20 +326,52 @@ export function ProjectForm({ initialData }: { initialData?: any }) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Category */}
         <div className="space-y-2">
-          <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
-            Category *
-          </label>
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
-          >
-            <option value="Rental">Rental Systems</option>
-            <option value="Inventory">Inventory Systems</option>
-            <option value="Booking">Booking Platforms</option>
-            <option value="CRM">CRM & Dashboards</option>
-            <option value="Other">Other Web Apps</option>
-          </select>
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+              Category *
+            </label>
+            <button
+              type="button"
+              onClick={() => setIsCustomCategory(!isCustomCategory)}
+              className="text-[11px] text-emerald-400 hover:underline font-semibold"
+            >
+              {isCustomCategory ? "Choose from presets" : "+ Add Custom Category"}
+            </button>
+          </div>
+
+          {isCustomCategory ? (
+            <input
+              type="text"
+              required
+              value={customCategory}
+              onChange={(e) => setCustomCategory(e.target.value)}
+              placeholder="Type new category (e.g. Healthcare, Fintech, SaaS)..."
+              className="w-full bg-slate-900 border border-emerald-500 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none"
+            />
+          ) : (
+            <select
+              value={category}
+              onChange={(e) => {
+                if (e.target.value === "CUSTOM_NEW") {
+                  setIsCustomCategory(true);
+                } else {
+                  setCategory(e.target.value);
+                }
+              }}
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+            >
+              <option value="Rental">Rental Systems</option>
+              <option value="Inventory">Inventory Systems</option>
+              <option value="Booking">Booking & Scheduling</option>
+              <option value="CRM">CRM & Operations</option>
+              <option value="Healthcare">Healthcare & Medical</option>
+              <option value="E-Commerce">E-Commerce Platforms</option>
+              <option value="SaaS">SaaS & Products</option>
+              <option value="Real Estate">Real Estate</option>
+              <option value="Other">Other Custom Web App</option>
+              <option value="CUSTOM_NEW">+ Add New Custom Category...</option>
+            </select>
+          )}
         </div>
 
         {/* Status */}

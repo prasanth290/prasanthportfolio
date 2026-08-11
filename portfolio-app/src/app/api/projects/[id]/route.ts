@@ -99,7 +99,25 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
     registerDynamicProject(project);
 
-    return NextResponse.json({ success: true, project });
+    // Clear project ID & slug from deleted projects cookie
+    const cookieStore = await cookies();
+    const existingDeletedCookie = cookieStore.get("devstudio_deleted_projects")?.value;
+    let deletedList: string[] = [];
+    if (existingDeletedCookie) {
+      try { deletedList = JSON.parse(existingDeletedCookie); } catch {}
+    }
+    const updatedDeletedList = deletedList.filter(
+      (dId) => dId !== id && dId !== project.id && dId !== project.slug && dId !== slug
+    );
+
+    const res = NextResponse.json({ success: true, project });
+    res.cookies.set("devstudio_deleted_projects", JSON.stringify(updatedDeletedList), {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: "lax",
+    });
+
+    return res;
   } catch (error) {
     console.error("PUT /api/projects/[id] error:", error);
     return NextResponse.json({ error: "Failed to update project" }, { status: 500 });

@@ -22,7 +22,9 @@ export function ProjectsGrid({ initialProjects }: { initialProjects: ProjectItem
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
 
-  const categories = ["All", "Rental", "Inventory", "Booking", "CRM"];
+  const dynamicCategories = Array.from(
+    new Set(["All", ...initialProjects.map((p) => p.category).filter(Boolean)])
+  );
 
   const filteredProjects = initialProjects.filter((p) => {
     const matchesCategory = activeCategory === "All" || p.category === activeCategory;
@@ -41,7 +43,7 @@ export function ProjectsGrid({ initialProjects }: { initialProjects: ProjectItem
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 glass-card p-4 rounded-2xl border border-slate-800">
         {/* Category Tabs */}
         <div className="flex flex-wrap items-center gap-1.5 w-full md:w-auto">
-          {categories.map((cat) => (
+          {dynamicCategories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}

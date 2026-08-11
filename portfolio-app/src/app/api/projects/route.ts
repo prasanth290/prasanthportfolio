@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma, getFilteredFallbackProjects, registerDynamicProject, isProjectDeleted } from "@/lib/db";
 import { getAdminSession } from "@/lib/auth";
+import { cookies } from "next/headers";
 
 // GET /api/projects
 export async function GET(req: Request) {
@@ -39,11 +40,11 @@ export async function GET(req: Request) {
       console.warn("Prisma GET projects failed, using fallback store:", e);
     }
 
-    const fallbackProjects = getFilteredFallbackProjects();
+    const fallbackProjects = await getFilteredFallbackProjects();
     return NextResponse.json({ projects: fallbackProjects });
   } catch (error) {
     console.error("GET /api/projects error:", error);
-    return NextResponse.json({ projects: getFilteredFallbackProjects() });
+    return NextResponse.json({ projects: await getFilteredFallbackProjects() });
   }
 }
 
@@ -79,25 +80,25 @@ export async function POST(req: Request) {
     }
 
     const finalTitle = title.trim();
-    const finalSlug = (slug || finalTitle)
+    let baseSlug = (slug || finalTitle)
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "") || `project-${Date.now()}`;
-    const finalCategory = category || "Rental";
-    const finalShortDesc = shortDesc || `${finalTitle} — Custom business web application.`;
-    const finalFullDesc = fullDesc || `### Product Case Study: ${finalTitle}\n\n${finalShortDesc}`;
-    const finalCoverImage = coverImage || "/images/booking.png";
 
-    let existing = null;
+    let finalSlug = baseSlug;
     try {
-      existing = await prisma.project.findUnique({ where: { slug: finalSlug } });
+      const existing = await prisma.project.findUnique({ where: { slug: finalSlug } });
+      if (existing) {
+        finalSlug = `${baseSlug}-${Date.now().toString().slice(-4)}`;
+      }
     } catch (e) {
       console.warn("Prisma slug check failed, proceeding:", e);
     }
 
-    if (existing) {
-      return NextResponse.json({ error: "Slug already exists. Choose a unique slug." }, { status: 400 });
-    }
+    const finalCategory = category || "Rental";
+    const finalShortDesc = shortDesc || `${finalTitle} — Custom business web application.`;
+    const finalFullDesc = fullDesc || `### Product Case Study: ${finalTitle}\n\n${finalShortDesc}`;
+    const finalCoverImage = coverImage || "/images/booking.png";
 
     let project;
     try {
@@ -146,7 +147,25 @@ export async function POST(req: Request) {
 
     registerDynamicProject(project);
 
-    return NextResponse.json({ success: true, project });
+    // Clear project ID & slug from deleted projects cookie if re-added
+    const cookieStore = await cookies();
+    const existingDeletedCookie = cookieStore.get("devstudio_deleted_projects")?.value;
+    let deletedList: string[] = [];
+    if (existingDeletedCookie) {
+      try { deletedList = JSON.parse(existingDeletedCookie); } catch {}
+    }
+    const updatedDeletedList = deletedList.filter(
+      (id) => id !== project.id && id !== project.slug && id !== finalSlug && id !== baseSlug
+    );
+
+    const res = NextResponse.json({ success: true, project });
+    res.cookies.set("devstudio_deleted_projects", JSON.stringify(updatedDeletedList), {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: "lax",
+    });
+
+    return res;
   } catch (error: any) {
     console.error("POST /api/projects error:", error);
     return NextResponse.json({ error: error?.message || "Failed to create project" }, { status: 500 });
