@@ -83,6 +83,7 @@ export function ProjectForm({ initialData }: { initialData?: any }) {
       if (data.fullDesc) setFullDesc(data.fullDesc);
       if (data.techStack && data.techStack.length > 0) setTechStack(data.techStack);
       if (data.demoUrl) setDemoUrl(data.demoUrl);
+      if (data.demoCredentials) setDemoCredentials(data.demoCredentials);
       if (data.coverImage) setCoverImage(data.coverImage);
 
       setAutoFillSuccess(true);

@@ -26,21 +26,29 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid URL format." }, { status: 400 });
     }
 
+    const domainHost = parsedUrl.hostname.replace(/^www\./, "");
+    const siteNameCapitalized = domainHost
+      .split(".")[0]
+      .replace(/[-_]/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+
     let html = "";
     try {
       const response = await fetch(targetUrl, {
         headers: {
           "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
           Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          "Accept-Language": "en-US,en;q=0.9",
         },
-        signal: AbortSignal.timeout(8000),
+        redirect: "follow",
+        signal: AbortSignal.timeout(9000),
       });
       if (response.ok) {
         html = await response.text();
       }
     } catch (e) {
-      console.warn("Failed to fetch target URL HTML, will parse domain name:", e);
+      console.warn("Failed to fetch target URL HTML, proceeding with domain intelligence:", e);
     }
 
     // Helper functions for parsing HTML metadata
@@ -68,93 +76,133 @@ export async function POST(req: Request) {
       return match && match[1] ? match[1].replace(/<[^>]+>/g, "").trim() : "";
     };
 
-    // Extract Title
-    const rawTitle =
-      getMetaContent("og:title") ||
-      getMetaContent("twitter:title") ||
-      getTagContent("title") ||
-      getTagContent("h1") ||
-      parsedUrl.hostname.replace(/^www\./, "");
+    const getAllTagContents = (tagName: string): string[] => {
+      if (!html) return [];
+      const regex = new RegExp(`<${tagName}[^>]*>([\\s\\S]*?)</${tagName}>`, "gi");
+      const matches = Array.from(html.matchAll(regex));
+      return matches
+        .map((m) => m[1].replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim())
+        .filter((text) => text.length > 5 && text.length < 300);
+    };
 
-    const title = rawTitle.replace(/\s*[-|–—]\s*.*$/, "").trim() || rawTitle;
+    // Clean body text
+    const cleanBodyText = html
+      ? html
+          .replace(/<script[\s\S]*?<\/script>/gi, " ")
+          .replace(/<style[\s\S]*?<\/style>/gi, " ")
+          .replace(/<svg[\s\S]*?<\/svg>/gi, " ")
+          .replace(/<[^>]+>/g, " ")
+          .replace(/\s+/g, " ")
+          .trim()
+      : "";
 
-    // Generate Slug
-    const slug = title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
+    // 1. Title Extraction
+    const rawOgTitle = getMetaContent("og:title") || getMetaContent("twitter:title") || getTagContent("title");
+    let extractedTitle = rawOgTitle
+      ? rawOgTitle.replace(/\s*[-|–—:]\s*(Home|Welcome|Official Site|App|Page).*$/i, "").trim()
+      : "";
 
-    // Extract Description
-    const rawDesc =
-      getMetaContent("og:description") ||
-      getMetaContent("twitter:description") ||
-      getMetaContent("description") ||
-      `Custom business web application engineered for ${parsedUrl.hostname}.`;
-
-    const shortDesc = rawDesc.length > 220 ? rawDesc.substring(0, 217) + "..." : rawDesc;
-
-    // Detect Category based on text
-    const textCorpus = (title + " " + rawDesc + " " + html).toLowerCase();
-    let category = "Other";
-    if (/rental|property|tenant|landlord|lease|rent/i.test(textCorpus)) {
-      category = "Rental";
-    } else if (/inventory|stock|warehouse|sku|barcode|supplier|po\b/i.test(textCorpus)) {
-      category = "Inventory";
-    } else if (/booking|appointment|schedule|clinic|reservation/i.test(textCorpus)) {
-      category = "Booking";
-    } else if (/crm|sales|lead|pipeline|analytics|dashboard|metrics/i.test(textCorpus)) {
-      category = "CRM";
+    if (!extractedTitle || extractedTitle.length < 3) {
+      const h1List = getAllTagContents("h1");
+      if (h1List.length > 0) extractedTitle = h1List[0];
     }
 
-    // Infer Tech Stack
+    if (!extractedTitle || extractedTitle.length < 3) {
+      extractedTitle = siteNameCapitalized;
+    }
+
+    const title = `${extractedTitle} — Custom Web System`;
+
+    // 2. Slug Generation
+    const slug = siteNameCapitalized
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "") || `project-${Date.now()}`;
+
+    // 3. Description Extraction
+    const metaDesc =
+      getMetaContent("og:description") ||
+      getMetaContent("twitter:description") ||
+      getMetaContent("description");
+
+    const paragraphs = getAllTagContents("p").filter((p) => p.length > 30);
+    let extractedDesc = metaDesc || (paragraphs.length > 0 ? paragraphs[0] : "");
+
+    if (!extractedDesc || extractedDesc.length < 20) {
+      extractedDesc = `High-performance custom web application engineered for ${domainHost}. Provides automated workflows, real-time data sync, and modern digital operations.`;
+    }
+
+    const shortDesc =
+      extractedDesc.length > 220 ? extractedDesc.substring(0, 217) + "..." : extractedDesc;
+
+    // 4. Category Intelligence
+    const corpus = (title + " " + extractedDesc + " " + cleanBodyText.substring(0, 3000)).toLowerCase();
+    let category = "Rental";
+    if (/rental|property|tenant|landlord|lease|rent|real estate/i.test(corpus)) {
+      category = "Rental";
+    } else if (/inventory|stock|warehouse|sku|barcode|supplier|po\b|e-commerce|store/i.test(corpus)) {
+      category = "Inventory";
+    } else if (/booking|appointment|schedule|clinic|doctor|health|medical|reservation/i.test(corpus)) {
+      category = "Booking";
+    } else if (/crm|sales|lead|pipeline|analytics|dashboard|metrics|saas/i.test(corpus)) {
+      category = "CRM";
+    } else {
+      category = "Other";
+    }
+
+    // 5. Business Type, Problem Solved, Key Results
+    let businessType = `Digital Operations & Custom Software (${domainHost})`;
+    if (category === "Rental") businessType = `Property Operations & Real Estate (${domainHost})`;
+    else if (category === "Inventory") businessType = `E-Commerce & Warehouse Supply Chain (${domainHost})`;
+    else if (category === "Booking") businessType = `Healthcare & Service Appointment Business (${domainHost})`;
+    else if (category === "CRM") businessType = `B2B Enterprise & Operational Dashboard (${domainHost})`;
+
+    const problemSolved = metaDesc
+      ? `Eliminated manual administrative friction: "${metaDesc.length > 110 ? metaDesc.substring(0, 107) + "..." : metaDesc}"`
+      : `Manual paper processes, fragmented data tracking, and operational visibility bottlenecks for ${siteNameCapitalized}.`;
+
+    const keyResults = `Automated core operational workflows for ${domainHost}, cutting manual processing times by over 80% with instant data synchronization.`;
+
+    // 6. Tech Stack Inference
     const techStack: string[] = ["Next.js", "TypeScript", "Tailwind CSS"];
-    if (/react/i.test(textCorpus)) techStack.push("React");
-    if (/node|express/i.test(textCorpus)) techStack.push("Node.js");
-    if (/postgres|pg\b/i.test(textCorpus)) techStack.push("PostgreSQL");
-    if (/stripe/i.test(textCorpus)) techStack.push("Stripe API");
-    if (/twilio/i.test(textCorpus)) techStack.push("Twilio API");
-    if (/prisma/i.test(textCorpus)) techStack.push("Prisma ORM");
+    if (/react/i.test(corpus)) techStack.push("React");
+    if (/node|express/i.test(corpus)) techStack.push("Node.js");
+    if (/postgres|pg\b/i.test(corpus)) techStack.push("PostgreSQL");
+    if (/mongo/i.test(corpus)) techStack.push("MongoDB");
+    if (/stripe/i.test(corpus)) techStack.push("Stripe API");
+    if (/twilio/i.test(corpus)) techStack.push("Twilio API");
+    if (/prisma/i.test(corpus)) techStack.push("Prisma ORM");
+    if (/graphql/i.test(corpus)) techStack.push("GraphQL");
 
     const uniqueTechStack = Array.from(new Set(techStack));
 
-    // Cover Image
-    let coverImage =
-      getMetaContent("og:image") ||
-      getMetaContent("twitter:image") ||
-      "";
-
+    // 7. Cover Image (Real OpenGraph image or Live Screenshot API)
+    let coverImage = getMetaContent("og:image") || getMetaContent("twitter:image") || "";
     if (coverImage && coverImage.startsWith("/")) {
       coverImage = parsedUrl.origin + coverImage;
     }
-    if (!coverImage) {
-      coverImage = category === "Rental" ? "/images/rental.png" : category === "Inventory" ? "/images/inventory.png" : "/images/booking.png";
+    if (!coverImage || !coverImage.startsWith("http")) {
+      coverImage = `https://image.thum.io/get/width/1200/crop/800/${targetUrl}`;
     }
 
-    const siteName = getMetaContent("og:site_name") || parsedUrl.hostname.replace(/^www\./, "");
-    
-    let businessType = `${category} & Business Operations (${siteName})`;
-    if (category === "Rental") businessType = `Property Operations & Real Estate (${siteName})`;
-    else if (category === "Inventory") businessType = `E-Commerce & Warehouse Supply Chain (${siteName})`;
-    else if (category === "Booking") businessType = `Service Clinic & Appointment Business (${siteName})`;
-    else if (category === "CRM") businessType = `B2B Enterprise & Client Management (${siteName})`;
+    // 8. Full Case Study Description (Markdown)
+    const h2Headings = getAllTagContents("h2").slice(0, 4);
+    const featureListItems =
+      h2Headings.length > 0
+        ? h2Headings.map((h) => `- **${h}:** Custom web feature designed to eliminate manual overhead.`).join("\n")
+        : `- **Automated Workflows:** Replaced paper friction and offline manual tracking with real-time digital automation.
+- **Instant System Telemetry:** Live data sync across connected dashboards and client interfaces.
+- **Enterprise Architecture:** Engineered for maximum responsiveness, security, and uptime performance.`;
 
-    const problemSolved = rawDesc
-      ? `Eliminated operational friction: "${rawDesc.length > 120 ? rawDesc.substring(0, 117) + "..." : rawDesc}"`
-      : `Manual tracking, inefficient paper workflows, and operational visibility gaps for ${title}.`;
+    const fullDesc = `### Product Case Study: ${extractedTitle}
 
-    const keyResults = `Automated core workflows for ${siteName}, cutting manual processing time by over 80% and delivering real-time data sync.`;
+${extractedDesc}
 
-    const fullDesc = `### Product Case Study: ${title}
+#### Key Operational Capabilities:
+${featureListItems}
 
-${rawDesc}
-
-#### Key Operational Features:
-- **Streamlined Workflow:** Custom web application designed to eliminate operational friction and manual tracking.
-- **Real-Time Data Sync:** Live system telemetry and automated status updates across all connected interfaces.
-- **Enterprise-Grade Infrastructure:** Built with high performance, security, and responsive UI components.
-
-#### Live Working Demo:
-Test the active live application directly via the **View Live Demo** button below.`;
+#### Live Working Demonstration:
+Test the active deployed application directly via the **View Live Demo** link below.`;
 
     return NextResponse.json({
       success: true,
@@ -169,6 +217,7 @@ Test the active live application directly via the **View Live Demo** button belo
         fullDesc,
         techStack: uniqueTechStack,
         demoUrl: targetUrl,
+        demoCredentials: "Role: Live Application | Access: Public Live Access Available",
         coverImage,
       },
     });
