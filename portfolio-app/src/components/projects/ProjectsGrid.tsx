@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, ExternalLink, ArrowRight } from "lucide-react";
@@ -19,16 +19,42 @@ interface ProjectItem {
 }
 
 export function ProjectsGrid({ initialProjects }: { initialProjects: ProjectItem[] }) {
+  const [projects, setProjects] = useState<ProjectItem[]>(initialProjects);
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
 
+  useEffect(() => {
+    try {
+      const local = localStorage.getItem("devstudio_custom_projects");
+      const deletedLocal = localStorage.getItem("devstudio_deleted_projects");
+      const deletedSet = new Set(deletedLocal ? JSON.parse(deletedLocal) : []);
+
+      if (local) {
+        const customProjects = JSON.parse(local);
+        if (Array.isArray(customProjects)) {
+          const publishedCustom = customProjects.filter((p: any) => p.status === "PUBLISHED" || !p.status);
+          setProjects((prev) => {
+            const combined = [...publishedCustom, ...prev];
+            const map = new Map();
+            for (const p of combined) {
+              if (!deletedSet.has(p.id) && !deletedSet.has(p.slug) && !map.has(p.id)) {
+                map.set(p.id, p);
+              }
+            }
+            return Array.from(map.values());
+          });
+        }
+      }
+    } catch {}
+  }, []);
+
   const dynamicCategories = Array.from(
-    new Set(["All", ...initialProjects.map((p) => p.category).filter(Boolean)])
+    new Set(["All", ...projects.map((p) => p.category).filter(Boolean)])
   );
 
-  const filteredProjects = initialProjects.filter((p) => {
+  const filteredProjects = projects.filter((p) => {
     const matchesCategory = activeCategory === "All" || p.category === activeCategory;
-    const techArray = JSON.parse(p.techStack || "[]");
+    const techArray = typeof p.techStack === "string" ? JSON.parse(p.techStack || "[]") : (p.techStack || []);
     const matchesSearch =
       p.title.toLowerCase().includes(search.toLowerCase()) ||
       p.shortDesc.toLowerCase().includes(search.toLowerCase()) ||

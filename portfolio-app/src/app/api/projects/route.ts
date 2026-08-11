@@ -158,14 +158,22 @@ export async function POST(req: Request) {
       (id) => id !== project.id && id !== project.slug && id !== finalSlug && id !== baseSlug
     );
 
-    // Store dynamic project in cookies for serverless persistence
+    // Store dynamic project in cookies for serverless persistence (minified to prevent cookie size limits)
     const existingDynamicCookie = cookieStore.get("devstudio_dynamic_projects")?.value;
     let dynamicList: any[] = [];
     if (existingDynamicCookie) {
       try { dynamicList = JSON.parse(existingDynamicCookie); } catch {}
     }
-    const filteredDynamics = dynamicList.filter((p) => p.id !== project.id && p.slug !== project.slug);
-    filteredDynamics.unshift(project);
+
+    const minifiedProject = {
+      ...project,
+      fullDesc: (project.fullDesc || "").substring(0, 300),
+    };
+
+    const filteredDynamics = dynamicList
+      .filter((p) => p.id !== project.id && p.slug !== project.slug)
+      .slice(0, 10);
+    filteredDynamics.unshift(minifiedProject);
 
     const res = NextResponse.json({ success: true, project });
     res.cookies.set("devstudio_deleted_projects", JSON.stringify(updatedDeletedList), {

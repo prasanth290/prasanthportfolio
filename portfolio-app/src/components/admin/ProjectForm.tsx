@@ -178,6 +178,23 @@ export function ProjectForm({ initialData }: { initialData?: any }) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to save project.");
 
+      // Save project to client localStorage for instant browser persistence across lambda resets
+      try {
+        const pObj = data.project || { ...payload, id: `proj-${Date.now()}` };
+        const local = localStorage.getItem("devstudio_custom_projects");
+        let list = local ? JSON.parse(local) : [];
+        list = list.filter((p: any) => p.id !== pObj.id && p.slug !== pObj.slug);
+        list.unshift(pObj);
+        localStorage.setItem("devstudio_custom_projects", JSON.stringify(list));
+
+        // Remove from deleted list if present
+        const delLocal = localStorage.getItem("devstudio_deleted_projects");
+        if (delLocal) {
+          const delList = JSON.parse(delLocal).filter((dId: string) => dId !== pObj.id && dId !== pObj.slug);
+          localStorage.setItem("devstudio_deleted_projects", JSON.stringify(delList));
+        }
+      } catch {}
+
       window.location.href = "/admin/projects";
     } catch (err: any) {
       setError(err.message || "Error saving project.");
