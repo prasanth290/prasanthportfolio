@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma, getFilteredFallbackProjects, registerDynamicProject } from "@/lib/db";
+import { prisma, getFilteredFallbackProjects, registerDynamicProject, isProjectDeleted } from "@/lib/db";
 import { getAdminSession } from "@/lib/auth";
 
 // GET /api/projects
@@ -31,7 +31,10 @@ export async function GET(req: Request) {
         where,
         orderBy: [{ isFeatured: "desc" }, { displayOrder: "asc" }, { createdAt: "desc" }],
       });
-      return NextResponse.json({ projects });
+      const cleanProjects = projects.filter(
+        (p) => !isProjectDeleted(p.id) && !isProjectDeleted(p.slug)
+      );
+      return NextResponse.json({ projects: cleanProjects });
     } catch (e) {
       console.warn("Prisma GET projects failed, using fallback store:", e);
     }

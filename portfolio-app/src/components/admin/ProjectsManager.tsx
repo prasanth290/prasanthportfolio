@@ -24,11 +24,19 @@ export function ProjectsManager({ initialProjects }: { initialProjects: any[] })
     setDeletingId(id);
 
     try {
-      await fetch(`/api/projects/${id}`, { method: "DELETE" });
-    } catch (e) {
-      console.warn("Delete error:", e);
-    } finally {
+      const res = await fetch(`/api/projects/${id}`, { method: "DELETE" });
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok || data.error) {
+        alert(data.error || "Failed to delete project. Please verify admin session.");
+        return;
+      }
+
       setProjects((prev) => prev.filter((p) => p.id !== id));
+    } catch (e) {
+      console.error("Delete error:", e);
+      alert("Network error while deleting project.");
+    } finally {
       setDeletingId(null);
     }
   };

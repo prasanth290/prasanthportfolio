@@ -1,15 +1,13 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getAdminSession } from "@/lib/auth";
-import { prisma, FALLBACK_PROJECTS } from "@/lib/db";
+import { prisma, getAllAdminProjects } from "@/lib/db";
 import {
   FolderKanban,
   Inbox,
   Sparkles,
   Plus,
   ArrowRight,
-  ExternalLink,
-  Clock,
 } from "lucide-react";
 
 export const revalidate = 0;
@@ -20,7 +18,10 @@ export default async function AdminDashboardPage() {
     redirect("/admin/login");
   }
 
-  let recentProjects = FALLBACK_PROJECTS as any[];
+  const allProjects = await getAllAdminProjects();
+  let recentProjects = allProjects.slice(0, 4);
+  let projectCount = allProjects.length;
+
   let recentLeads = [
     {
       id: "lead-1",
@@ -45,29 +46,21 @@ export default async function AdminDashboardPage() {
       createdAt: new Date(),
     },
   ];
-  let projectCount = FALLBACK_PROJECTS.length;
   let leadCount = 2;
   let newLeadCount = 1;
 
   try {
-    const pCount = await prisma.project.count();
     const lCount = await prisma.lead.count();
     const nLCount = await prisma.lead.count({ where: { status: "NEW" } });
     const rLeads = await prisma.lead.findMany({
       take: 5,
       orderBy: { createdAt: "desc" },
     });
-    const rProjects = await prisma.project.findMany({
-      take: 4,
-      orderBy: { createdAt: "desc" },
-    });
-    projectCount = pCount;
     leadCount = lCount;
     newLeadCount = nLCount;
     recentLeads = rLeads as any;
-    recentProjects = rProjects as any;
   } catch (e) {
-    console.warn("Failed to query dashboard metrics from DB, using fallback data:", e);
+    console.warn("Failed to query lead dashboard metrics from DB, using fallback data:", e);
   }
 
   return (

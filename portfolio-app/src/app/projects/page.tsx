@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+import { getSafeProjects } from "@/lib/db";
 import { ProjectsGrid } from "@/components/projects/ProjectsGrid";
 import { Layers } from "lucide-react";
 
@@ -11,15 +11,7 @@ export const metadata = {
 export const revalidate = 0;
 
 export default async function ProjectsPage() {
-  let projects: any[] = [];
-  try {
-    projects = await prisma.project.findMany({
-      where: { status: "PUBLISHED" },
-      orderBy: [{ isFeatured: "desc" }, { displayOrder: "asc" }, { createdAt: "desc" }],
-    });
-  } catch (e) {
-    console.error("ProjectsPage fetch error:", e);
-  }
+  const projects = await getSafeProjects();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">

@@ -111,13 +111,25 @@ if (!globalForStore.dynamicProjects) {
   globalForStore.dynamicProjects = [];
 }
 
+export function isProjectDeleted(idOrSlug?: string | null): boolean {
+  if (!idOrSlug) return false;
+  return globalForStore.deletedProjectIds.has(idOrSlug);
+}
+
 export function registerDeletedProject(id: string) {
   globalForStore.deletedProjectIds.add(id);
-  globalForStore.dynamicProjects = globalForStore.dynamicProjects.filter((p) => p.id !== id);
+  globalForStore.dynamicProjects = globalForStore.dynamicProjects.filter(
+    (p) => p.id !== id && p.slug !== id
+  );
 }
 
 export function registerDynamicProject(project: any) {
-  const index = globalForStore.dynamicProjects.findIndex((p) => p.id === project.id || p.slug === project.slug);
+  if (project.id) globalForStore.deletedProjectIds.delete(project.id);
+  if (project.slug) globalForStore.deletedProjectIds.delete(project.slug);
+
+  const index = globalForStore.dynamicProjects.findIndex(
+    (p) => p.id === project.id || p.slug === project.slug
+  );
   if (index >= 0) {
     globalForStore.dynamicProjects[index] = project;
   } else {
@@ -129,7 +141,11 @@ export function getFilteredFallbackProjects() {
   const combined = [...globalForStore.dynamicProjects, ...FALLBACK_PROJECTS];
   const uniqueMap = new Map();
   for (const p of combined) {
-    if (!globalForStore.deletedProjectIds.has(p.id) && !uniqueMap.has(p.id)) {
+    if (
+      !globalForStore.deletedProjectIds.has(p.id) &&
+      !globalForStore.deletedProjectIds.has(p.slug) &&
+      !uniqueMap.has(p.id)
+    ) {
       uniqueMap.set(p.id, p);
     }
   }
@@ -142,7 +158,25 @@ export async function getSafeProjects() {
       where: { status: "PUBLISHED" },
       orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
     });
-    return projects;
+    const deletedIds = globalForStore.deletedProjectIds;
+    return projects.filter(
+      (p) => !deletedIds.has(p.id) && !deletedIds.has(p.slug)
+    );
+  } catch (e) {
+    console.warn("Prisma query failed, returning fallback projects:", e);
+  }
+  return getFilteredFallbackProjects().filter((p) => p.status === "PUBLISHED");
+}
+
+export async function getAllAdminProjects() {
+  try {
+    const projects = await prisma.project.findMany({
+      orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
+    });
+    const deletedIds = globalForStore.deletedProjectIds;
+    return projects.filter(
+      (p) => !deletedIds.has(p.id) && !deletedIds.has(p.slug)
+    );
   } catch (e) {
     console.warn("Prisma query failed, returning fallback projects:", e);
   }
@@ -150,13 +184,27 @@ export async function getSafeProjects() {
 }
 
 export async function getSafeProjectBySlug(slug: string) {
+  if (globalForStore.deletedProjectIds.has(slug)) return null;
   try {
     const project = await prisma.project.findUnique({
       where: { slug },
     });
-    if (project) return project;
+    if (
+      project &&
+      !globalForStore.deletedProjectIds.has(project.id) &&
+      !globalForStore.deletedProjectIds.has(project.slug)
+    ) {
+      return project;
+    }
   } catch (e) {
     console.warn("Prisma query failed for slug:", slug, e);
   }
-  return getFilteredFallbackProjects().find((p) => p.slug === slug) || null;
+  return (
+    getFilteredFallbackProjects().find(
+      (p) =>
+        p.slug === slug &&
+        !globalForStore.deletedProjectIds.has(p.id) &&
+        !globalForStore.deletedProjectIds.has(p.slug)
+    ) || null
+  );
 }

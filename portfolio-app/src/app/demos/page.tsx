@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { prisma } from "@/lib/db";
+import { getSafeProjects } from "@/lib/db";
 import { ExternalLink, KeyRound, ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
 import { CopyButton } from "@/components/ui/CopyButton";
 
@@ -13,18 +13,8 @@ export const metadata = {
 export const revalidate = 0;
 
 export default async function DemosPage() {
-  let projectsWithDemos: any[] = [];
-  try {
-    projectsWithDemos = await prisma.project.findMany({
-      where: {
-        status: "PUBLISHED",
-        demoUrl: { not: null },
-      },
-      orderBy: [{ isFeatured: "desc" }, { displayOrder: "asc" }],
-    });
-  } catch (e) {
-    console.error("DemosPage fetch error:", e);
-  }
+  const safeProjects = await getSafeProjects();
+  const projectsWithDemos = safeProjects.filter((p) => p.demoUrl);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">

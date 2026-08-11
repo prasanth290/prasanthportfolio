@@ -116,16 +116,17 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
     registerDeletedProject(id);
 
     try {
-      await prisma.project.deleteMany({
+      const res = await prisma.project.deleteMany({
         where: { OR: [{ id }, { slug: id }] },
       });
+      console.log(`Prisma delete project ${id}: ${res.count} record(s) removed.`);
     } catch (e) {
       console.warn(`Prisma delete project ${id} failed:`, e);
     }
 
-    return NextResponse.json({ success: true });
-  } catch (error) {
+    return NextResponse.json({ success: true, message: "Project deleted successfully" });
+  } catch (error: any) {
     console.error("DELETE /api/projects/[id] error:", error);
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ error: error?.message || "Failed to delete project" }, { status: 500 });
   }
 }
