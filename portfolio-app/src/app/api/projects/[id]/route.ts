@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma, registerDeletedProject, registerDynamicProject } from "@/lib/db";
 import { getAdminSession } from "@/lib/auth";
+import { cookies } from "next/headers";
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -124,7 +125,26 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
       console.warn(`Prisma delete project ${id} failed:`, e);
     }
 
-    return NextResponse.json({ success: true, message: "Project deleted successfully" });
+    const cookieStore = await cookies();
+    const existingCookie = cookieStore.get("devstudio_deleted_projects")?.value;
+    let deletedList: string[] = [];
+    if (existingCookie) {
+      try {
+        deletedList = JSON.parse(existingCookie);
+      } catch {}
+    }
+    if (!deletedList.includes(id)) {
+      deletedList.push(id);
+    }
+
+    const res = NextResponse.json({ success: true, message: "Project deleted successfully" });
+    res.cookies.set("devstudio_deleted_projects", JSON.stringify(deletedList), {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: "lax",
+    });
+
+    return res;
   } catch (error: any) {
     console.error("DELETE /api/projects/[id] error:", error);
     return NextResponse.json({ error: error?.message || "Failed to delete project" }, { status: 500 });
