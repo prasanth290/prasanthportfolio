@@ -110,8 +110,22 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       (dId) => dId !== id && dId !== project.id && dId !== project.slug && dId !== slug
     );
 
+    // Store dynamic project in cookies for serverless persistence
+    const existingDynamicCookie = cookieStore.get("devstudio_dynamic_projects")?.value;
+    let dynamicList: any[] = [];
+    if (existingDynamicCookie) {
+      try { dynamicList = JSON.parse(existingDynamicCookie); } catch {}
+    }
+    const filteredDynamics = dynamicList.filter((p) => p.id !== id && p.id !== project.id && p.slug !== project.slug);
+    filteredDynamics.unshift(project);
+
     const res = NextResponse.json({ success: true, project });
     res.cookies.set("devstudio_deleted_projects", JSON.stringify(updatedDeletedList), {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: "lax",
+    });
+    res.cookies.set("devstudio_dynamic_projects", JSON.stringify(filteredDynamics), {
       path: "/",
       maxAge: 60 * 60 * 24 * 365,
       sameSite: "lax",

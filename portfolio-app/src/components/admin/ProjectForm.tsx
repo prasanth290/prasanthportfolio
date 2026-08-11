@@ -552,6 +552,13 @@ export function ProjectForm({ initialData }: { initialData?: any }) {
         />
       </div>
 
+      {error && (
+        <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
+          <AlertCircle className="w-4 h-4 shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
+
       {/* Action Submit Button */}
       <div className="flex items-center justify-end gap-4 pt-4 border-t border-slate-800">
         <button
