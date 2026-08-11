@@ -31,6 +31,7 @@ async function main() {
   // Create Flagship Projects (Real Built Software Case Studies)
   const p1 = await prisma.project.create({
     data: {
+      id: "p1-propflow",
       title: "PropFlow — Enterprise Rental & Property Management System",
       slug: "propflow-rental-management",
       category: "Rental",
@@ -62,6 +63,7 @@ You can test the actual deployed platform right now via the Live Demo button usi
 
   const p2 = await prisma.project.create({
     data: {
+      id: "p2-nexusstock",
       title: "NexusStock — Real-Time Multi-Warehouse Inventory & Barcode Suite",
       slug: "nexusstock-inventory-system",
       category: "Inventory",
@@ -93,6 +95,7 @@ Test-drive the live warehouse manager portal using the credentials provided belo
 
   const p3 = await prisma.project.create({
     data: {
+      id: "p3-omnibooking",
       title: "OmniBooking — Custom Service Booking & Staff Scheduling Platform",
       slug: "omnibooking-platform",
       category: "Booking",
@@ -123,6 +126,7 @@ Test the live customer booking flow and manager dashboard via the demo link.`,
 
   const p4 = await prisma.project.create({
     data: {
+      id: "p4-pulseanalytics",
       title: "PulseAnalytics — Executive SaaS Operations & Operations Cockpit",
       slug: "pulseanalytics-saas-dashboard",
       category: "CRM",

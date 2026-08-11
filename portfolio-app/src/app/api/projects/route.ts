@@ -31,9 +31,7 @@ export async function GET(req: Request) {
         where,
         orderBy: [{ isFeatured: "desc" }, { displayOrder: "asc" }, { createdAt: "desc" }],
       });
-      if (projects && projects.length > 0) {
-        return NextResponse.json({ projects });
-      }
+      return NextResponse.json({ projects });
     } catch (e) {
       console.warn("Prisma GET projects failed, using fallback store:", e);
     }

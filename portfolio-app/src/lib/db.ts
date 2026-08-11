@@ -142,7 +142,7 @@ export async function getSafeProjects() {
       where: { status: "PUBLISHED" },
       orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
     });
-    if (projects && projects.length > 0) return projects;
+    return projects;
   } catch (e) {
     console.warn("Prisma query failed, returning fallback projects:", e);
   }

@@ -116,9 +116,11 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
     registerDeletedProject(id);
 
     try {
-      await prisma.project.delete({ where: { id } });
+      await prisma.project.deleteMany({
+        where: { OR: [{ id }, { slug: id }] },
+      });
     } catch (e) {
-      console.warn(`Prisma delete project ${id} failed (entry may be fallback):`, e);
+      console.warn(`Prisma delete project ${id} failed:`, e);
     }
 
     return NextResponse.json({ success: true });

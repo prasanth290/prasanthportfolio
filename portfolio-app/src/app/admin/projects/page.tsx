@@ -11,16 +11,14 @@ export default async function AdminProjectsPage() {
     redirect("/admin/login");
   }
 
-  let projects: any[] = FALLBACK_PROJECTS;
+  let projects: any[] = [];
   try {
-    const dbProjects = await prisma.project.findMany({
+    projects = await prisma.project.findMany({
       orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
     });
-    if (dbProjects && dbProjects.length > 0) {
-      projects = dbProjects;
-    }
   } catch (e) {
     console.warn("Failed to fetch projects from DB, using fallback projects:", e);
+    projects = FALLBACK_PROJECTS;
   }
 
   return (

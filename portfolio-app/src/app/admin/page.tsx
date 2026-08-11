@@ -61,13 +61,11 @@ export default async function AdminDashboardPage() {
       take: 4,
       orderBy: { createdAt: "desc" },
     });
-    if (rProjects && rProjects.length > 0) {
-      projectCount = pCount;
-      leadCount = lCount;
-      newLeadCount = nLCount;
-      recentLeads = rLeads as any;
-      recentProjects = rProjects as any;
-    }
+    projectCount = pCount;
+    leadCount = lCount;
+    newLeadCount = nLCount;
+    recentLeads = rLeads as any;
+    recentProjects = rProjects as any;
   } catch (e) {
     console.warn("Failed to query dashboard metrics from DB, using fallback data:", e);
   }
