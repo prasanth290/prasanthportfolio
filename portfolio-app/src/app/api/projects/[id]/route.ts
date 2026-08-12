@@ -113,6 +113,13 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
     return NextResponse.json({ success: true, message: "Project deleted successfully" });
   } catch (error: any) {
     console.error("DELETE /api/projects/[id] error:", error);
+    const msg = error?.message || "";
+    if (msg.includes("the URL must start with the protocol") || msg.includes("postgresql://")) {
+      return NextResponse.json(
+        { error: "Please update DATABASE_URL in your Vercel Project Settings to your Supabase PostgreSQL URL (starting with postgresql://)." },
+        { status: 500 }
+      );
+    }
     return NextResponse.json({ error: error?.message || "Failed to delete project" }, { status: 500 });
   }
 }
