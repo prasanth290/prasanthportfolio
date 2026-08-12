@@ -114,6 +114,12 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
   } catch (error: any) {
     console.error("DELETE /api/projects/[id] error:", error);
     const msg = error?.message || "";
+    if (msg.includes("Authentication failed") || msg.includes("provided database credentials")) {
+      return NextResponse.json(
+        { error: "Supabase Password Error: The database password in your Vercel DATABASE_URL is incorrect. Please reset your password in Supabase Dashboard (Settings -> Database), update DATABASE_URL in Vercel, and redeploy." },
+        { status: 500 }
+      );
+    }
     if (msg.includes("the URL must start with the protocol") || msg.includes("postgresql://")) {
       return NextResponse.json(
         { error: "Please update DATABASE_URL in your Vercel Project Settings to your Supabase PostgreSQL URL (starting with postgresql://)." },
