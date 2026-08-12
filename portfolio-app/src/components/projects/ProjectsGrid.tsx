@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, ExternalLink, ArrowRight } from "lucide-react";
@@ -19,34 +19,9 @@ interface ProjectItem {
 }
 
 export function ProjectsGrid({ initialProjects }: { initialProjects: ProjectItem[] }) {
-  const [projects, setProjects] = useState<ProjectItem[]>(initialProjects);
+  const [projects] = useState<ProjectItem[]>(initialProjects);
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
-
-  useEffect(() => {
-    try {
-      const local = localStorage.getItem("devstudio_custom_projects");
-      const deletedLocal = localStorage.getItem("devstudio_deleted_projects");
-      const deletedSet = new Set(deletedLocal ? JSON.parse(deletedLocal) : []);
-
-      if (local) {
-        const customProjects = JSON.parse(local);
-        if (Array.isArray(customProjects)) {
-          const publishedCustom = customProjects.filter((p: any) => p.status === "PUBLISHED" || !p.status);
-          setProjects((prev) => {
-            const combined = [...publishedCustom, ...prev];
-            const map = new Map();
-            for (const p of combined) {
-              if (!deletedSet.has(p.id) && !deletedSet.has(p.slug) && !map.has(p.id)) {
-                map.set(p.id, p);
-              }
-            }
-            return Array.from(map.values());
-          });
-        }
-      }
-    } catch {}
-  }, []);
 
   const dynamicCategories = Array.from(
     new Set(["All", ...projects.map((p) => p.category).filter(Boolean)])

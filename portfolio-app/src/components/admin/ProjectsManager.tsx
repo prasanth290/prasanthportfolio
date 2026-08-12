@@ -19,30 +19,6 @@ export function ProjectsManager({ initialProjects }: { initialProjects: any[] })
   const [search, setSearch] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  useEffect(() => {
-    try {
-      const local = localStorage.getItem("devstudio_custom_projects");
-      const deletedLocal = localStorage.getItem("devstudio_deleted_projects");
-      const deletedSet = new Set(deletedLocal ? JSON.parse(deletedLocal) : []);
-
-      if (local) {
-        const customProjects = JSON.parse(local);
-        if (Array.isArray(customProjects)) {
-          setProjects((prev) => {
-            const combined = [...customProjects, ...prev];
-            const map = new Map();
-            for (const p of combined) {
-              if (!deletedSet.has(p.id) && !deletedSet.has(p.slug) && !map.has(p.id)) {
-                map.set(p.id, p);
-              }
-            }
-            return Array.from(map.values());
-          });
-        }
-      }
-    } catch {}
-  }, []);
-
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this project?")) return;
     setDeletingId(id);
@@ -55,19 +31,6 @@ export function ProjectsManager({ initialProjects }: { initialProjects: any[] })
         alert(data.error || "Failed to delete project. Please verify admin session.");
         return;
       }
-
-      // Sync local storage on delete
-      try {
-        const local = localStorage.getItem("devstudio_custom_projects");
-        if (local) {
-          const list = JSON.parse(local).filter((p: any) => p.id !== id && p.slug !== id);
-          localStorage.setItem("devstudio_custom_projects", JSON.stringify(list));
-        }
-        const delLocal = localStorage.getItem("devstudio_deleted_projects");
-        const delList = delLocal ? JSON.parse(delLocal) : [];
-        if (!delList.includes(id)) delList.push(id);
-        localStorage.setItem("devstudio_deleted_projects", JSON.stringify(delList));
-      } catch {}
 
       setProjects((prev) => prev.filter((p) => p.id !== id));
     } catch (e) {

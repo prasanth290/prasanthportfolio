@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { cookies } from "next/headers";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
@@ -100,181 +99,44 @@ export const FALLBACK_PROJECTS = [
   },
 ];
 
-const globalForStore = globalThis as unknown as {
-  deletedProjectIds: Set<string>;
-  dynamicProjects: any[];
-};
-
-if (!globalForStore.deletedProjectIds) {
-  globalForStore.deletedProjectIds = new Set<string>();
-}
-if (!globalForStore.dynamicProjects) {
-  globalForStore.dynamicProjects = [];
-}
-
-export async function getDeletedProjectIdsSet(): Promise<Set<string>> {
-  const set = new Set<string>(globalForStore.deletedProjectIds);
-  try {
-    const cookieStore = await cookies();
-    const deletedCookie = cookieStore.get("devstudio_deleted_projects")?.value;
-    if (deletedCookie) {
-      const parsed = JSON.parse(deletedCookie);
-      if (Array.isArray(parsed)) {
-        parsed.forEach((id: string) => set.add(id));
-      }
-    }
-  } catch {
-    // Ignore cookie errors outside request contexts
-  }
-  return set;
-}
-
-export async function getDynamicProjectsFromCookies(): Promise<any[]> {
-  try {
-    const cookieStore = await cookies();
-    const dynamicCookie = cookieStore.get("devstudio_dynamic_projects")?.value;
-    if (dynamicCookie) {
-      const parsed = JSON.parse(dynamicCookie);
-      if (Array.isArray(parsed)) return parsed;
-    }
-  } catch {
-    // Ignore cookie errors outside request contexts
-  }
-  return [];
-}
-
-export async function isProjectDeleted(idOrSlug?: string | null): Promise<boolean> {
-  if (!idOrSlug) return false;
-  const deletedSet = await getDeletedProjectIdsSet();
-  return deletedSet.has(idOrSlug);
-}
-
-export function registerDeletedProject(id: string) {
-  globalForStore.deletedProjectIds.add(id);
-  globalForStore.dynamicProjects = globalForStore.dynamicProjects.filter(
-    (p) => p.id !== id && p.slug !== id
-  );
-}
-
-export function registerDynamicProject(project: any) {
-  if (project.id) globalForStore.deletedProjectIds.delete(project.id);
-  if (project.slug) globalForStore.deletedProjectIds.delete(project.slug);
-
-  const index = globalForStore.dynamicProjects.findIndex(
-    (p) => p.id === project.id || p.slug === project.slug
-  );
-  if (index >= 0) {
-    globalForStore.dynamicProjects[index] = project;
-  } else {
-    globalForStore.dynamicProjects.unshift(project);
-  }
-}
-
 export async function getFilteredFallbackProjects() {
-  const deletedSet = await getDeletedProjectIdsSet();
-  const cookieDynamics = await getDynamicProjectsFromCookies();
-
-  const combined = [
-    ...cookieDynamics,
-    ...globalForStore.dynamicProjects,
-    ...FALLBACK_PROJECTS,
-  ];
-  const uniqueMap = new Map();
-  for (const p of combined) {
-    if (
-      !deletedSet.has(p.id) &&
-      !deletedSet.has(p.slug) &&
-      !uniqueMap.has(p.id)
-    ) {
-      uniqueMap.set(p.id, p);
-    }
-  }
-  return Array.from(uniqueMap.values());
+  return FALLBACK_PROJECTS;
 }
 
 export async function getSafeProjects() {
-  const deletedSet = await getDeletedProjectIdsSet();
-  const cookieDynamics = await getDynamicProjectsFromCookies();
-
   try {
     const dbProjects = await prisma.project.findMany({
       where: { status: "PUBLISHED" },
       orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
     });
-
-    const combined = [...cookieDynamics, ...dbProjects];
-    const uniqueMap = new Map();
-    for (const p of combined) {
-      if (
-        p.status === "PUBLISHED" &&
-        !deletedSet.has(p.id) &&
-        !deletedSet.has(p.slug) &&
-        !uniqueMap.has(p.id)
-      ) {
-        uniqueMap.set(p.id, p);
-      }
-    }
-    const result = Array.from(uniqueMap.values());
-    if (result.length > 0) return result;
+    if (dbProjects.length > 0) return dbProjects;
   } catch (e) {
     console.warn("Prisma query failed, returning fallback projects:", e);
   }
-  const fallbacks = await getFilteredFallbackProjects();
-  return fallbacks.filter((p) => p.status === "PUBLISHED");
+  return FALLBACK_PROJECTS.filter((p) => p.status === "PUBLISHED");
 }
 
 export async function getAllAdminProjects() {
-  const deletedSet = await getDeletedProjectIdsSet();
-  const cookieDynamics = await getDynamicProjectsFromCookies();
-
   try {
     const dbProjects = await prisma.project.findMany({
       orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
     });
-
-    const combined = [...cookieDynamics, ...dbProjects];
-    const uniqueMap = new Map();
-    for (const p of combined) {
-      if (
-        !deletedSet.has(p.id) &&
-        !deletedSet.has(p.slug) &&
-        !uniqueMap.has(p.id)
-      ) {
-        uniqueMap.set(p.id, p);
-      }
-    }
-    const result = Array.from(uniqueMap.values());
-    if (result.length > 0) return result;
+    if (dbProjects.length > 0) return dbProjects;
   } catch (e) {
     console.warn("Prisma query failed, returning fallback projects:", e);
   }
-  return getFilteredFallbackProjects();
+  return FALLBACK_PROJECTS;
 }
 
 export async function getSafeProjectBySlug(slug: string) {
-  const deletedSet = await getDeletedProjectIdsSet();
-  if (deletedSet.has(slug)) return null;
   try {
     const project = await prisma.project.findUnique({
       where: { slug },
     });
-    if (
-      project &&
-      !deletedSet.has(project.id) &&
-      !deletedSet.has(project.slug)
-    ) {
-      return project;
-    }
+    if (project) return project;
   } catch (e) {
     console.warn("Prisma query failed for slug:", slug, e);
   }
-  const fallbacks = await getFilteredFallbackProjects();
-  return (
-    fallbacks.find(
-      (p) =>
-        p.slug === slug &&
-        !deletedSet.has(p.id) &&
-        !deletedSet.has(p.slug)
-    ) || null
-  );
+  return FALLBACK_PROJECTS.find((p) => p.slug === slug) || null;
 }
+
