@@ -24,12 +24,12 @@ export default async function HomePage() {
   const featuredProjects = await getSafeProjects();
 
   const flagshipRental =
-    featuredProjects.find((p) => p.category === "Rental" || p.slug === "propflow-rental-management") ||
+    featuredProjects.find((p) => p.slug === "propflow-rental-management") ||
     FALLBACK_PROJECTS.find((p) => p.slug === "propflow-rental-management") ||
     FALLBACK_PROJECTS[0];
 
   const flagshipInventory =
-    featuredProjects.find((p) => p.category === "Inventory" || p.slug === "nexusstock-inventory-system") ||
+    featuredProjects.find((p) => p.slug === "nexusstock-inventory-system") ||
     FALLBACK_PROJECTS.find((p) => p.slug === "nexusstock-inventory-system") ||
     FALLBACK_PROJECTS[1];
 

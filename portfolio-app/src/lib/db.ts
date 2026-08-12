@@ -109,7 +109,11 @@ export async function getSafeProjects() {
       where: { status: "PUBLISHED" },
       orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
     });
-    return dbProjects;
+    const cleaned = dbProjects.filter((p) => {
+      const fullText = `${p.title} ${p.shortDesc} ${p.keyResults || ""} ${p.slug}`.toLowerCase();
+      return !fullText.includes("aeoncare") && !fullText.includes("health-care-ecommerce");
+    });
+    return cleaned.length > 0 ? cleaned : FALLBACK_PROJECTS.filter((p) => p.status === "PUBLISHED");
   } catch (e) {
     console.warn("Prisma query failed, returning fallback projects:", e);
     return FALLBACK_PROJECTS.filter((p) => p.status === "PUBLISHED");
@@ -121,7 +125,11 @@ export async function getAllAdminProjects() {
     const dbProjects = await prisma.project.findMany({
       orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
     });
-    return dbProjects;
+    const cleaned = dbProjects.filter((p) => {
+      const fullText = `${p.title} ${p.shortDesc} ${p.keyResults || ""} ${p.slug}`.toLowerCase();
+      return !fullText.includes("aeoncare") && !fullText.includes("health-care-ecommerce");
+    });
+    return cleaned.length > 0 ? cleaned : FALLBACK_PROJECTS;
   } catch (e) {
     console.warn("Prisma query failed, returning fallback projects:", e);
     return FALLBACK_PROJECTS;
@@ -129,6 +137,9 @@ export async function getAllAdminProjects() {
 }
 
 export async function getSafeProjectBySlug(slug: string) {
+  if (slug.toLowerCase().includes("aeoncare") || slug.toLowerCase().includes("health-care")) {
+    return null;
+  }
   try {
     const project = await prisma.project.findUnique({
       where: { slug },
