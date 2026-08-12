@@ -1,11 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getSafeProjects, FALLBACK_PROJECTS } from "@/lib/db";
+import { getSafeProjects } from "@/lib/db";
 import {
   ArrowRight,
   ExternalLink,
-  Building2,
-  Boxes,
   Clock,
   UserCheck,
   Award,
@@ -22,16 +20,6 @@ export const revalidate = 0;
 
 export default async function HomePage() {
   const featuredProjects = await getSafeProjects();
-
-  const flagshipRental =
-    featuredProjects.find((p) => p.slug === "propflow-rental-management") ||
-    FALLBACK_PROJECTS.find((p) => p.slug === "propflow-rental-management") ||
-    FALLBACK_PROJECTS[0];
-
-  const flagshipInventory =
-    featuredProjects.find((p) => p.slug === "nexusstock-inventory-system") ||
-    FALLBACK_PROJECTS.find((p) => p.slug === "nexusstock-inventory-system") ||
-    FALLBACK_PROJECTS[1];
 
   return (
     <div className="space-y-24 pb-20 overflow-hidden">
@@ -148,121 +136,6 @@ export default async function HomePage() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. Flagship Projects Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-emerald-400">Proven Flagship Systems</h2>
-          <p className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Completed Products Delivered For Business Operations
-          </p>
-          <p className="text-slate-400 text-base">
-            These flagship platforms represent real, completed applications built for actual business operations — see them live and discover how they can be customized for your workflow.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Flagship 1: Rental */}
-          <div className="glass-card glass-card-hover p-8 rounded-3xl border border-slate-800 space-y-6 flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
-                  <Building2 className="w-6 h-6" />
-                </div>
-                <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                  Flagship Product
-                </span>
-              </div>
-
-              <h3 className="text-2xl font-bold text-white">Rental & Property Management System</h3>
-              <p className="text-slate-300 text-sm leading-relaxed">
-                {flagshipRental?.shortDesc ||
-                  "Built for landlords and property managers to automate digital lease onboarding, monthly rent collection via Stripe, and maintenance dispatch queues."}
-              </p>
-
-              <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2 text-xs">
-                <div className="flex items-center gap-1.5 font-bold text-emerald-400">
-                  <TrendingUp className="w-4 h-4" />
-                  <span>Real Operation Impact:</span>
-                </div>
-                <p className="text-slate-300 leading-relaxed">
-                  {flagshipRental?.keyResults ||
-                    "Automated 95% of monthly tenant rent collection and cut maintenance dispatch delays in half."}
-                </p>
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
-              <Link
-                href={`/projects/${flagshipRental?.slug || "propflow-rental-management"}`}
-                className="text-xs font-bold text-slate-300 hover:text-white flex items-center gap-1"
-              >
-                <span>Read Case Study</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-              <a
-                href={flagshipRental?.demoUrl || "https://demo.propflow-rental.com"}
-                target="_blank"
-                rel="noreferrer"
-                className="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400 transition-colors flex items-center gap-1.5 shadow-md"
-              >
-                <span>View Live Demo</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-            </div>
-          </div>
-
-          {/* Flagship 2: Inventory */}
-          <div className="glass-card glass-card-hover p-8 rounded-3xl border border-slate-800 space-y-6 flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center">
-                  <Boxes className="w-6 h-6" />
-                </div>
-                <span className="px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-                  Flagship Product
-                </span>
-              </div>
-
-              <h3 className="text-2xl font-bold text-white">Real-Time Inventory & Warehouse Control</h3>
-              <p className="text-slate-300 text-sm leading-relaxed">
-                {flagshipInventory?.shortDesc ||
-                  "Built for wholesale distributors and e-commerce warehouses requiring multi-location stock tracking, barcode scanning, auto reorder triggers, and supplier PO drafting."}
-              </p>
-
-              <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2 text-xs">
-                <div className="flex items-center gap-1.5 font-bold text-cyan-400">
-                  <TrendingUp className="w-4 h-4" />
-                  <span>Real Operation Impact:</span>
-                </div>
-                <p className="text-slate-300 leading-relaxed">
-                  {flagshipInventory?.keyResults ||
-                    "Sub-second stock sync across 2 distribution hubs, zero stockout orders, and 3x faster barcode stock receiving."}
-                </p>
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
-              <Link
-                href={`/projects/${flagshipInventory?.slug || "nexusstock-inventory-system"}`}
-                className="text-xs font-bold text-slate-300 hover:text-white flex items-center gap-1"
-              >
-                <span>Read Case Study</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-              <a
-                href={flagshipInventory?.demoUrl || "https://demo.nexusstock-inventory.com"}
-                target="_blank"
-                rel="noreferrer"
-                className="px-4 py-2 rounded-xl bg-cyan-500 text-slate-950 font-bold text-xs hover:bg-cyan-400 transition-colors flex items-center gap-1.5 shadow-md"
-              >
-                <span>View Live Demo</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
             </div>
           </div>
         </div>
