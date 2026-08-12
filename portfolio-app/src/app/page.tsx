@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getSafeProjects } from "@/lib/db";
+import { getSafeProjects, FALLBACK_PROJECTS } from "@/lib/db";
 import {
   ArrowRight,
   ExternalLink,
@@ -23,8 +23,15 @@ export const revalidate = 0;
 export default async function HomePage() {
   const featuredProjects = await getSafeProjects();
 
-  const flagshipRental = featuredProjects.find((p) => p.category === "Rental") || featuredProjects[0];
-  const flagshipInventory = featuredProjects.find((p) => p.category === "Inventory") || featuredProjects[1];
+  const flagshipRental =
+    featuredProjects.find((p) => p.category === "Rental" || p.slug === "propflow-rental-management") ||
+    FALLBACK_PROJECTS.find((p) => p.slug === "propflow-rental-management") ||
+    FALLBACK_PROJECTS[0];
+
+  const flagshipInventory =
+    featuredProjects.find((p) => p.category === "Inventory" || p.slug === "nexusstock-inventory-system") ||
+    FALLBACK_PROJECTS.find((p) => p.slug === "nexusstock-inventory-system") ||
+    FALLBACK_PROJECTS[1];
 
   return (
     <div className="space-y-24 pb-20 overflow-hidden">
