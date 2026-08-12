@@ -109,11 +109,11 @@ export async function getSafeProjects() {
       where: { status: "PUBLISHED" },
       orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
     });
-    if (dbProjects.length > 0) return dbProjects;
+    return dbProjects;
   } catch (e) {
     console.warn("Prisma query failed, returning fallback projects:", e);
+    return FALLBACK_PROJECTS.filter((p) => p.status === "PUBLISHED");
   }
-  return FALLBACK_PROJECTS.filter((p) => p.status === "PUBLISHED");
 }
 
 export async function getAllAdminProjects() {
@@ -121,11 +121,11 @@ export async function getAllAdminProjects() {
     const dbProjects = await prisma.project.findMany({
       orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
     });
-    if (dbProjects.length > 0) return dbProjects;
+    return dbProjects;
   } catch (e) {
     console.warn("Prisma query failed, returning fallback projects:", e);
+    return FALLBACK_PROJECTS;
   }
-  return FALLBACK_PROJECTS;
 }
 
 export async function getSafeProjectBySlug(slug: string) {
