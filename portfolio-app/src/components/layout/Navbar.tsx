@@ -69,15 +69,6 @@ export function Navbar() {
           {/* Right Action */}
           <div className="hidden md:flex items-center gap-3">
             <Link
-              href="/admin/login"
-              className="p-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/60 transition-colors text-xs font-medium flex items-center gap-1.5"
-              title="Admin Portal"
-            >
-              <ShieldCheck className="w-4 h-4 text-slate-400" />
-              <span>Admin</span>
-            </Link>
-
-            <Link
               href="/contact"
               className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-semibold text-sm hover:opacity-95 transition-all shadow-md shadow-emerald-500/20 flex items-center gap-1.5 group"
             >
@@ -128,13 +119,6 @@ export function Navbar() {
               className="w-full text-center px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-bold text-sm"
             >
               Get Free Consultation
-            </Link>
-            <Link
-              href="/admin/login"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full text-center px-4 py-2.5 rounded-xl border border-slate-800 text-slate-400 hover:text-white text-xs font-medium"
-            >
-              Admin Login
             </Link>
           </div>
         </div>

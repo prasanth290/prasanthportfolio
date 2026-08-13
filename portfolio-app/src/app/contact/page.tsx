@@ -38,28 +38,28 @@ export default function ContactPage() {
 
             <div className="space-y-4 text-xs">
               <a
-                href="mailto:prasanth@devstudio.com"
+                href="mailto:prasanth.dev.studio@gmail.com"
                 className="p-4 rounded-2xl bg-slate-900 border border-slate-800 flex items-center gap-3 text-slate-300 hover:text-white hover:border-emerald-500/50 transition-colors"
               >
                 <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
                   <Mail className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-[11px] text-slate-400">Email Address</div>
-                  <div className="font-bold text-white text-sm">prasanth@devstudio.com</div>
+                  <div className="text-[11px] text-slate-400">Direct Email</div>
+                  <div className="font-bold text-white text-sm">prasanth.dev.studio@gmail.com</div>
                 </div>
               </a>
 
               <a
-                href="tel:+15550192831"
+                href="mailto:prasanth.dev.studio@gmail.com?subject=Consultation%20Request"
                 className="p-4 rounded-2xl bg-slate-900 border border-slate-800 flex items-center gap-3 text-slate-300 hover:text-white hover:border-emerald-500/50 transition-colors"
               >
                 <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center shrink-0">
-                  <Phone className="w-5 h-5" />
+                  <MessageSquare className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-[11px] text-slate-400">Direct Phone / WhatsApp</div>
-                  <div className="font-bold text-white text-sm">+1 (555) 019-2831</div>
+                  <div className="text-[11px] text-slate-400">Direct Consultation / Priority Inquiries</div>
+                  <div className="font-bold text-white text-sm">Send Direct Project Brief</div>
                 </div>
               </a>
             </div>
@@ -74,17 +74,15 @@ export default function ContactPage() {
             <div>
               <h4 className="font-bold text-white text-lg">Prefer A 1-on-1 Discovery Call?</h4>
               <p className="text-slate-300 text-xs mt-1 leading-relaxed">
-                Book a 15-minute video consultation to walk through your system requirements live.
+                Walk through your custom system requirements live. Submit the form to get a direct meeting invite within 12 hours.
               </p>
             </div>
 
             <a
-              href="https://calendly.com"
-              target="_blank"
-              rel="noreferrer"
+              href="mailto:prasanth.dev.studio@gmail.com?subject=Discovery%20Call%20Request"
               className="inline-block w-full text-center py-3 rounded-xl bg-slate-900 border border-slate-700 hover:bg-slate-800 text-white font-bold text-xs transition-colors"
             >
-              Book 15-Min Zoom Call
+              Request Discovery Meeting Invite
             </a>
           </div>
 

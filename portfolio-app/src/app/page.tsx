@@ -13,6 +13,8 @@ import {
   Calculator,
   TrendingUp,
   ShieldCheck,
+  Building2,
+  Users,
 } from "lucide-react";
 import { EstimatorWidget } from "@/components/home/EstimatorWidget";
 
@@ -68,19 +70,23 @@ export default async function HomePage() {
                 </Link>
               </div>
 
-              {/* Trust Metrics */}
-              <div className="pt-6 border-t border-slate-800/80 grid grid-cols-3 gap-4 max-w-xl mx-auto lg:mx-0">
+              {/* Trust & Quantified Track Record Metrics (4-stat row) */}
+              <div className="pt-6 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto lg:mx-0 text-left">
                 <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-white">4+</div>
-                  <div className="text-xs text-slate-400 font-medium">Live Demo Systems</div>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-white">3+ Yrs</div>
+                  <div className="text-xs text-slate-400 font-medium">Systems Experience</div>
                 </div>
                 <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400">100%</div>
-                  <div className="text-xs text-slate-400 font-medium">Full Code Ownership</div>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-cyan-400">12+</div>
+                  <div className="text-xs text-slate-400 font-medium">Projects Delivered</div>
                 </div>
                 <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-cyan-400">2–4 Wks</div>
-                  <div className="text-xs text-slate-400 font-medium">Average Adapt / Launch</div>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400">4+</div>
+                  <div className="text-xs text-slate-400 font-medium">Live Working Demos</div>
+                </div>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-teal-300">100%</div>
+                  <div className="text-xs text-slate-400 font-medium">Code Ownership</div>
                 </div>
               </div>
             </div>
@@ -324,6 +330,100 @@ export default async function HomePage() {
 
             <div className="lg:col-span-7">
               <EstimatorWidget />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5.5 "Recently Delivered" Interim Trust & Proof Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="glass-card rounded-3xl p-8 sm:p-12 border border-slate-800 space-y-8 bg-gradient-to-b from-slate-900 to-slate-950">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-3">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>Verified Client Systems Delivered</span>
+              </div>
+              <h3 className="text-3xl font-extrabold text-white">Recently Delivered Live Systems</h3>
+              <p className="text-slate-400 text-sm mt-1">
+                Custom software solutions engineered and shipped for real active client businesses.
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-center gap-3 text-xs text-slate-300">
+              <Users className="w-5 h-5 text-emerald-400 shrink-0" />
+              <span>
+                <strong className="text-white block font-bold">Client Verification & References</strong>
+                Ask me directly — happy to connect you with past clients.
+              </span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Client Showcase 1: Twosomesty */}
+            <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4 hover:border-slate-700 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500/20 to-emerald-500/20 text-cyan-400 flex items-center justify-center font-bold text-base border border-cyan-500/30">
+                    T
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white text-base">Twosomesty</h4>
+                    <span className="text-xs text-emerald-400 font-medium">Live Client Software System</span>
+                  </div>
+                </div>
+                <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
+                  Delivered & Active
+                </span>
+              </div>
+
+              <p className="text-slate-300 text-xs leading-relaxed">
+                Full-stack custom platform engineered for client e-commerce operations, order tracking, and custom workflow automation with real-time database management.
+              </p>
+
+              <div className="pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between text-xs text-slate-400 gap-2">
+                <span className="flex items-center gap-1 font-mono text-[11px]">
+                  <Clock className="w-3.5 h-3.5 text-emerald-400" />
+                  Sprint: 18 Days
+                </span>
+                <span className="flex items-center gap-1 font-mono text-[11px]">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" />
+                  100% Custom Architecture
+                </span>
+              </div>
+            </div>
+
+            {/* Client Showcase 2: Subash Build */}
+            <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4 hover:border-slate-700 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500/20 to-emerald-500/20 text-amber-400 flex items-center justify-center font-bold text-base border border-amber-500/30">
+                    S
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white text-base">Subash Build</h4>
+                    <span className="text-xs text-emerald-400 font-medium">Construction Operations Platform</span>
+                  </div>
+                </div>
+                <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
+                  Delivered & Active
+                </span>
+              </div>
+
+              <p className="text-slate-300 text-xs leading-relaxed">
+                Tailored business management tool for site project estimates, contractor material allocation, and automated client status reporting.
+              </p>
+
+              <div className="pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between text-xs text-slate-400 gap-2">
+                <span className="flex items-center gap-1 font-mono text-[11px]">
+                  <Clock className="w-3.5 h-3.5 text-emerald-400" />
+                  Sprint: 21 Days
+                </span>
+                <span className="flex items-center gap-1 font-mono text-[11px]">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" />
+                  Site Management Suite
+                </span>
+              </div>
             </div>
           </div>
         </div>

@@ -144,7 +144,7 @@ function ContactFormInner() {
           </label>
           <input
             type="tel"
-            placeholder="+1 (555) 000-0000"
+            placeholder="+1 (234) 567-8900"
             value={formData.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
