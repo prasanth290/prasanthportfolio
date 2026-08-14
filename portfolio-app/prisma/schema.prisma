@@ -63,3 +63,29 @@ model SiteSetting {
   value     String
   updatedAt DateTime @updatedAt
 }
+
+model Testimonial {
+  id          String   @id @default(uuid())
+  clientName  String
+  clientRole  String   // e.g. "Founder & Managing Director"
+  company     String   // e.g. "Twosomesty / Subash Build"
+  avatarUrl   String?
+  quote       String
+  rating      Int      @default(5)
+  projectSlug String?  // Optional link to specific project case study
+  isPublished Boolean  @default(true)
+  displayOrder Int     @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model FAQ {
+  id           String   @id @default(uuid())
+  question     String
+  answer       String
+  category     String   @default("General")
+  isPublished  Boolean  @default(true)
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

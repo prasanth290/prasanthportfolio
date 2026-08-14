@@ -11,6 +11,8 @@ import {
   LogOut,
   ExternalLink,
   PlusCircle,
+  MessageSquareQuote,
+  HelpCircle,
 } from "lucide-react";
 
 export function AdminSidebar({ session }: { session: any }) {
@@ -25,6 +27,8 @@ export function AdminSidebar({ session }: { session: any }) {
     { label: "Overview", href: "/admin", icon: LayoutDashboard },
     { label: "Projects & Portfolio", href: "/admin/projects", icon: FolderKanban },
     { label: "Add New Project", href: "/admin/projects/new", icon: PlusCircle },
+    { label: "Client Testimonials", href: "/admin/testimonials", icon: MessageSquareQuote },
+    { label: "FAQ Manager", href: "/admin/faqs", icon: HelpCircle },
     { label: "Inquiries & Leads", href: "/admin/leads", icon: Inbox },
     { label: "Site Settings", href: "/admin/settings", icon: Settings },
   ];

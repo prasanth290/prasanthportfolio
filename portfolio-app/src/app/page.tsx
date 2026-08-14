@@ -18,12 +18,32 @@ import {
 } from "lucide-react";
 import { EstimatorWidget } from "@/components/home/EstimatorWidget";
 import { FAQSection } from "@/components/home/FAQSection";
+import { TestimonialSection } from "@/components/home/TestimonialSection";
 import { ResumeDownloadModal } from "@/components/ui/ResumeDownloadModal";
+import { prisma } from "@/lib/db";
 
 export const revalidate = 0;
 
 export default async function HomePage() {
   const featuredProjects = await getSafeProjects();
+
+  let settingsMap: Record<string, string> = {};
+  let dbFaqs: any[] = [];
+
+  try {
+    const settings = await prisma.siteSetting.findMany();
+    settingsMap = settings.reduce((acc, curr) => {
+      acc[curr.key] = curr.value;
+      return acc;
+    }, {} as Record<string, string>);
+
+    dbFaqs = await prisma.fAQ.findMany({
+      where: { isPublished: true },
+      orderBy: { displayOrder: "asc" },
+    });
+  } catch (e) {
+    console.warn("Failed to fetch settings/faqs from DB:", e);
+  }
 
   return (
     <div className="space-y-24 pb-20 overflow-hidden">
@@ -79,19 +99,27 @@ export default async function HomePage() {
               {/* Trust & Quantified Track Record Metrics (4-stat row) */}
               <div className="pt-6 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto lg:mx-0 text-left">
                 <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-white">3+ Yrs</div>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-white">
+                    {settingsMap.stat_experience_years || "3+ Yrs"}
+                  </div>
                   <div className="text-xs text-slate-400 font-medium">Systems Experience</div>
                 </div>
                 <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-cyan-400">12+</div>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-cyan-400">
+                    {settingsMap.stat_projects_delivered || "12+"}
+                  </div>
                   <div className="text-xs text-slate-400 font-medium">Projects Delivered</div>
                 </div>
                 <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400">4+</div>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400">
+                    {settingsMap.stat_live_demos || "4+"}
+                  </div>
                   <div className="text-xs text-slate-400 font-medium">Live Working Demos</div>
                 </div>
                 <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-teal-300">100%</div>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-teal-300">
+                    {settingsMap.stat_code_ownership || "100%"}
+                  </div>
                   <div className="text-xs text-slate-400 font-medium">Code Ownership</div>
                 </div>
               </div>
@@ -435,8 +463,11 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 5.5 FAQ Section */}
-      <FAQSection />
+      {/* 5. Client Testimonials Section */}
+      <TestimonialSection />
+
+      {/* 5.5 Dynamic FAQ Section */}
+      <FAQSection items={dbFaqs} />
 
       {/* 6. "Ready To Start Your Project?" CTA Banner */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

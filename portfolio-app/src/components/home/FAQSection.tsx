@@ -4,11 +4,13 @@ import { useState } from "react";
 import { ChevronDown, HelpCircle } from "lucide-react";
 
 interface FAQItem {
+  id?: string;
   question: string;
   answer: string;
+  category?: string;
 }
 
-const faqs: FAQItem[] = [
+const defaultFaqs: FAQItem[] = [
   {
     question: "Do I get 100% full ownership of the source code?",
     answer:
@@ -36,8 +38,10 @@ const faqs: FAQItem[] = [
   },
 ];
 
-export function FAQSection() {
+export function FAQSection({ items }: { items?: FAQItem[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  const displayItems = items && items.length > 0 ? items : defaultFaqs;
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -60,11 +64,11 @@ export function FAQSection() {
         </div>
 
         <div className="space-y-4">
-          {faqs.map((faq, index) => {
+          {displayItems.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div
-                key={index}
+                key={faq.id || index}
                 className="glass-card rounded-2xl border border-slate-800/80 overflow-hidden transition-all"
               >
                 <button

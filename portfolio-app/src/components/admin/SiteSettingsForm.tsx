@@ -11,6 +11,10 @@ export function SiteSettingsForm({ initialSettings }: { initialSettings: Record<
     linkedin_url: initialSettings.linkedin_url || "https://linkedin.com/in/prasanth-dev",
     notification_email: initialSettings.notification_email || "prasanth.dev.studio@gmail.com",
     resume_url: initialSettings.resume_url || "/Prasanth_Developer_Capabilities.pdf",
+    stat_experience_years: initialSettings.stat_experience_years || "3+ Yrs",
+    stat_projects_delivered: initialSettings.stat_projects_delivered || "12+",
+    stat_live_demos: initialSettings.stat_live_demos || "4+",
+    stat_code_ownership: initialSettings.stat_code_ownership || "100%",
     meta_title: initialSettings.meta_title || "Prasanth | Custom Web Development & Business Software Studio",
     meta_description:
       initialSettings.meta_description ||
@@ -129,6 +133,62 @@ export function SiteSettingsForm({ initialSettings }: { initialSettings: Record<
               type="text"
               value={settings.resume_url}
               onChange={(e) => handleChange("resume_url", e.target.value)}
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Quantified Homepage Stat Counters */}
+      <div className="space-y-4 pt-4 border-t border-slate-800">
+        <h3 className="text-base font-bold text-white border-b border-slate-800 pb-2">
+          Homepage Hero Stat Overrides
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+              Experience Years
+            </label>
+            <input
+              type="text"
+              value={settings.stat_experience_years}
+              onChange={(e) => handleChange("stat_experience_years", e.target.value)}
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+              Projects Shipped
+            </label>
+            <input
+              type="text"
+              value={settings.stat_projects_delivered}
+              onChange={(e) => handleChange("stat_projects_delivered", e.target.value)}
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+              Live Working Demos
+            </label>
+            <input
+              type="text"
+              value={settings.stat_live_demos}
+              onChange={(e) => handleChange("stat_live_demos", e.target.value)}
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+              Code Ownership
+            </label>
+            <input
+              type="text"
+              value={settings.stat_code_ownership}
+              onChange={(e) => handleChange("stat_code_ownership", e.target.value)}
               className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
             />
           </div>
