@@ -12,13 +12,17 @@ export default async function AdminSettingsPage() {
   }
 
   let settingsMap: Record<string, string> = {
-    contact_email: "prasanth@customwebstudio.com",
-    contact_phone: "+1 (555) 019-2831",
-    contact_whatsapp: "+15550192831",
+    contact_email: "prasanth.dev.studio@gmail.com",
+    contact_phone: "+91 98765 43210",
+    github_url: "https://github.com/BloodHunt029",
+    linkedin_url: "https://linkedin.com/in/prasanth-dev",
+    notification_email: "prasanth.dev.studio@gmail.com",
+    resume_url: "/Prasanth_Developer_Capabilities.pdf",
     meta_title: "Prasanth | Real Business Software Built & Tested Live",
-    meta_description: "Portfolio of real completed custom business software — Rental Management Systems, Inventory Control, and Custom Web Apps.",
-    ga4_id: "G-DEVSTUDIO2026",
-    meta_pixel_id: "PIXEL-987654321",
+    meta_description:
+      "Portfolio of real completed custom business software — Rental Management Systems, Inventory Control, and Custom Web Apps.",
+    ga4_id: "",
+    meta_pixel_id: "",
   };
 
   try {
@@ -36,8 +40,8 @@ export default async function AdminSettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Global Site & Ad Settings</h1>
-        <p className="text-xs text-slate-400">Configure studio contact details, SEO meta tags, and ad pixel tracking IDs.</p>
+        <h1 className="text-2xl font-bold text-white">Global Site & Studio Settings</h1>
+        <p className="text-xs text-slate-400">Configure studio contact info, social channels, lead notification alerts, and SEO settings.</p>
       </div>
 
       <SiteSettingsForm initialSettings={settingsMap} />

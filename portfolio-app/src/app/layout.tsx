@@ -27,6 +27,14 @@ export const metadata: Metadata = {
     "business web app developer",
   ],
   authors: [{ name: "Prasanth" }],
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://prasanthportfolio-five.vercel.app"),
+  openGraph: {
+    title: "Prasanth | Real Business Software Built & Tested Live",
+    description: "Bespoke rental management systems, inventory tracking suites, and custom web applications.",
+    siteName: "Prasanth Dev Studio",
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -34,8 +42,43 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: "Prasanth Dev Studio",
+    url: "https://prasanthportfolio-five.vercel.app",
+    description: "High-performance custom web app development, rental management software, and enterprise software engineering.",
+    address: {
+      "@type": "PostalAddress",
+      addressCountry: "IN",
+    },
+    founder: {
+      "@type": "Person",
+      name: "Prasanth",
+      jobTitle: "Senior Software Engineer & Web Developer",
+      sameAs: [
+        "https://github.com/BloodHunt029",
+        "https://linkedin.com/in/prasanth-dev",
+      ],
+    },
+    knowsAbout: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "PostgreSQL",
+      "Rental Management Systems",
+      "Inventory Management Systems",
+    ],
+  };
+
   return (
     <html lang="en" className={`${plusJakartaSans.variable} dark`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="bg-[#090d16] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500/30 selection:text-emerald-200">
         <Navbar />
         <main className="flex-1 pt-20">{children}</main>

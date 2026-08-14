@@ -17,6 +17,8 @@ import {
   Users,
 } from "lucide-react";
 import { EstimatorWidget } from "@/components/home/EstimatorWidget";
+import { FAQSection } from "@/components/home/FAQSection";
+import { ResumeDownloadModal } from "@/components/ui/ResumeDownloadModal";
 
 export const revalidate = 0;
 
@@ -68,6 +70,10 @@ export default async function HomePage() {
                   <span>Get a Custom Quote</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
+
+                <div className="w-full sm:w-auto flex justify-center">
+                  <ResumeDownloadModal />
+                </div>
               </div>
 
               {/* Trust & Quantified Track Record Metrics (4-stat row) */}
@@ -428,6 +434,9 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* 5.5 FAQ Section */}
+      <FAQSection />
 
       {/* 6. "Ready To Start Your Project?" CTA Banner */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

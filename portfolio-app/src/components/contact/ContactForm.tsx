@@ -20,6 +20,7 @@ function ContactFormInner() {
     message: initialRef ? `Hi Prasanth, I'm interested in building a system similar to "${initialRef}".` : "",
     utmSource: "",
     utmCampaign: "",
+    website_hp: "", // Honeypot field for anti-spam protection
   });
 
   const [loading, setLoading] = useState(false);
@@ -84,6 +85,7 @@ function ContactFormInner() {
                 message: "",
                 utmSource: "",
                 utmCampaign: "",
+                website_hp: "",
               });
             }}
             className="px-6 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white text-xs font-semibold"
@@ -199,6 +201,18 @@ function ContactFormInner() {
           value={formData.message}
           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
           className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+        />
+      </div>
+
+      {/* Invisible Honeypot Input Field (Anti-Spam) */}
+      <div className="hidden" aria-hidden="true">
+        <input
+          type="text"
+          name="website_hp"
+          tabIndex={-1}
+          autoComplete="off"
+          value={formData.website_hp}
+          onChange={(e) => setFormData({ ...formData, website_hp: e.target.value })}
         />
       </div>
 
