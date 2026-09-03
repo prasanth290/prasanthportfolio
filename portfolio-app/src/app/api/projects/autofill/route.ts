@@ -176,13 +176,23 @@ export async function POST(req: Request) {
 
     const uniqueTechStack = Array.from(new Set(techStack));
 
-    // 7. Cover Image (Real OpenGraph image or Live Screenshot API)
+    const categoryDefaults: Record<string, string> = {
+      Rental: "/images/rental.png",
+      Inventory: "/images/inventory.png",
+      Booking: "/images/booking.png",
+      CRM: "/images/analytics.png",
+      Other: "/images/developer-workbench.png",
+    };
+    const defaultLocalImage = categoryDefaults[category] || "/images/developer-workbench.png";
+
+    // 7. Cover Image (Real OpenGraph image or Clean Local Preset)
     let coverImage = getMetaContent("og:image") || getMetaContent("twitter:image") || "";
     if (coverImage && coverImage.startsWith("/")) {
       coverImage = parsedUrl.origin + coverImage;
     }
-    if (!coverImage || !coverImage.startsWith("http")) {
-      coverImage = `https://image.thum.io/get/width/1200/crop/800/${targetUrl}`;
+    // Never fallback to slow live screenshot scrapers like thum.io
+    if (!coverImage || !coverImage.startsWith("http") || coverImage.includes("thum.io")) {
+      coverImage = defaultLocalImage;
     }
 
     // 8. Full Case Study Description (Markdown)

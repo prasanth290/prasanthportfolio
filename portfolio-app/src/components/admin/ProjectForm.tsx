@@ -522,17 +522,22 @@ export function ProjectForm({ initialData }: { initialData?: any }) {
               placeholder="/images/rental.png or image URL"
               className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-xs text-white font-mono focus:outline-none focus:border-emerald-500"
             />
-            <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold cursor-pointer">
-              <Upload className="w-4 h-4 text-emerald-400" />
-              <span>{uploading ? "Uploading..." : "Upload New File"}</span>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => handleFileUpload(e, true)}
-                className="hidden"
-                disabled={uploading}
-              />
-            </label>
+            <div className="flex items-center gap-3">
+              <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold cursor-pointer">
+                <Upload className="w-4 h-4 text-emerald-400" />
+                <span>{uploading ? "Uploading..." : "Upload New File"}</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleFileUpload(e, true)}
+                  className="hidden"
+                  disabled={uploading}
+                />
+              </label>
+              <span className="text-[11px] text-slate-400">
+                Auto-fill assigns a fast local preset by category. Upload a direct file for custom look.
+              </span>
+            </div>
           </div>
         </div>
       </div>
