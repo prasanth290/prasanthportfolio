@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 
 function ContactFormInner() {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const initialType = searchParams.get("type") || "Rental Management";
   const initialBudget = searchParams.get("budget") || "$3,000 - $5,000";
@@ -20,6 +21,9 @@ function ContactFormInner() {
     message: initialRef ? `Hi Prasanth, I'm interested in building a system similar to "${initialRef}".` : "",
     utmSource: "",
     utmCampaign: "",
+    utmMedium: "",
+    utmTerm: "",
+    gclid: "",
     website_hp: "", // Honeypot field for anti-spam protection
   });
 
@@ -28,11 +32,33 @@ function ContactFormInner() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const utmSource = searchParams.get("utm_source") || "";
-    const utmCampaign = searchParams.get("utm_campaign") || "";
-    if (utmSource || utmCampaign) {
-      setFormData((prev) => ({ ...prev, utmSource, utmCampaign }));
-    }
+    // Capture tracking parameters from URL and persist in sessionStorage across page navigation
+    const trackingKeys = ["utm_source", "utm_campaign", "utm_medium", "utm_term", "gclid"];
+    const captured: Record<string, string> = {};
+
+    trackingKeys.forEach((key) => {
+      const paramVal = searchParams.get(key);
+      if (paramVal) {
+        captured[key] = paramVal;
+        try {
+          sessionStorage.setItem(`lead_${key}`, paramVal);
+        } catch {}
+      } else {
+        try {
+          const cachedVal = sessionStorage.getItem(`lead_${key}`);
+          if (cachedVal) captured[key] = cachedVal;
+        } catch {}
+      }
+    });
+
+    setFormData((prev) => ({
+      ...prev,
+      utmSource: captured.utm_source || (captured.gclid ? "google-ads" : prev.utmSource),
+      utmCampaign: captured.utm_campaign || prev.utmCampaign,
+      utmMedium: captured.utm_medium || prev.utmMedium,
+      utmTerm: captured.utm_term || prev.utmTerm,
+      gclid: captured.gclid || prev.gclid,
+    }));
   }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -53,6 +79,8 @@ function ContactFormInner() {
       }
 
       setSuccess(true);
+      // Redirect to dedicated Thank You conversion page for Google Ads tracking
+      router.push(`/thank-you?name=${encodeURIComponent(formData.name)}&type=${encodeURIComponent(formData.projectType)}`);
     } catch (err: any) {
       setError(err.message || "An error occurred. Please try again.");
     } finally {
@@ -85,6 +113,9 @@ function ContactFormInner() {
                 message: "",
                 utmSource: "",
                 utmCampaign: "",
+                utmMedium: "",
+                utmTerm: "",
+                gclid: "",
                 website_hp: "",
               });
             }}

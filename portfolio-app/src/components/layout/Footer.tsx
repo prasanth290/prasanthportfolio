@@ -140,6 +140,9 @@ export function Footer() {
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
           <p>© {new Date().getFullYear()} Prasanth Custom Web Studio. All rights reserved.</p>
           <div className="flex items-center gap-6">
+            <Link href="/privacy-policy" className="hover:text-slate-200 transition-colors">
+              Privacy Policy
+            </Link>
             <Link href="/contact" className="hover:text-slate-200 flex items-center gap-1 text-emerald-400 font-medium">
               <span>Direct Consultation</span>
             </Link>

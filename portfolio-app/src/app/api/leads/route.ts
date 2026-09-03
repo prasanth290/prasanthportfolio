@@ -36,7 +36,20 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { name, email, phone, projectType, budgetRange, message, utmSource, utmCampaign, website_hp } = body;
+    const {
+      name,
+      email,
+      phone,
+      projectType,
+      budgetRange,
+      message,
+      utmSource,
+      utmCampaign,
+      utmMedium,
+      utmTerm,
+      gclid,
+      website_hp,
+    } = body;
 
     // 2. Honeypot check (Bots that auto-fill all form fields will trigger this)
     if (website_hp) {
@@ -48,6 +61,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Name, email, project type, and message are required." }, { status: 400 });
     }
 
+    const attributionDetails = [
+      gclid ? `Google Click ID (gclid): ${gclid}` : "",
+      utmMedium ? `Medium: ${utmMedium}` : "",
+      utmTerm ? `Keyword/Search Term: ${utmTerm}` : "",
+    ]
+      .filter(Boolean)
+      .join(" | ");
+
     const lead = await prisma.lead.create({
       data: {
         name,
@@ -56,8 +77,9 @@ export async function POST(req: Request) {
         projectType,
         budgetRange: budgetRange || null,
         message,
-        utmSource: utmSource || null,
+        utmSource: utmSource || (gclid ? "google-ads" : null),
         utmCampaign: utmCampaign || null,
+        notes: attributionDetails || null,
         status: "NEW",
       },
     });
