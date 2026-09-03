@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { ShieldCheck, ArrowLeft, Lock, EyeOff, FileText, Mail } from "lucide-react";
+import { ShieldCheck, ArrowLeft, Lock, EyeOff, FileText, Mail, Info } from "lucide-react";
+import { getSafeSiteSettings } from "@/lib/db";
+
+export const revalidate = 300;
 
 export const metadata = {
   title: "Privacy Policy | Prasanth Dev Studio",
@@ -7,8 +10,13 @@ export const metadata = {
     "Privacy Policy for Prasanth Dev Studio. Learn how client project inquiries, contact details, and proprietary software ideas are safeguarded.",
 };
 
-export default function PrivacyPolicyPage() {
+export default async function PrivacyPolicyPage() {
+  const settings = await getSafeSiteSettings();
   const lastUpdated = "September 2026";
+  const developerName = settings.developer_name || "Prasanth";
+  const developerEmail = settings.contact_email || "prasanth.dev.studio@gmail.com";
+  const developerPhone = settings.contact_phone || settings.whatsapp_number || "";
+  const customNotes = settings.privacy_policy_custom_notes || "";
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
@@ -110,10 +118,18 @@ export default function PrivacyPolicyPage() {
             If you have questions regarding this Privacy Policy or wish to have your submitted project details deleted, please contact:
           </p>
           <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs space-y-1 font-mono text-emerald-400">
-            <div>Developer: Prasanth</div>
-            <div>Email: prasanth.dev.studio@gmail.com</div>
+            <div>Developer / Studio: {developerName}</div>
+            <div>Email: {developerEmail}</div>
+            {developerPhone && <div>Phone / WhatsApp: {developerPhone}</div>}
             <div>Website: prasanthportfolio-five.vercel.app</div>
           </div>
+
+          {customNotes && (
+            <div className="mt-4 p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300 space-y-1">
+              <div className="font-bold text-white uppercase tracking-wider text-[10px]">Additional Policy Provisions</div>
+              <p className="whitespace-pre-line leading-relaxed">{customNotes}</p>
+            </div>
+          )}
         </section>
       </div>
     </div>

@@ -195,3 +195,39 @@ export const getSafeProjectBySlug = cache(async (slug: string) => {
   }
 });
 
+export const DEFAULT_SITE_SETTINGS: Record<string, string> = {
+  contact_email: "prasanth.dev.studio@gmail.com",
+  contact_phone: "+91 98765 43210",
+  whatsapp_number: "+91 98765 43210",
+  whatsapp_message: "Hi Prasanth, I saw your portfolio and would like to discuss building a custom software/web system.",
+  developer_name: "Prasanth",
+  privacy_policy_custom_notes: "",
+  github_url: "https://github.com/BloodHunt029",
+  linkedin_url: "https://linkedin.com/in/prasanth-dev",
+  notification_email: "prasanth.dev.studio@gmail.com",
+  resume_url: "/Prasanth_Developer_Capabilities.pdf",
+  meta_title: "Prasanth | Real Business Software Built & Tested Live",
+  meta_description:
+    "Portfolio of real completed custom business software — Rental Management Systems, Inventory Control, and Custom Web Apps.",
+};
+
+export const getSafeSiteSettings = cache(async (): Promise<Record<string, string>> => {
+  try {
+    return await withDbTimeout(
+      prisma.siteSetting.findMany().then((list) => {
+        if (!list || list.length === 0) return DEFAULT_SITE_SETTINGS;
+        const map = { ...DEFAULT_SITE_SETTINGS };
+        list.forEach((item) => {
+          map[item.key] = item.value;
+        });
+        return map;
+      }),
+      2500,
+      DEFAULT_SITE_SETTINGS
+    );
+  } catch (e) {
+    console.warn("Failed to fetch settings from DB, using defaults:", e);
+    return DEFAULT_SITE_SETTINGS;
+  }
+});
+

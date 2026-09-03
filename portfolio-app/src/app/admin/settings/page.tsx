@@ -3,6 +3,8 @@ import { getAdminSession } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { SiteSettingsForm } from "@/components/admin/SiteSettingsForm";
 
+import { DEFAULT_SITE_SETTINGS } from "@/lib/db";
+
 export const revalidate = 0;
 
 export default async function AdminSettingsPage() {
@@ -11,19 +13,7 @@ export default async function AdminSettingsPage() {
     redirect("/admin/login");
   }
 
-  let settingsMap: Record<string, string> = {
-    contact_email: "prasanth.dev.studio@gmail.com",
-    contact_phone: "+91 98765 43210",
-    github_url: "https://github.com/BloodHunt029",
-    linkedin_url: "https://linkedin.com/in/prasanth-dev",
-    notification_email: "prasanth.dev.studio@gmail.com",
-    resume_url: "/Prasanth_Developer_Capabilities.pdf",
-    meta_title: "Prasanth | Real Business Software Built & Tested Live",
-    meta_description:
-      "Portfolio of real completed custom business software — Rental Management Systems, Inventory Control, and Custom Web Apps.",
-    ga4_id: "",
-    meta_pixel_id: "",
-  };
+  let settingsMap: Record<string, string> = { ...DEFAULT_SITE_SETTINGS };
 
   try {
     const settingsList = await prisma.siteSetting.findMany();
@@ -31,7 +21,7 @@ export default async function AdminSettingsPage() {
       settingsMap = settingsList.reduce((acc, curr) => {
         acc[curr.key] = curr.value;
         return acc;
-      }, {} as Record<string, string>);
+      }, { ...DEFAULT_SITE_SETTINGS } as Record<string, string>);
     }
   } catch (e) {
     console.warn("Failed to fetch site settings from DB, using defaults:", e);

@@ -38,11 +38,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+import { getSafeSiteSettings } from "@/lib/db";
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const siteSettings = await getSafeSiteSettings();
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
@@ -55,11 +59,11 @@ export default function RootLayout({
     },
     founder: {
       "@type": "Person",
-      name: "Prasanth",
+      name: siteSettings.developer_name || "Prasanth",
       jobTitle: "Senior Software Engineer & Web Developer",
       sameAs: [
-        "https://github.com/BloodHunt029",
-        "https://linkedin.com/in/prasanth-dev",
+        siteSettings.github_url || "https://github.com/BloodHunt029",
+        siteSettings.linkedin_url || "https://linkedin.com/in/prasanth-dev",
       ],
     },
     knowsAbout: [
@@ -84,7 +88,11 @@ export default function RootLayout({
         <Navbar />
         <main className="flex-1 pt-20">{children}</main>
         <Footer />
-        <QuickContactWidget />
+        <QuickContactWidget
+          whatsappNumber={siteSettings.whatsapp_number || siteSettings.contact_phone}
+          contactPhone={siteSettings.contact_phone || siteSettings.whatsapp_number}
+          customMessage={siteSettings.whatsapp_message}
+        />
       </body>
     </html>
   );

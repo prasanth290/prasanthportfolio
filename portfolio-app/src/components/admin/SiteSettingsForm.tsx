@@ -7,6 +7,12 @@ export function SiteSettingsForm({ initialSettings }: { initialSettings: Record<
   const [settings, setSettings] = useState({
     contact_email: initialSettings.contact_email || "prasanth.dev.studio@gmail.com",
     contact_phone: initialSettings.contact_phone || "+91 98765 43210",
+    whatsapp_number: initialSettings.whatsapp_number || initialSettings.contact_phone || "+91 98765 43210",
+    whatsapp_message:
+      initialSettings.whatsapp_message ||
+      "Hi Prasanth, I saw your portfolio and would like to discuss building a custom software/web system.",
+    developer_name: initialSettings.developer_name || "Prasanth",
+    privacy_policy_custom_notes: initialSettings.privacy_policy_custom_notes || "",
     github_url: initialSettings.github_url || "https://github.com/BloodHunt029",
     linkedin_url: initialSettings.linkedin_url || "https://linkedin.com/in/prasanth-dev",
     notification_email: initialSettings.notification_email || "prasanth.dev.studio@gmail.com",
@@ -71,12 +77,25 @@ export function SiteSettingsForm({ initialSettings }: { initialSettings: Record<
         </div>
       )}
 
-      {/* Studio Contact & Social Channels */}
+      {/* Studio Contact & Public Profiles */}
       <div className="space-y-4">
         <h3 className="text-base font-bold text-white border-b border-slate-800 pb-2">
           Studio Contact & Public Profiles
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+              Developer / Studio Name (for Privacy Policy & Schema)
+            </label>
+            <input
+              type="text"
+              value={settings.developer_name}
+              onChange={(e) => handleChange("developer_name", e.target.value)}
+              placeholder="Prasanth"
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+            />
+          </div>
+
           <div className="space-y-2">
             <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
               Contact / Reply Email
@@ -97,6 +116,19 @@ export function SiteSettingsForm({ initialSettings }: { initialSettings: Record<
               type="email"
               value={settings.notification_email}
               onChange={(e) => handleChange("notification_email", e.target.value)}
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+              Direct Phone Call Number
+            </label>
+            <input
+              type="text"
+              value={settings.contact_phone}
+              onChange={(e) => handleChange("contact_phone", e.target.value)}
+              placeholder="+91 98765 43210"
               className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
             />
           </div>
@@ -136,6 +168,60 @@ export function SiteSettingsForm({ initialSettings }: { initialSettings: Record<
               className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
             />
           </div>
+        </div>
+      </div>
+
+      {/* WhatsApp & Quick Channels Widget Settings */}
+      <div className="space-y-4 pt-4 border-t border-slate-800">
+        <h3 className="text-base font-bold text-white border-b border-slate-800 pb-2 flex items-center justify-between">
+          <span>Floating WhatsApp & Call Widget</span>
+          <span className="text-xs font-normal text-emerald-400">Mobile & Desktop Direct Action</span>
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+              WhatsApp Number (with country code)
+            </label>
+            <input
+              type="text"
+              value={settings.whatsapp_number}
+              onChange={(e) => handleChange("whatsapp_number", e.target.value)}
+              placeholder="+91 98765 43210"
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+              WhatsApp Pre-filled Greeting Message
+            </label>
+            <input
+              type="text"
+              value={settings.whatsapp_message}
+              onChange={(e) => handleChange("whatsapp_message", e.target.value)}
+              placeholder="Hi Prasanth, I saw your portfolio and would like to discuss building a custom software/web system."
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Privacy Policy & Legal Customization */}
+      <div className="space-y-4 pt-4 border-t border-slate-800">
+        <h3 className="text-base font-bold text-white border-b border-slate-800 pb-2">
+          Privacy Policy & Legal Customization
+        </h3>
+        <div className="space-y-2">
+          <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+            Custom Legal Notes / Jurisdiction (Optional additions shown on /privacy-policy)
+          </label>
+          <textarea
+            rows={3}
+            value={settings.privacy_policy_custom_notes}
+            onChange={(e) => handleChange("privacy_policy_custom_notes", e.target.value)}
+            placeholder="Add any company registration numbers, specific jurisdiction laws, or custom NDA clauses..."
+            className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-mono text-xs"
+          />
         </div>
       </div>
 

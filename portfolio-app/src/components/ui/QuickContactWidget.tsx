@@ -5,7 +5,15 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { MessageSquare, Phone, X, MessageCircle, ArrowUpRight, Sparkles } from "lucide-react";
 
-export function QuickContactWidget({ whatsappNumber = "+91 98765 43210" }: { whatsappNumber?: string }) {
+export function QuickContactWidget({
+  whatsappNumber = "+91 98765 43210",
+  contactPhone = "+91 98765 43210",
+  customMessage = "Hi Prasanth, I saw your portfolio and would like to discuss building a custom software/web system.",
+}: {
+  whatsappNumber?: string;
+  contactPhone?: string;
+  customMessage?: string;
+}) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -14,11 +22,10 @@ export function QuickContactWidget({ whatsappNumber = "+91 98765 43210" }: { wha
     return null;
   }
 
-  const cleanNumber = whatsappNumber.replace(/[^0-9]/g, "");
-  const defaultMessage = encodeURIComponent(
-    "Hi Prasanth, I saw your portfolio and would like to discuss building a custom software/web system."
-  );
-  const whatsappUrl = `https://wa.me/${cleanNumber}?text=${defaultMessage}`;
+  const cleanWhatsapp = (whatsappNumber || "+91 98765 43210").replace(/[^0-9]/g, "");
+  const cleanPhone = (contactPhone || whatsappNumber || "+91 98765 43210").replace(/[^0-9+]/g, "");
+  const encodedMessage = encodeURIComponent(customMessage || "Hi Prasanth, I saw your portfolio and would like to discuss building a custom software/web system.");
+  const whatsappUrl = `https://wa.me/${cleanWhatsapp}?text=${encodedMessage}`;
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
@@ -69,7 +76,7 @@ export function QuickContactWidget({ whatsappNumber = "+91 98765 43210" }: { wha
 
             {/* Direct Phone Call */}
             <a
-              href={`tel:${cleanNumber}`}
+              href={`tel:${cleanPhone}`}
               className="p-3 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 flex items-center justify-between group transition-all"
             >
               <div className="flex items-center gap-3">
@@ -80,7 +87,7 @@ export function QuickContactWidget({ whatsappNumber = "+91 98765 43210" }: { wha
                   <div className="text-xs font-bold text-white group-hover:text-cyan-300 transition-colors">
                     Direct Phone Call
                   </div>
-                  <div className="text-[10px] text-slate-400 font-mono">{whatsappNumber}</div>
+                  <div className="text-[10px] text-slate-400 font-mono">{contactPhone || whatsappNumber}</div>
                 </div>
               </div>
               <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
