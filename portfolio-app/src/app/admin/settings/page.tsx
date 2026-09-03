@@ -5,6 +5,7 @@ import { SiteSettingsForm } from "@/components/admin/SiteSettingsForm";
 
 import { DEFAULT_SITE_SETTINGS } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function AdminSettingsPage() {

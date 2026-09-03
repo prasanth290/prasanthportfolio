@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { MessageSquare, Phone, X, MessageCircle, ArrowUpRight, Sparkles } from "lucide-react";
@@ -17,14 +17,33 @@ export function QuickContactWidget({
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
+  const [activeWhatsapp, setActiveWhatsapp] = useState(whatsappNumber);
+  const [activePhone, setActivePhone] = useState(contactPhone);
+  const [activeMessage, setActiveMessage] = useState(customMessage);
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.settings) {
+          if (data.settings.whatsapp_number) setActiveWhatsapp(data.settings.whatsapp_number);
+          if (data.settings.contact_phone) setActivePhone(data.settings.contact_phone);
+          if (data.settings.whatsapp_message) setActiveMessage(data.settings.whatsapp_message);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   // Auto-hide on admin routes
   if (pathname?.startsWith("/admin")) {
     return null;
   }
 
-  const cleanWhatsapp = (whatsappNumber || "+91 98765 43210").replace(/[^0-9]/g, "");
-  const cleanPhone = (contactPhone || whatsappNumber || "+91 98765 43210").replace(/[^0-9+]/g, "");
-  const encodedMessage = encodeURIComponent(customMessage || "Hi Prasanth, I saw your portfolio and would like to discuss building a custom software/web system.");
+  const cleanWhatsapp = (activeWhatsapp || "+91 98765 43210").replace(/[^0-9]/g, "");
+  const cleanPhone = (activePhone || activeWhatsapp || "+91 98765 43210").replace(/[^0-9+]/g, "");
+  const encodedMessage = encodeURIComponent(
+    activeMessage || "Hi Prasanth, I saw your portfolio and would like to discuss building a custom software/web system."
+  );
   const whatsappUrl = `https://wa.me/${cleanWhatsapp}?text=${encodedMessage}`;
 
   return (
@@ -87,7 +106,7 @@ export function QuickContactWidget({
                   <div className="text-xs font-bold text-white group-hover:text-cyan-300 transition-colors">
                     Direct Phone Call
                   </div>
-                  <div className="text-[10px] text-slate-400 font-mono">{contactPhone || whatsappNumber}</div>
+                  <div className="text-[10px] text-slate-400 font-mono">{activePhone || activeWhatsapp}</div>
                 </div>
               </div>
               <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />

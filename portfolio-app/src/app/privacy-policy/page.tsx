@@ -2,7 +2,8 @@ import Link from "next/link";
 import { ShieldCheck, ArrowLeft, Lock, EyeOff, FileText, Mail, Info } from "lucide-react";
 import { getSafeSiteSettings } from "@/lib/db";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata = {
   title: "Privacy Policy | Prasanth Dev Studio",

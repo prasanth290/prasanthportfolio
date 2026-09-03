@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Save, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 
 export function SiteSettingsForm({ initialSettings }: { initialSettings: Record<string, string> }) {
+  const router = useRouter();
   const [settings, setSettings] = useState({
     contact_email: initialSettings.contact_email || "prasanth.dev.studio@gmail.com",
     contact_phone: initialSettings.contact_phone || "+91 98765 43210",
@@ -53,6 +55,7 @@ export function SiteSettingsForm({ initialSettings }: { initialSettings: Record<
       if (!res.ok) throw new Error("Failed to save settings.");
 
       setSuccess(true);
+      router.refresh();
       setTimeout(() => setSuccess(false), 3000);
     } catch (err: any) {
       setError(err.message || "Error saving settings.");

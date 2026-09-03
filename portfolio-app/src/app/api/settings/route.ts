@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
 import { getAdminSession } from "@/lib/auth";
+
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
@@ -37,6 +40,16 @@ export async function PUT(req: Request) {
         update: { value: String(value) },
         create: { key, value: String(value) },
       });
+    }
+
+    // Immediately purge and revalidate cache across pages
+    try {
+      revalidatePath("/", "layout");
+      revalidatePath("/privacy-policy");
+      revalidatePath("/admin/settings");
+      revalidatePath("/contact");
+    } catch (e) {
+      console.warn("revalidatePath error:", e);
     }
 
     return NextResponse.json({ success: true });
