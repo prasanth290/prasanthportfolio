@@ -111,26 +111,56 @@ export const FALLBACK_PROJECTS = [
   },
 ];
 
+import { cache } from "react";
+
+export async function withDbTimeout<T>(promise: Promise<T>, timeoutMs = 2500, fallbackValue: T): Promise<T> {
+  let timer: NodeJS.Timeout;
+  const timeoutPromise = new Promise<T>((resolve) => {
+    timer = setTimeout(() => {
+      console.warn(`[db] Query timed out after ${timeoutMs}ms, using fallback data`);
+      resolve(fallbackValue);
+    }, timeoutMs);
+  });
+
+  try {
+    const result = await Promise.race([promise, timeoutPromise]);
+    clearTimeout(timer!);
+    return result;
+  } catch (err) {
+    clearTimeout(timer!);
+    console.warn("[db] Query error, using fallback data:", err);
+    return fallbackValue;
+  }
+}
+
 export async function getFilteredFallbackProjects() {
   return FALLBACK_PROJECTS;
 }
 
-export async function getSafeProjects() {
+export const getSafeProjects = cache(async () => {
+  const publishedFallbacks = FALLBACK_PROJECTS.filter((p) => p.status === "PUBLISHED");
   try {
-    const dbProjects = await prisma.project.findMany({
-      where: { status: "PUBLISHED" },
-      orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
-    });
-    const cleaned = dbProjects.filter((p) => {
-      const fullText = `${p.title} ${p.shortDesc} ${p.keyResults || ""} ${p.slug}`.toLowerCase();
-      return !fullText.includes("aeoncare") && !fullText.includes("health-care-ecommerce");
-    });
-    return cleaned.length > 0 ? cleaned : FALLBACK_PROJECTS.filter((p) => p.status === "PUBLISHED");
+    return await withDbTimeout(
+      prisma.project
+        .findMany({
+          where: { status: "PUBLISHED" },
+          orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
+        })
+        .then((dbProjects) => {
+          const cleaned = dbProjects.filter((p) => {
+            const fullText = `${p.title} ${p.shortDesc} ${p.keyResults || ""} ${p.slug}`.toLowerCase();
+            return !fullText.includes("aeoncare") && !fullText.includes("health-care-ecommerce");
+          });
+          return cleaned.length > 0 ? cleaned : publishedFallbacks;
+        }),
+      2500,
+      publishedFallbacks
+    );
   } catch (e) {
     console.warn("Prisma query failed, returning fallback projects:", e);
-    return FALLBACK_PROJECTS.filter((p) => p.status === "PUBLISHED");
+    return publishedFallbacks;
   }
-}
+});
 
 export async function getAllAdminProjects() {
   try {
@@ -148,18 +178,20 @@ export async function getAllAdminProjects() {
   }
 }
 
-export async function getSafeProjectBySlug(slug: string) {
-  if (slug.toLowerCase().includes("aeoncare") || slug.toLowerCase().includes("health-care")) {
+export const getSafeProjectBySlug = cache(async (slug: string) => {
+  if (!slug || slug.toLowerCase().includes("aeoncare") || slug.toLowerCase().includes("health-care")) {
     return null;
   }
+  const fallbackMatch = FALLBACK_PROJECTS.find((p) => p.slug === slug) || null;
   try {
-    const project = await prisma.project.findUnique({
-      where: { slug },
-    });
-    if (project) return project;
+    return await withDbTimeout(
+      prisma.project.findUnique({ where: { slug } }).then((project) => project || fallbackMatch),
+      2500,
+      fallbackMatch
+    );
   } catch (e) {
     console.warn("Prisma query failed for slug:", slug, e);
+    return fallbackMatch;
   }
-  return FALLBACK_PROJECTS.find((p) => p.slug === slug) || null;
-}
+});
 

@@ -10,7 +10,7 @@ export const metadata = {
     "Test live working demonstrations of custom Rental Management Systems, Inventory Control Suites, and Service Booking Engines.",
 };
 
-export const revalidate = 0;
+export const revalidate = 300;
 
 export default async function DemosPage() {
   const safeProjects = await getSafeProjects();
@@ -34,7 +34,7 @@ export default async function DemosPage() {
 
       {/* Grid of Demos */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {projectsWithDemos.map((project) => {
+        {projectsWithDemos.map((project, idx) => {
           const techList = JSON.parse(project.techStack || "[]");
           return (
             <div
@@ -54,7 +54,14 @@ export default async function DemosPage() {
                 </div>
 
                 <div className="relative aspect-[16/9] rounded-2xl overflow-hidden bg-slate-900 border border-slate-800">
-                  <Image src={project.coverImage} alt={project.title} fill className="object-cover" />
+                  <Image
+                    src={project.coverImage}
+                    alt={project.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority={idx < 2}
+                    className="object-cover"
+                  />
                   <div className="absolute inset-0 bg-slate-950/40" />
 
                   {project.demoUrl && (

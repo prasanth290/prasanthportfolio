@@ -20,9 +20,9 @@ import { EstimatorWidget } from "@/components/home/EstimatorWidget";
 import { FAQSection } from "@/components/home/FAQSection";
 import { TestimonialSection } from "@/components/home/TestimonialSection";
 import { ResumeDownloadModal } from "@/components/ui/ResumeDownloadModal";
-import { prisma } from "@/lib/db";
+import { prisma, withDbTimeout } from "@/lib/db";
 
-export const revalidate = 0;
+export const revalidate = 300;
 
 export default async function HomePage() {
   const featuredProjects = await getSafeProjects();
@@ -31,16 +31,24 @@ export default async function HomePage() {
   let dbFaqs: any[] = [];
 
   try {
-    const settings = await prisma.siteSetting.findMany();
+    const [settings, faqs] = await Promise.all([
+      withDbTimeout(prisma.siteSetting.findMany(), 2000, []),
+      withDbTimeout(
+        prisma.fAQ.findMany({
+          where: { isPublished: true },
+          orderBy: { displayOrder: "asc" },
+        }),
+        2000,
+        []
+      ),
+    ]);
+
     settingsMap = settings.reduce((acc, curr) => {
       acc[curr.key] = curr.value;
       return acc;
     }, {} as Record<string, string>);
 
-    dbFaqs = await prisma.fAQ.findMany({
-      where: { isPublished: true },
-      orderBy: { displayOrder: "asc" },
-    });
+    dbFaqs = faqs;
   } catch (e) {
     console.warn("Failed to fetch settings/faqs from DB:", e);
   }

@@ -8,7 +8,7 @@ export const metadata = {
     "Explore custom web application projects, Rental Management Systems, and Inventory Tracking platforms built for business clients.",
 };
 
-export const revalidate = 0;
+export const revalidate = 300;
 
 export default async function ProjectsPage() {
   const projects = await getSafeProjects();

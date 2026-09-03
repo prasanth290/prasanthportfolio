@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { prisma } from "@/lib/db";
+import { getSafeProjects, getSafeProjectBySlug } from "@/lib/db";
 import {
   ExternalLink,
   ArrowLeft,
@@ -19,11 +19,18 @@ import {
 } from "lucide-react";
 import { LightboxGallery } from "@/components/projects/LightboxGallery";
 
-export const revalidate = 0;
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const projects = await getSafeProjects();
+  return projects.map((project) => ({
+    slug: project.slug,
+  }));
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const project = await prisma.project.findUnique({ where: { slug } });
+  const project = await getSafeProjectBySlug(slug);
   if (!project) return { title: "Project Not Found" };
 
   return {
@@ -34,25 +41,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const rawProject = await getSafeProjectBySlug(slug);
 
-  let project: any = null;
-  try {
-    project = await prisma.project.findUnique({
-      where: { slug },
-    });
-  } catch (e) {
-    console.error("Error fetching project slug:", e);
-  }
-
-  // Fallback to in-memory project data with proof metrics if prisma doesn't yield project
-  if (!project) {
-    const { getSafeProjectBySlug } = await import("@/lib/db");
-    project = await getSafeProjectBySlug(slug);
-  }
-
-  if (!project || project.status === "DRAFT") {
+  if (!rawProject || rawProject.status === "DRAFT") {
     notFound();
   }
+  const project = rawProject as any;
 
   const techStackList = JSON.parse(project.techStack || "[]");
   const galleryImagesList = JSON.parse(project.galleryImages || "[]");

@@ -20,6 +20,7 @@ export function LightboxGallery({ images, title }: { images: string[]; title: st
           src={images[0]}
           alt={title}
           fill
+          sizes="(max-width: 1200px) 100vw, 1150px"
           className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
           priority
         />
@@ -40,7 +41,13 @@ export function LightboxGallery({ images, title }: { images: string[]; title: st
               onClick={() => setSelectedImage(img)}
               className="relative aspect-[16/10] rounded-xl overflow-hidden border border-slate-800 cursor-pointer hover:border-emerald-500 transition-colors"
             >
-              <Image src={img} alt={`${title} screenshot ${idx + 1}`} fill className="object-cover" />
+              <Image
+                src={img}
+                alt={`${title} screenshot ${idx + 1}`}
+                fill
+                sizes="(max-width: 768px) 25vw, 200px"
+                className="object-cover"
+              />
             </div>
           ))}
         </div>
@@ -63,6 +70,7 @@ export function LightboxGallery({ images, title }: { images: string[]; title: st
               src={selectedImage}
               alt={title}
               fill
+              sizes="(max-width: 1280px) 90vw, 1200px"
               className="object-contain rounded-xl"
             />
           </div>

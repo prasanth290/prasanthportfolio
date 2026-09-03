@@ -89,7 +89,7 @@ export function ProjectsGrid({ initialProjects }: { initialProjects: ProjectItem
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project) => {
+          {filteredProjects.map((project, idx) => {
             const techList = JSON.parse(project.techStack || "[]");
             return (
               <div
@@ -102,6 +102,8 @@ export function ProjectsGrid({ initialProjects }: { initialProjects: ProjectItem
                     src={project.coverImage}
                     alt={project.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority={idx < 3}
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-75" />
