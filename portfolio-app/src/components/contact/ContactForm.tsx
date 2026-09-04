@@ -8,7 +8,7 @@ function ContactFormInner() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const initialType = searchParams.get("type") || "Rental Management";
+  const initialType = searchParams.get("type") || "Custom Web App";
   const initialBudget = searchParams.get("budget") || "$3,000 - $5,000";
   const initialRef = searchParams.get("ref") || "";
 
@@ -108,7 +108,7 @@ function ContactFormInner() {
                 name: "",
                 email: "",
                 phone: "",
-                projectType: "Rental Management",
+                projectType: "Custom Web App",
                 budgetRange: "$3,000 - $5,000",
                 message: "",
                 utmSource: "",
@@ -194,10 +194,11 @@ function ContactFormInner() {
             onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
             className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors"
           >
-            <option value="Rental Management">Rental & Property Management</option>
-            <option value="Inventory System">Inventory & Warehouse Control</option>
-            <option value="Booking Engine">Booking & Appointment Platform</option>
-            <option value="Custom Web App">Custom Web App / Portal</option>
+            <option value="Custom Web App">Custom Business Web App / Client Portal</option>
+            <option value="Workflow Automation">Internal Operations & Workflow Automation</option>
+            <option value="SaaS Platform">SaaS MVP / Web Product</option>
+            <option value="Rental Management">Rental & Property Management Software</option>
+            <option value="Inventory System">Inventory & Warehouse System</option>
             <option value="Other">Other Custom Software</option>
           </select>
         </div>
