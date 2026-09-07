@@ -10,13 +10,11 @@ import {
   LifeBuoy,
   CheckCircle2,
   Sparkles,
-  Calculator,
   TrendingUp,
   ShieldCheck,
   Building2,
   Users,
 } from "lucide-react";
-import { EstimatorWidget } from "@/components/home/EstimatorWidget";
 import { FAQSection } from "@/components/home/FAQSection";
 import { TestimonialSection } from "@/components/home/TestimonialSection";
 import { ResumeDownloadModal } from "@/components/ui/ResumeDownloadModal";
@@ -343,41 +341,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 5. Interactive Cost & Timeline Estimator Widget */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="glass-card rounded-3xl p-8 sm:p-12 border border-slate-800 bg-gradient-to-b from-slate-900/90 to-slate-950">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            <div className="lg:col-span-5 space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-semibold">
-                <Calculator className="w-3.5 h-3.5" />
-                <span>Adaptation & Custom Estimator</span>
-              </div>
-              <h3 className="text-3xl font-extrabold text-white leading-tight">
-                Want To Adapt An Existing System Or Build Custom?
-              </h3>
-              <p className="text-slate-400 text-sm leading-relaxed">
-                Select your required modules and features to get an instant estimate range for customizing one of my built systems or creating a bespoke web app from scratch.
-              </p>
-              <div className="space-y-2 pt-2 text-xs text-slate-300">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                  <span>100% full source code ownership guaranteed</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                  <span>Fast 2 to 4 week launch timelines</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="lg:col-span-7">
-              <EstimatorWidget />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5.5 "Recently Delivered" Interim Trust & Proof Section */}
+      {/* 5. "Recently Delivered" Interim Trust & Proof Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="glass-card rounded-3xl p-8 sm:p-12 border border-slate-800 space-y-8 bg-gradient-to-b from-slate-900 to-slate-950">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
