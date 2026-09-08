@@ -40,8 +40,6 @@ export const metadata: Metadata = {
 
 import { getSafeSiteSettings } from "@/lib/db";
 
-import { CommandPalette } from "@/components/ui/CommandPalette";
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -86,10 +84,9 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="bg-[#070a12] bg-cyber-grid text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500/30 selection:text-emerald-200">
-        <CommandPalette />
+      <body className="bg-[#090d16] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500/30 selection:text-emerald-200">
         <Navbar />
-        <main className="flex-1 pt-24">{children}</main>
+        <main className="flex-1 pt-20">{children}</main>
         <Footer />
         <QuickContactWidget
           whatsappNumber={siteSettings.whatsapp_number || siteSettings.contact_phone}

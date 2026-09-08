@@ -5,17 +5,19 @@ import {
   ArrowRight,
   ExternalLink,
   Clock,
+  UserCheck,
+  Award,
+  LifeBuoy,
   CheckCircle2,
   Sparkles,
+  TrendingUp,
   ShieldCheck,
+  Building2,
   Users,
 } from "lucide-react";
 import { FAQSection } from "@/components/home/FAQSection";
 import { TestimonialSection } from "@/components/home/TestimonialSection";
 import { ResumeDownloadModal } from "@/components/ui/ResumeDownloadModal";
-import { InteractiveTerminal } from "@/components/home/InteractiveTerminal";
-import { BentoShowcase } from "@/components/home/BentoShowcase";
-import { SaaSCostCalculator } from "@/components/home/SaaSCostCalculator";
 import { prisma, withDbTimeout } from "@/lib/db";
 
 export const revalidate = 300;
@@ -129,16 +131,115 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* Right Hero Graphic Showcase: Interactive Engineering Terminal */}
+            {/* Right Hero Graphic Showcase: Studio Workbench */}
             <div className="lg:col-span-5 relative">
-              <InteractiveTerminal />
+              <div className="relative mx-auto max-w-md lg:max-w-none">
+                <div className="rounded-2xl glass-card border border-slate-700/60 p-3 shadow-2xl space-y-3 transform hover:scale-[1.01] transition-transform">
+                  <div className="flex items-center justify-between px-3 py-2 border-b border-slate-800">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full bg-rose-500/80" />
+                      <div className="w-3 h-3 rounded-full bg-amber-500/80" />
+                      <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+                      <span className="text-xs text-slate-400 ml-2 font-mono">studio.prasanth.dev/engineering</span>
+                    </div>
+                    <span className="px-2 py-0.5 text-[10px] bg-emerald-500/20 text-emerald-300 rounded font-bold uppercase">
+                      Developer Cockpit
+                    </span>
+                  </div>
+
+                  <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-slate-900">
+                    <Image
+                      src="/images/developer-workbench.png"
+                      alt="Software Engineering Workbench & Architecture UI"
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                  </div>
+
+                  <div className="p-3.5 bg-slate-900/90 rounded-xl border border-slate-800 flex items-center justify-between text-xs">
+                    <div>
+                      <div className="font-bold text-white">Full-Stack Business Architecture</div>
+                      <div className="text-slate-400 text-[11px]">Next.js 16 • React 19 • TypeScript • Prisma</div>
+                    </div>
+                    <Link
+                      href="/about"
+                      className="px-3.5 py-1.5 bg-emerald-500 text-slate-950 rounded-lg font-bold hover:bg-emerald-400 transition-colors flex items-center gap-1 shadow-sm"
+                    >
+                      <span>Engineering Process</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="absolute -bottom-6 -left-6 hidden sm:flex items-center gap-3 p-3.5 rounded-xl glass-card border border-slate-700/80 shadow-2xl">
+                  <div className="w-10 h-10 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-white">100% Direct Developer</div>
+                    <div className="text-[11px] text-slate-400">Zero agency bloat • Fast 2-4 wk sprints</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. Bento Engineering Standards & Architecture Showcase */}
-      <BentoShowcase />
+      {/* 3. "Why Work With Me" Value-Props 4-Column Strip */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-2xl mx-auto space-y-3 mb-12">
+          <h2 className="text-xs font-bold uppercase tracking-widest text-emerald-400">Differentiation & Trust</h2>
+          <h3 className="text-3xl font-extrabold text-white">Why Work With Me</h3>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Column 1: On-Time Delivery */}
+          <div className="glass-card glass-card-hover p-6 rounded-2xl border border-slate-800 space-y-4">
+            <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
+              <Clock className="w-6 h-6" />
+            </div>
+            <h4 className="text-lg font-bold text-white">On-Time Delivery</h4>
+            <p className="text-slate-400 text-xs leading-relaxed">
+              Track record of shipping working, production-ready software on schedule with strict milestone timelines.
+            </p>
+          </div>
+
+          {/* Column 2: Direct Access */}
+          <div className="glass-card glass-card-hover p-6 rounded-2xl border border-slate-800 space-y-4">
+            <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center">
+              <UserCheck className="w-6 h-6" />
+            </div>
+            <h4 className="text-lg font-bold text-white">Direct Access</h4>
+            <p className="text-slate-400 text-xs leading-relaxed">
+              Work directly with the senior software engineer building your system — zero agency layers or account managers.
+            </p>
+          </div>
+
+          {/* Column 3: Proven Process */}
+          <div className="glass-card glass-card-hover p-6 rounded-2xl border border-slate-800 space-y-4">
+            <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center">
+              <Award className="w-6 h-6" />
+            </div>
+            <h4 className="text-lg font-bold text-white">Proven Process</h4>
+            <p className="text-slate-400 text-xs leading-relaxed">
+              Real delivered software products as evidence, not just promises. Test live working demos before committing.
+            </p>
+          </div>
+
+          {/* Column 4: Ongoing Support */}
+          <div className="glass-card glass-card-hover p-6 rounded-2xl border border-slate-800 space-y-4">
+            <div className="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center">
+              <LifeBuoy className="w-6 h-6" />
+            </div>
+            <h4 className="text-lg font-bold text-white">Ongoing Support</h4>
+            <p className="text-slate-400 text-xs leading-relaxed">
+              Ownership doesn't end at launch; post-launch maintenance, automated backups, and feature iterations included.
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* 4. Featured Projects Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -238,11 +339,6 @@ export default async function HomePage() {
             );
           })}
         </div>
-      </section>
-
-      {/* 4.5 SaaS Subscription Cost Waste vs Custom Ownership ROI Calculator */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SaaSCostCalculator />
       </section>
 
       {/* 5. "Recently Delivered" Interim Trust & Proof Section */}
