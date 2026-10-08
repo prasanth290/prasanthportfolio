@@ -74,9 +74,7 @@ export default async function HomePage() {
               </h1>
 
               <p className="text-lg sm:text-xl text-slate-300 max-w-2xl leading-relaxed font-normal">
-                Don't settle for agency promises. See working, completed systems like my flagship{" "}
-                <strong className="text-white font-semibold">Rental Management Platform</strong> and{" "}
-                <strong className="text-white font-semibold">Inventory Tracking Suite</strong> in action — then let's adapt a solution or build custom for your business.
+                Don't settle for agency promises. Inspect working, completed software platforms in action — then let's adapt a solution or build custom for your business operations.
               </p>
 
               {/* Action Buttons */}
