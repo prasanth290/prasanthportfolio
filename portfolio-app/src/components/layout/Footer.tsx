@@ -143,6 +143,9 @@ export function Footer() {
             <Link href="/privacy-policy" className="hover:text-slate-200 transition-colors">
               Privacy Policy
             </Link>
+            <Link href="/terms" className="hover:text-slate-200 transition-colors">
+              Terms & Conditions
+            </Link>
             <Link href="/contact" className="hover:text-slate-200 flex items-center gap-1 text-emerald-400 font-medium">
               <span>Direct Consultation</span>
             </Link>
