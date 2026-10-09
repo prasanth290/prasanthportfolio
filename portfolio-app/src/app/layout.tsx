@@ -49,30 +49,52 @@ export default async function RootLayout({
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    name: "Prasanth Dev Studio",
-    url: "https://prasanthportfolio-five.vercel.app",
-    description: "High-performance custom web app development, rental management software, and enterprise software engineering.",
-    address: {
-      "@type": "PostalAddress",
-      addressCountry: "IN",
-    },
-    founder: {
-      "@type": "Person",
-      name: siteSettings.developer_name || "Prasanth",
-      jobTitle: "Senior Software Engineer & Web Developer",
-      sameAs: [
-        siteSettings.github_url || "https://github.com/BloodHunt029",
-        siteSettings.linkedin_url || "https://linkedin.com/in/prasanth-dev",
-      ],
-    },
-    knowsAbout: [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "PostgreSQL",
-      "Rental Management Systems",
-      "Inventory Management Systems",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://prasanthportfolio-five.vercel.app/#person",
+        name: siteSettings.developer_name || "Prasanth",
+        jobTitle: "Full-Stack Software Engineer & Web Developer",
+        url: "https://prasanthportfolio-five.vercel.app",
+        image: "https://prasanthportfolio-five.vercel.app/images/developer-workbench.png",
+        sameAs: [
+          siteSettings.github_url || "https://github.com/BloodHunt029",
+          siteSettings.linkedin_url || "https://linkedin.com/in/prasanth-dev",
+        ],
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Chennai",
+          addressRegion: "Tamil Nadu",
+          addressCountry: "India",
+        },
+        knowsAbout: [
+          "Next.js",
+          "React",
+          "TypeScript",
+          "PostgreSQL",
+          "Custom Web Development",
+          "Rental Management Systems",
+          "Inventory Control Systems",
+        ],
+      },
+      {
+        "@type": "ProfessionalService",
+        "@id": "https://prasanthportfolio-five.vercel.app/#service",
+        name: "Prasanth – Web Developer Studio",
+        url: "https://prasanthportfolio-five.vercel.app",
+        logo: "https://prasanthportfolio-five.vercel.app/images/developer-workbench.png",
+        description: "Bespoke web development services, rental management applications, and inventory tracking systems for business operations.",
+        priceRange: "$$",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Chennai",
+          addressRegion: "Tamil Nadu",
+          addressCountry: "India",
+        },
+        telephone: siteSettings.contact_phone || "+91 98765 43210",
+        email: siteSettings.contact_email || "prasanth.dev.studio@gmail.com",
+        founder: { "@id": "https://prasanthportfolio-five.vercel.app/#person" },
+      },
     ],
   };
 
