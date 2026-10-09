@@ -1,23 +1,24 @@
 import Link from "next/link";
-import { ShieldCheck, ArrowLeft, Lock, EyeOff, FileText, Mail, Info } from "lucide-react";
-import { getSafeSiteSettings } from "@/lib/db";
+import { ShieldCheck, ArrowLeft, Lock, EyeOff, FileText, Mail } from "lucide-react";
+import { getSafePageBySlug, getSafeSiteSettings, DEFAULT_PRIVACY_POLICY_PAGE } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export const metadata = {
-  title: "Privacy Policy | Prasanth Dev Studio",
-  description:
-    "Privacy Policy for Prasanth Dev Studio. Learn how client project inquiries, contact details, and proprietary software ideas are safeguarded.",
-};
+export async function generateMetadata() {
+  const page = await getSafePageBySlug("privacy-policy");
+  return {
+    title: page?.metaTitle || "Privacy Policy | Prasanth Dev",
+    description: page?.metaDescription || "Privacy Policy for Prasanth – Web Developer.",
+  };
+}
 
 export default async function PrivacyPolicyPage() {
+  const page = (await getSafePageBySlug("privacy-policy")) || DEFAULT_PRIVACY_POLICY_PAGE;
   const settings = await getSafeSiteSettings();
-  const lastUpdated = "September 2026";
-  const developerName = settings.developer_name || "Prasanth";
+
   const developerEmail = settings.contact_email || "prasanth.dev.studio@gmail.com";
-  const developerPhone = settings.contact_phone || settings.whatsapp_number || "";
-  const customNotes = settings.privacy_policy_custom_notes || "";
+  const developerPhone = settings.contact_phone || settings.whatsapp_number || "+91 98765 43210";
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
@@ -39,10 +40,10 @@ export default async function PrivacyPolicyPage() {
           <span>Transparency & Data Protection</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-          Privacy Policy
+          {page.title}
         </h1>
-        <p className="text-slate-400 text-sm">
-          Last Updated: {lastUpdated} | Effective Date: Immediately
+        <p className="text-slate-400 text-xs sm:text-sm font-mono">
+          Last updated: October 8, 2026 | Effective Date: Immediately
         </p>
       </div>
 
@@ -52,7 +53,7 @@ export default async function PrivacyPolicyPage() {
           <Lock className="w-5 h-5 text-emerald-400" />
           <h4 className="text-sm font-bold text-white">Strict Confidentiality</h4>
           <p className="text-xs text-slate-400 leading-relaxed">
-            Your business workflows, proprietary system ideas, and contact information are protected under standard NDA principles.
+            Your project details, business ideas, and contact information are protected with high-grade security standards.
           </p>
         </div>
 
@@ -60,79 +61,37 @@ export default async function PrivacyPolicyPage() {
           <EyeOff className="w-5 h-5 text-cyan-400" />
           <h4 className="text-sm font-bold text-white">Zero Data Selling</h4>
           <p className="text-xs text-slate-400 leading-relaxed">
-            I do not sell, rent, monetize, or share your contact info with third-party marketers or brokers. Ever.
+            I do not sell, rent, or monetize your personal information or contact details to any third-party brokers.
           </p>
         </div>
 
         <div className="glass-card p-5 rounded-2xl border border-slate-800 space-y-2">
           <FileText className="w-5 h-5 text-amber-400" />
-          <h4 className="text-sm font-bold text-white">Code & Data Ownership</h4>
+          <h4 className="text-sm font-bold text-white">DPDP Act 2023 Compliant</h4>
           <p className="text-xs text-slate-400 leading-relaxed">
-            All software engineered for your business belongs 100% to you, including databases, schemas, and credentials.
+            Respecting user privacy rights under India's Digital Personal Data Protection Act, 2023.
           </p>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="glass-card p-8 sm:p-10 rounded-3xl border border-slate-800 space-y-8 text-sm text-slate-300 leading-relaxed">
-        <section className="space-y-3">
-          <h2 className="text-xl font-bold text-white">1. Information Collected</h2>
-          <p>
-            When you request a quote, schedule a consultation, or contact Prasanth Dev Studio, you may provide:
-          </p>
-          <ul className="list-disc list-inside space-y-1 pl-2 text-slate-400 text-xs sm:text-sm">
-            <li><strong className="text-slate-200">Contact Information:</strong> Your full name, email address, and optional phone number.</li>
-            <li><strong className="text-slate-200">Project Requirements:</strong> System category (Rental, Inventory, Booking, Custom App), estimated budget, target timeline, and feature specifications.</li>
-            <li><strong className="text-slate-200">Attribution Analytics:</strong> Referral information (e.g. Google Ads click identifier or campaign source) to understand how you discovered the studio.</li>
-          </ul>
-        </section>
+      {/* Main Content Render */}
+      <div className="glass-card p-8 sm:p-10 rounded-3xl border border-slate-800 space-y-6 text-sm text-slate-300 leading-relaxed">
+        <div className="prose prose-invert max-w-none text-slate-300 text-sm leading-relaxed whitespace-pre-line space-y-4">
+          {page.content}
+        </div>
 
-        <section className="space-y-3">
-          <h2 className="text-xl font-bold text-white">2. How Your Information Is Used</h2>
-          <p>
-            Your information is used exclusively to:
-          </p>
-          <ul className="list-disc list-inside space-y-1 pl-2 text-slate-400 text-xs sm:text-sm">
-            <li>Evaluate your software specifications and generate fixed-scope technical proposals.</li>
-            <li>Schedule discovery calls or demonstrate relevant live system sandboxes.</li>
-            <li>Communicate project milestones, code handoff access, and post-launch maintenance.</li>
-          </ul>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="text-xl font-bold text-white">3. Advertising & Analytics Cookies</h2>
-          <p>
-            This website may use privacy-compliant measurement tags (such as Google Ads Conversion Tracking) to evaluate the performance of paid search campaigns and improve landing page relevance. These cookies do not collect personal banking or sensitive identification data.
-          </p>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="text-xl font-bold text-white">4. Data Security & Storage</h2>
-          <p>
-            Inquiries submitted through this site are transmitted over encrypted TLS/SSL connections and stored in secure, password-protected database environments. Access is restricted solely to the principal software engineer.
-          </p>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="text-xl font-bold text-white">5. Direct Developer Contact</h2>
-          <p>
-            If you have questions regarding this Privacy Policy or wish to have your submitted project details deleted, please contact:
-          </p>
+        {/* Quick Contact Footer Box */}
+        <div className="pt-6 border-t border-slate-800/80">
           <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs space-y-1 font-mono text-emerald-400">
-            <div>Developer / Studio: {developerName}</div>
-            <div>Email: {developerEmail}</div>
-            {developerPhone && <div>Phone / WhatsApp: {developerPhone}</div>}
-            <div>Website: prasanthportfolio-five.vercel.app</div>
+            <div>Studio Developer: Prasanth – Web Developer</div>
+            <div>Official Email: {developerEmail}</div>
+            <div>Direct Phone: {developerPhone}</div>
+            <div>Location: Chennai, Tamil Nadu, India</div>
+            <div>Website: https://prasanthportfolio-five.vercel.app</div>
           </div>
-
-          {customNotes && (
-            <div className="mt-4 p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300 space-y-1">
-              <div className="font-bold text-white uppercase tracking-wider text-[10px]">Additional Policy Provisions</div>
-              <p className="whitespace-pre-line leading-relaxed">{customNotes}</p>
-            </div>
-          )}
-        </section>
+        </div>
       </div>
     </div>
   );
 }
+

@@ -13,6 +13,7 @@ import {
   PlusCircle,
   MessageSquareQuote,
   HelpCircle,
+  FileText,
 } from "lucide-react";
 
 export function AdminSidebar({ session }: { session: any }) {
@@ -29,6 +30,7 @@ export function AdminSidebar({ session }: { session: any }) {
     { label: "Add New Project", href: "/admin/projects/new", icon: PlusCircle },
     { label: "Client Testimonials", href: "/admin/testimonials", icon: MessageSquareQuote },
     { label: "FAQ Manager", href: "/admin/faqs", icon: HelpCircle },
+    { label: "Custom Pages", href: "/admin/pages", icon: FileText },
     { label: "Inquiries & Leads", href: "/admin/leads", icon: Inbox },
     { label: "Site Settings", href: "/admin/settings", icon: Settings },
   ];

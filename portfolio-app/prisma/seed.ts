@@ -172,6 +172,81 @@ async function main() {
     });
   }
   console.log("Seeded Updated Site Settings");
+
+  // Seed Privacy Policy Custom Page
+  await prisma.page.upsert({
+    where: { slug: "privacy-policy" },
+    update: {},
+    create: {
+      id: "privacy-policy-default",
+      title: "Privacy Policy",
+      slug: "privacy-policy",
+      metaTitle: "Privacy Policy | Prasanth Dev",
+      metaDescription: "Privacy Policy for Prasanth – Web Developer. Learn how your data and inquiries are safeguarded.",
+      isPublished: true,
+      isSystem: true,
+      displayOrder: 1,
+      content: `### Privacy Policy
+**Last updated: October 8, 2026**
+
+This Privacy Policy explains how Prasanth – Web Developer ("I", "me", "my") collects, uses, and protects your information when you visit [https://prasanthportfolio-five.vercel.app](https://prasanthportfolio-five.vercel.app/) (the "Website") or contact me about web development services. By using this Website, you agree to this policy.
+
+#### 1. Information I Collect
+- **Information you give me:** When you fill in a contact or enquiry form, email me, call me, or message me, I may collect your name, email address, phone number, company name, and the details of your project or message.
+- **Information collected automatically:** When you browse the Website, I and my service providers may automatically collect technical data such as your IP address, browser type, device type, operating system, pages visited, time spent on pages, referring website, and approximate location (city/country level).
+
+#### 2. How I Use Your Information
+- To reply to your enquiries and provide quotes or proposals
+- To deliver web development, design, and related services you request
+- To improve the Website, its content, and user experience
+- To measure and improve my advertising and marketing performance
+- To send project-related updates or follow-ups you have asked for
+- To protect against spam, fraud, and misuse, and to meet legal obligations
+
+*I do not sell your personal information.*
+
+#### 3. Cookies and Similar Technologies
+This Website uses cookies, pixels, and similar technologies to remember preferences, understand how visitors use the site, and measure advertising. You can control or delete cookies through your browser settings. Blocking some cookies may affect how parts of the Website work.
+
+#### 4. Advertising, Analytics, and Third-Party Services
+I use the following third-party services, which may collect data through cookies or tags:
+- **Google Ads and Google Analytics** – to measure ad performance and site traffic, and to show relevant ads (including remarketing). Google, as a third-party vendor, uses cookies to serve ads based on your prior visits to this Website and other sites on the internet.
+- **Meta (Facebook/Instagram) Pixel** – to measure conversions and show relevant ads on Meta platforms.
+- **Vercel** – to host the Website and collect basic performance and traffic data.
+- **Email, messaging, and form tools** – to receive and respond to your messages.
+
+You can opt out of personalised advertising from Google at [Google Ads Settings](https://adssettings.google.com/) or at [www.aboutads.info](https://www.aboutads.info/), and install the [Google Analytics Opt-out Browser Add-on](https://tools.google.com/dlpage/gaoptout). You can manage Meta ad preferences in your Facebook/Instagram [Ad Preferences](https://www.facebook.com/adpreferences). To learn how Google uses data from sites that use its services, visit [Google's Privacy & Terms](https://policies.google.com/technologies/partner-sites).
+
+#### 5. Sharing of Information
+I share information only with trusted service providers who help me operate the Website and my business (hosting, analytics, advertising, email), when required by law, or to protect my rights. These providers may only use your data to perform services for me.
+
+#### 6. Data Retention
+I keep your personal information only as long as needed for the purposes in this policy, such as responding to your enquiry, completing a project, or meeting legal and accounting requirements. After that, it is deleted or anonymised.
+
+#### 7. Data Security
+I use reasonable technical and organisational measures to protect your information, such as HTTPS encryption and restricted access. However, no method of transmission over the internet is 100% secure, so I cannot guarantee absolute security.
+
+#### 8. Your Rights
+Under applicable laws, including India's Digital Personal Data Protection Act, 2023, you may have the right to access, correct, update, or request deletion of your personal data, and to withdraw your consent at any time. To exercise these rights, email me at [prasanth.dev.studio@gmail.com](mailto:prasanth.dev.studio@gmail.com).
+
+#### 9. Children's Privacy
+This Website is not directed at children under 18, and I do not knowingly collect personal information from them. If you believe a child has given me their data, contact me and I will delete it.
+
+#### 10. External Links
+The Website may link to other websites (for example, client projects, GitHub, or social profiles). I am not responsible for the privacy practices of those sites.
+
+#### 11. Changes to This Policy
+I may update this policy from time to time. The "Last updated" date at the top shows when it was last changed. Continued use of the Website means you accept the updated policy.
+
+#### 12. Contact Me
+If you have any questions about this Privacy Policy, contact:
+- **Prasanth – Web Developer**
+- **Email:** [prasanth.dev.studio@gmail.com](mailto:prasanth.dev.studio@gmail.com)
+- **Phone:** +91 98765 43210
+- **Location:** Chennai, Tamil Nadu, India`,
+    },
+  });
+  console.log("Seeded Privacy Policy Page");
 }
 
 main()
