@@ -10,14 +10,14 @@ import {
   LifeBuoy,
   CheckCircle2,
   Sparkles,
-  TrendingUp,
   ShieldCheck,
-  Building2,
   Users,
 } from "lucide-react";
 import { FAQSection } from "@/components/home/FAQSection";
 import { TestimonialSection } from "@/components/home/TestimonialSection";
 import { ResumeDownloadModal } from "@/components/ui/ResumeDownloadModal";
+import { SpotlightCard } from "@/components/ui/SpotlightCard";
+import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { prisma, withDbTimeout } from "@/lib/db";
 
 export const revalidate = 300;
@@ -52,19 +52,22 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="space-y-24 pb-20 overflow-hidden">
+    <div className="space-y-24 pb-20 overflow-hidden relative">
+      {/* Background Architectural Grid Pattern */}
+      <div className="absolute inset-0 bg-grid-pattern bg-radial-gradient-mask pointer-events-none opacity-60" />
+
       {/* 1. Hero Section */}
       <section className="relative pt-12 lg:pt-20 pb-16 overflow-hidden">
-        {/* Ambient Glows */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none" />
-        <div className="absolute top-1/3 right-10 w-[400px] h-[300px] bg-cyan-500/10 blur-[100px] rounded-full pointer-events-none" />
+        {/* Ambient Pulsing Glows */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-emerald-500/15 blur-[120px] rounded-full pointer-events-none animate-pulse-glow" />
+        <div className="absolute top-1/3 right-10 w-[400px] h-[300px] bg-cyan-500/15 blur-[100px] rounded-full pointer-events-none animate-pulse-glow" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center lg:text-left">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Hero Copy */}
             <div className="lg:col-span-7 space-y-8">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold tracking-wide">
-                <Sparkles className="w-3.5 h-3.5" />
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold tracking-wide shadow-lg shadow-emerald-500/10 animate-float-slow">
+                <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Portfolio & Proven Systems Studio</span>
               </div>
 
@@ -81,7 +84,7 @@ export default async function HomePage() {
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
                 <Link
                   href="/demos"
-                  className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-bold text-base hover:opacity-95 transition-all shadow-xl shadow-emerald-500/20 flex items-center justify-center gap-2 group"
+                  className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-bold text-base hover:opacity-95 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-emerald-500/20 flex items-center justify-center gap-2 group"
                 >
                   <span>View Live Demos</span>
                   <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -89,7 +92,7 @@ export default async function HomePage() {
 
                 <Link
                   href="/contact"
-                  className="w-full sm:w-auto px-8 py-4 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-white font-semibold text-base transition-all flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-8 py-4 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-emerald-500/40 text-white font-semibold text-base transition-all flex items-center justify-center gap-2"
                 >
                   <span>Get a Custom Quote</span>
                   <ArrowRight className="w-4 h-4" />
@@ -100,39 +103,42 @@ export default async function HomePage() {
                 </div>
               </div>
 
-              {/* Trust & Quantified Track Record Metrics (4-stat row) */}
+              {/* Trust & Quantified Track Record Metrics (4-stat row with Animated Counters) */}
               <div className="pt-6 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto lg:mx-0 text-left">
-                <div>
+                <div className="p-3 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-sm">
                   <div className="text-2xl sm:text-3xl font-extrabold text-white">
-                    {settingsMap.stat_experience_years || "3+ Yrs"}
+                    <AnimatedCounter value={settingsMap.stat_experience_years || "3+ Yrs"} />
                   </div>
                   <div className="text-xs text-slate-400 font-medium">Systems Experience</div>
                 </div>
-                <div>
+                <div className="p-3 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-sm">
                   <div className="text-2xl sm:text-3xl font-extrabold text-cyan-400">
-                    {settingsMap.stat_projects_delivered || "12+"}
+                    <AnimatedCounter value={settingsMap.stat_projects_delivered || "12+"} />
                   </div>
                   <div className="text-xs text-slate-400 font-medium">Projects Delivered</div>
                 </div>
-                <div>
+                <div className="p-3 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-sm">
                   <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400">
-                    {settingsMap.stat_live_demos || "4+"}
+                    <AnimatedCounter value={settingsMap.stat_live_demos || "4+"} />
                   </div>
                   <div className="text-xs text-slate-400 font-medium">Live Working Demos</div>
                 </div>
-                <div>
+                <div className="p-3 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-sm">
                   <div className="text-2xl sm:text-3xl font-extrabold text-teal-300">
-                    {settingsMap.stat_code_ownership || "100%"}
+                    <AnimatedCounter value={settingsMap.stat_code_ownership || "100%"} />
                   </div>
                   <div className="text-xs text-slate-400 font-medium">Code Ownership</div>
                 </div>
               </div>
             </div>
 
-            {/* Right Hero Graphic Showcase: Studio Workbench */}
+            {/* Right Hero Graphic Showcase: Studio Workbench with Mouse Spotlight */}
             <div className="lg:col-span-5 relative">
               <div className="relative mx-auto max-w-md lg:max-w-none">
-                <div className="rounded-2xl glass-card border border-slate-700/60 p-3 shadow-2xl space-y-3 transform hover:scale-[1.01] transition-transform">
+                <SpotlightCard
+                  className="p-3 border-slate-700/60 shadow-2xl space-y-3 transform hover:scale-[1.01] transition-transform"
+                  spotlightColor="rgba(52, 211, 153, 0.2)"
+                >
                   <div className="flex items-center justify-between px-3 py-2 border-b border-slate-800">
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 rounded-full bg-rose-500/80" />
@@ -140,7 +146,7 @@ export default async function HomePage() {
                       <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
                       <span className="text-xs text-slate-400 ml-2 font-mono">studio.prasanth.dev/engineering</span>
                     </div>
-                    <span className="px-2 py-0.5 text-[10px] bg-emerald-500/20 text-emerald-300 rounded font-bold uppercase">
+                    <span className="px-2 py-0.5 text-[10px] bg-emerald-500/20 text-emerald-300 rounded font-bold uppercase border border-emerald-500/30">
                       Developer Cockpit
                     </span>
                   </div>
@@ -164,13 +170,13 @@ export default async function HomePage() {
                       href="/about"
                       className="px-3.5 py-1.5 bg-emerald-500 text-slate-950 rounded-lg font-bold hover:bg-emerald-400 transition-colors flex items-center gap-1 shadow-sm"
                     >
-                      <span>Engineering Process</span>
+                      <span>Process</span>
                       <ArrowRight className="w-3 h-3" />
                     </Link>
                   </div>
-                </div>
+                </SpotlightCard>
 
-                <div className="absolute -bottom-6 -left-6 hidden sm:flex items-center gap-3 p-3.5 rounded-xl glass-card border border-slate-700/80 shadow-2xl">
+                <div className="absolute -bottom-6 -left-6 hidden sm:flex items-center gap-3 p-3.5 rounded-xl glass-card border border-slate-700/80 shadow-2xl z-30">
                   <div className="w-10 h-10 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
@@ -185,8 +191,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 3. "Why Work With Me" Value-Props 4-Column Strip */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* 3. "Why Work With Me" Value-Props 4-Column Strip with Mouse Spotlights */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-2xl mx-auto space-y-3 mb-12">
           <h2 className="text-xs font-bold uppercase tracking-widest text-emerald-400">Differentiation & Trust</h2>
           <h3 className="text-3xl font-extrabold text-white">Why Work With Me</h3>
@@ -194,7 +200,7 @@ export default async function HomePage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Column 1: On-Time Delivery */}
-          <div className="glass-card glass-card-hover p-6 rounded-2xl border border-slate-800 space-y-4">
+          <SpotlightCard className="p-6 space-y-4" spotlightColor="rgba(52, 211, 153, 0.15)">
             <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
               <Clock className="w-6 h-6" />
             </div>
@@ -202,10 +208,10 @@ export default async function HomePage() {
             <p className="text-slate-400 text-xs leading-relaxed">
               Track record of shipping working, production-ready software on schedule with strict milestone timelines.
             </p>
-          </div>
+          </SpotlightCard>
 
           {/* Column 2: Direct Access */}
-          <div className="glass-card glass-card-hover p-6 rounded-2xl border border-slate-800 space-y-4">
+          <SpotlightCard className="p-6 space-y-4" spotlightColor="rgba(56, 189, 248, 0.15)">
             <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center">
               <UserCheck className="w-6 h-6" />
             </div>
@@ -213,10 +219,10 @@ export default async function HomePage() {
             <p className="text-slate-400 text-xs leading-relaxed">
               Work directly with the senior software engineer building your system — zero agency layers or account managers.
             </p>
-          </div>
+          </SpotlightCard>
 
           {/* Column 3: Proven Process */}
-          <div className="glass-card glass-card-hover p-6 rounded-2xl border border-slate-800 space-y-4">
+          <SpotlightCard className="p-6 space-y-4" spotlightColor="rgba(251, 191, 36, 0.15)">
             <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center">
               <Award className="w-6 h-6" />
             </div>
@@ -224,10 +230,10 @@ export default async function HomePage() {
             <p className="text-slate-400 text-xs leading-relaxed">
               Real delivered software products as evidence, not just promises. Test live working demos before committing.
             </p>
-          </div>
+          </SpotlightCard>
 
           {/* Column 4: Ongoing Support */}
-          <div className="glass-card glass-card-hover p-6 rounded-2xl border border-slate-800 space-y-4">
+          <SpotlightCard className="p-6 space-y-4" spotlightColor="rgba(129, 140, 248, 0.15)">
             <div className="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center">
               <LifeBuoy className="w-6 h-6" />
             </div>
@@ -235,12 +241,12 @@ export default async function HomePage() {
             <p className="text-slate-400 text-xs leading-relaxed">
               Ownership doesn't end at launch; post-launch maintenance, automated backups, and feature iterations included.
             </p>
-          </div>
+          </SpotlightCard>
         </div>
       </section>
 
-      {/* 4. Featured Projects Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* 4. Featured Projects Section with Interactive Spotlight Cards */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
             <h2 className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-2">Full Portfolio Evidence</h2>
@@ -259,9 +265,10 @@ export default async function HomePage() {
           {featuredProjects.map((project) => {
             const techList = JSON.parse(project.techStack || "[]");
             return (
-              <div
+              <SpotlightCard
                 key={project.id}
-                className="glass-card glass-card-hover rounded-2xl overflow-hidden border border-slate-800 flex flex-col group"
+                className="flex flex-col group"
+                spotlightColor="rgba(52, 211, 153, 0.12)"
               >
                 <div className="relative aspect-[16/9] bg-slate-900 overflow-hidden">
                   <Image
@@ -281,7 +288,7 @@ export default async function HomePage() {
                       href={project.demoUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="absolute bottom-4 right-4 px-3.5 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400 transition-colors shadow-lg flex items-center gap-1.5"
+                      className="absolute bottom-4 right-4 px-3.5 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400 transition-colors shadow-lg flex items-center gap-1.5 z-30"
                     >
                       <span>Live Demo</span>
                       <ExternalLink className="w-3.5 h-3.5" />
@@ -333,15 +340,15 @@ export default async function HomePage() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </SpotlightCard>
             );
           })}
         </div>
       </section>
 
       {/* 5. "Recently Delivered" Interim Trust & Proof Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="glass-card rounded-3xl p-8 sm:p-12 border border-slate-800 space-y-8 bg-gradient-to-b from-slate-900 to-slate-950">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <SpotlightCard className="p-8 sm:p-12 space-y-8 bg-gradient-to-b from-slate-900 to-slate-950" spotlightColor="rgba(56, 189, 248, 0.1)">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-3">
@@ -365,7 +372,7 @@ export default async function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Client Showcase 1: Twosomesty */}
-            <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4 hover:border-slate-700 transition-colors">
+            <SpotlightCard className="p-6 space-y-4" spotlightColor="rgba(56, 189, 248, 0.15)">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500/20 to-emerald-500/20 text-cyan-400 flex items-center justify-center font-bold text-base border border-cyan-500/30">
@@ -395,10 +402,10 @@ export default async function HomePage() {
                   100% Custom Architecture
                 </span>
               </div>
-            </div>
+            </SpotlightCard>
 
             {/* Client Showcase 2: Subash Build */}
-            <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4 hover:border-slate-700 transition-colors">
+            <SpotlightCard className="p-6 space-y-4" spotlightColor="rgba(251, 191, 36, 0.15)">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500/20 to-emerald-500/20 text-amber-400 flex items-center justify-center font-bold text-base border border-amber-500/30">
@@ -428,9 +435,9 @@ export default async function HomePage() {
                   Site Management Suite
                 </span>
               </div>
-            </div>
+            </SpotlightCard>
           </div>
-        </div>
+        </SpotlightCard>
       </section>
 
       {/* 5. Client Testimonials Section */}
@@ -440,7 +447,7 @@ export default async function HomePage() {
       <FAQSection items={dbFaqs} />
 
       {/* 6. "Ready To Start Your Project?" CTA Banner */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="relative rounded-3xl bg-gradient-to-r from-emerald-950/90 via-slate-900 to-cyan-950/90 border border-emerald-500/40 p-10 sm:p-16 text-center space-y-6 overflow-hidden shadow-2xl">
           <div className="max-w-2xl mx-auto space-y-4">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider mx-auto">
@@ -456,7 +463,7 @@ export default async function HomePage() {
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/contact"
-              className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-bold text-base hover:opacity-95 transition-all shadow-xl shadow-emerald-500/20 flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-bold text-base hover:opacity-95 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-emerald-500/20 flex items-center justify-center gap-2"
             >
               <span>Get Your Free Custom Proposal</span>
               <ArrowRight className="w-5 h-5" />
