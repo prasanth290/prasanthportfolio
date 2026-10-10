@@ -5,7 +5,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://prasanthportfolio-five.vercel.app";
 
   // Static site routes
-  const routes = ["", "/services", "/projects", "/demos", "/about", "/contact"].map((route) => ({
+  const routes = ["", "/services", "/projects", "/demos", "/about", "/contact", "/privacy-policy", "/terms"].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date().toISOString(),
     changeFrequency: "weekly" as const,
