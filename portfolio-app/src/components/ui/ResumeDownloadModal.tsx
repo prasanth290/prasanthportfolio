@@ -12,7 +12,7 @@ export function ResumeDownloadModal() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-stone-900 border border-stone-800 hover:border-amber-500/40 text-stone-300 hover:text-white text-xs font-semibold transition-all shadow-sm"
+        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0a1710] border border-emerald-900/60 hover:border-amber-400/50 text-stone-300 hover:text-amber-200 text-xs font-semibold transition-all shadow-sm"
       >
         <FileText className="w-4 h-4 text-amber-400" />
         <span>View Capabilities Deck / CV</span>
@@ -20,17 +20,17 @@ export function ResumeDownloadModal() {
 
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in-50">
-          <div className="relative w-full max-w-lg glass-card p-8 rounded-3xl border border-stone-800 space-y-6 text-stone-100 shadow-2xl">
+          <div className="relative w-full max-w-lg glass-card p-8 rounded-3xl border border-amber-400/30 bg-[#060b08]/95 space-y-6 text-stone-100 shadow-2xl shadow-emerald-950/60">
             <button
               onClick={() => setIsOpen(false)}
-              className="absolute top-6 right-6 w-8 h-8 rounded-full bg-stone-900 border border-stone-800 flex items-center justify-center text-stone-400 hover:text-white transition-colors"
+              className="absolute top-6 right-6 w-8 h-8 rounded-full bg-[#0a1710] border border-emerald-900/50 flex items-center justify-center text-stone-400 hover:text-white transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
 
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center">
-                <FileText className="w-6 h-6" />
+              <div className="w-12 h-12 rounded-2xl bg-emerald-950 border border-amber-400/30 text-amber-300 flex items-center justify-center">
+                <FileText className="w-6 h-6 text-amber-400" />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-white">Developer Capabilities & CV</h3>
@@ -38,17 +38,17 @@ export function ResumeDownloadModal() {
               </div>
             </div>
 
-            <div className="space-y-3 bg-stone-900/60 p-4 rounded-2xl border border-stone-800 text-xs text-stone-300">
+            <div className="space-y-3 bg-[#07130c] p-4 rounded-2xl border border-emerald-950/60 text-xs text-stone-300">
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>Next.js, React 19, TypeScript & PostgreSQL Tech Stack</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>Rental, Inventory & Booking Systems Architecture</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>100% Direct Developer Access — No Middleman Agency Fees</span>
               </div>
             </div>
@@ -60,14 +60,14 @@ export function ResumeDownloadModal() {
                 rel="noreferrer"
                 download="Prasanth_Software_Developer_Profile.pdf"
                 onClick={() => setIsOpen(false)}
-                className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-600 text-stone-950 font-bold text-xs hover:brightness-105 transition-all flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20"
+                className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-700 border border-amber-400/50 text-amber-100 font-bold text-xs hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/60"
               >
-                <Download className="w-4 h-4" />
+                <Download className="w-4 h-4 text-amber-300" />
                 <span>Download PDF Profile</span>
               </a>
               <button
                 onClick={() => setIsOpen(false)}
-                className="py-3 px-6 rounded-xl bg-stone-900 border border-stone-800 text-stone-400 hover:text-white text-xs font-semibold"
+                className="py-3 px-6 rounded-xl bg-[#0a1710] border border-emerald-900/50 text-stone-400 hover:text-white text-xs font-semibold"
               >
                 Close
               </button>

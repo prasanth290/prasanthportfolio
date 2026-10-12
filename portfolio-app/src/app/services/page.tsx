@@ -76,14 +76,14 @@ export default async function ServicesPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto space-y-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
-          <Zap className="w-3.5 h-3.5" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-950/80 border border-amber-400/30 text-amber-300 text-xs font-semibold shadow-sm">
+          <Zap className="w-3.5 h-3.5 text-amber-400" />
           <span>Completed Products & Custom Offerings</span>
         </div>
         <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
           Delivered Software Products & Bespoke Builds
         </h1>
-        <p className="text-slate-400 text-base leading-relaxed">
+        <p className="text-stone-400 text-base leading-relaxed">
           I showcase completed, working software products managed directly via the Admin portal. Test any live system below, or let's engineer a custom web application tailored to your business operations.
         </p>
       </div>
@@ -92,14 +92,14 @@ export default async function ServicesPage() {
       <div className="space-y-12">
         {adminProjects.length > 0 && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div className="flex items-center justify-between border-b border-emerald-950/60 pb-4">
               <div>
-                <h2 className="text-xs font-bold uppercase tracking-widest text-emerald-400">Live Admin Projects</h2>
+                <h2 className="text-xs font-bold uppercase tracking-widest text-amber-400">Live Admin Projects</h2>
                 <h3 className="text-2xl font-extrabold text-white">Delivered Software Products</h3>
               </div>
               <Link
                 href="/projects"
-                className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
+                className="text-xs font-semibold text-amber-400 hover:text-amber-300 flex items-center gap-1"
               >
                 <span>View Full Portfolio</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -112,29 +112,29 @@ export default async function ServicesPage() {
                 return (
                   <div
                     key={project.id}
-                    className="glass-card p-8 rounded-3xl border border-slate-800 space-y-6 flex flex-col justify-between"
+                    className="glass-card p-8 rounded-3xl border border-emerald-900/40 bg-[#0a1710]/70 space-y-6 flex flex-col justify-between hover:border-amber-400/40 transition-colors"
                   >
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-900 text-emerald-400 border border-slate-800">
+                        <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-950/80 text-amber-300 border border-amber-400/30">
                           {project.category}
                         </span>
                         {project.businessType && (
-                          <span className="text-xs text-slate-400 font-medium truncate max-w-[200px]">
+                          <span className="text-xs text-stone-400 font-medium truncate max-w-[200px]">
                             {project.businessType}
                           </span>
                         )}
                       </div>
 
                       <h3 className="text-2xl font-bold text-white">{project.title}</h3>
-                      <p className="text-slate-400 text-sm leading-relaxed">{project.shortDesc}</p>
+                      <p className="text-stone-400 text-sm leading-relaxed">{project.shortDesc}</p>
 
                       {project.keyResults && (
                         <div className="space-y-2 pt-2">
-                          <div className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+                          <div className="text-xs font-semibold uppercase tracking-wider text-amber-300">
                             Key Results & Delivered Capabilities:
                           </div>
-                          <div className="flex items-start gap-2 text-xs text-slate-300">
+                          <div className="flex items-start gap-2 text-xs text-stone-300">
                             <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                             <span>{project.keyResults}</span>
                           </div>
@@ -142,17 +142,17 @@ export default async function ServicesPage() {
                       )}
 
                       {project.problemSolved && (
-                        <div className="flex items-start gap-2 text-xs text-slate-400 pt-1">
-                          <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+                        <div className="flex items-start gap-2 text-xs text-stone-400 pt-1">
+                          <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                           <span>Problem Solved: {project.problemSolved}</span>
                         </div>
                       )}
                     </div>
 
-                    <div className="pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
+                    <div className="pt-4 border-t border-emerald-950/60 flex items-center justify-between gap-3">
                       <Link
                         href={`/projects/${project.slug}`}
-                        className="text-xs font-bold text-slate-300 hover:text-white flex items-center gap-1"
+                        className="text-xs font-bold text-stone-300 hover:text-amber-200 flex items-center gap-1"
                       >
                         <span>View Case Study</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -163,10 +163,10 @@ export default async function ServicesPage() {
                           href={project.demoUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400 transition-colors flex items-center gap-1.5 shadow-md"
+                          className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-700 border border-amber-400/50 text-amber-100 font-bold text-xs hover:brightness-110 transition-colors flex items-center gap-1.5 shadow-md shadow-emerald-950/50"
                         >
                           <span>Launch Demo</span>
-                          <ExternalLink className="w-3.5 h-3.5" />
+                          <ExternalLink className="w-3.5 h-3.5 text-amber-300" />
                         </a>
                       )}
                     </div>
@@ -179,8 +179,8 @@ export default async function ServicesPage() {
 
         {/* Custom Development & SLA Offerings */}
         <div className="space-y-6">
-          <div className="border-b border-slate-800 pb-4">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-emerald-400">Custom Engineering</h2>
+          <div className="border-b border-emerald-950/60 pb-4">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-amber-400">Custom Engineering</h2>
             <h3 className="text-2xl font-extrabold text-white">Bespoke Systems & Ongoing Care</h3>
           </div>
 
@@ -190,28 +190,28 @@ export default async function ServicesPage() {
               return (
                 <div
                   key={idx}
-                  className="glass-card p-8 rounded-3xl border border-slate-800 space-y-6 flex flex-col justify-between"
+                  className="glass-card p-8 rounded-3xl border border-emerald-900/40 bg-[#0a1710]/70 space-y-6 flex flex-col justify-between hover:border-amber-400/40 transition-colors"
                 >
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <div className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-emerald-400">
+                      <div className="w-12 h-12 rounded-xl bg-[#060b08] border border-emerald-900/50 flex items-center justify-center text-amber-400">
                         <Icon className="w-6 h-6" />
                       </div>
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-900 text-emerald-400 border border-slate-800">
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-950/80 text-amber-300 border border-amber-400/30">
                         {p.category}
                       </span>
                     </div>
 
                     <h3 className="text-2xl font-bold text-white">{p.title}</h3>
-                    <p className="text-slate-400 text-sm leading-relaxed">{p.description}</p>
+                    <p className="text-stone-400 text-sm leading-relaxed">{p.description}</p>
 
                     <div className="space-y-2 pt-2">
-                      <div className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+                      <div className="text-xs font-semibold uppercase tracking-wider text-amber-300">
                         Capabilities Included:
                       </div>
                       <ul className="space-y-2">
                         {p.proofNotes.map((note, i) => (
-                          <li key={i} className="flex items-start gap-2 text-xs text-slate-300">
+                          <li key={i} className="flex items-start gap-2 text-xs text-stone-300">
                             <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                             <span>{note}</span>
                           </li>
@@ -220,10 +220,10 @@ export default async function ServicesPage() {
                     </div>
                   </div>
 
-                  <div className="pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
+                  <div className="pt-4 border-t border-emerald-950/60 flex items-center justify-between gap-3">
                     <Link
                       href="/contact"
-                      className="text-xs font-bold text-slate-300 hover:text-white flex items-center gap-1"
+                      className="text-xs font-bold text-stone-300 hover:text-amber-200 flex items-center gap-1"
                     >
                       <span>Inquire Custom Build</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -237,12 +237,12 @@ export default async function ServicesPage() {
       </div>
 
       {/* Proof-First Philosophy Banner */}
-      <div className="glass-card p-10 rounded-3xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900 to-emerald-950/50 space-y-6">
+      <div className="glass-card p-10 rounded-3xl border border-amber-400/30 bg-gradient-to-r from-[#06140c] via-[#091f14] to-[#040f09] space-y-6 shadow-2xl shadow-emerald-950/50">
         <div className="max-w-2xl space-y-3">
           <h3 className="text-2xl font-extrabold text-white">
             Need To Adapt A System Or Build From Scratch?
           </h3>
-          <p className="text-slate-300 text-sm leading-relaxed">
+          <p className="text-stone-300 text-sm leading-relaxed">
             All systems I build are structured modularly. I can quickly adapt an existing engine for your specific business rules or build a clean custom web application.
           </p>
         </div>
@@ -250,14 +250,14 @@ export default async function ServicesPage() {
         <div className="pt-2 flex flex-wrap items-center gap-4">
           <Link
             href="/contact"
-            className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-bold text-xs hover:opacity-95 transition-all shadow-lg flex items-center gap-2"
+            className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-700 border border-amber-400/50 text-amber-100 font-bold text-xs hover:brightness-110 transition-all shadow-lg shadow-emerald-950/50 flex items-center gap-2"
           >
             <span>Request Custom Adaptation Quote</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 text-amber-300" />
           </Link>
           <Link
             href="/demos"
-            className="px-6 py-3.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-semibold text-xs hover:bg-slate-800 transition-colors flex items-center gap-1.5"
+            className="px-6 py-3.5 rounded-xl bg-[#060b08] border border-emerald-900/60 text-amber-200 font-semibold text-xs hover:bg-[#0a1710] hover:text-white transition-colors flex items-center gap-1.5"
           >
             <span>Browse All Live Demos</span>
             <ExternalLink className="w-3.5 h-3.5" />
@@ -266,9 +266,9 @@ export default async function ServicesPage() {
       </div>
 
       {/* FAQ Accordion */}
-      <div className="max-w-4xl mx-auto space-y-8 pt-8 border-t border-slate-800">
+      <div className="max-w-4xl mx-auto space-y-8 pt-8 border-t border-emerald-950/60">
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-400 uppercase tracking-wider">
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-400 uppercase tracking-wider">
             <HelpCircle className="w-4 h-4" />
             <span>Got Questions?</span>
           </div>
@@ -277,9 +277,9 @@ export default async function ServicesPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {faqs.map((faq, idx) => (
-            <div key={idx} className="glass-card p-6 rounded-2xl border border-slate-800 space-y-2">
+            <div key={idx} className="glass-card p-6 rounded-2xl border border-emerald-900/40 bg-[#0a1710]/70 space-y-2">
               <h4 className="font-bold text-white text-base">{faq.q}</h4>
-              <p className="text-slate-400 text-xs leading-relaxed">{faq.a}</p>
+              <p className="text-stone-400 text-xs leading-relaxed">{faq.a}</p>
             </div>
           ))}
         </div>
