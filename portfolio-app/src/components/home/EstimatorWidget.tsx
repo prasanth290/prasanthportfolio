@@ -10,7 +10,6 @@ export function EstimatorWidget() {
     "Tenant Portal & Payments",
     "Analytics Dashboard",
   ]);
-  const [urgency, setUrgency] = useState<string>("Standard (3-4 Weeks)");
 
   const projectTypes = [
     { label: "Rental Management", baseCost: 3200 },
@@ -46,10 +45,10 @@ export function EstimatorWidget() {
   const totalMax = Math.round(totalMin * 1.25);
 
   return (
-    <div className="glass-card p-6 sm:p-8 rounded-2xl border border-slate-800 space-y-6">
+    <div className="glass-card p-6 sm:p-8 rounded-2xl border border-slate-200/90 shadow-xl space-y-6 bg-white/95">
       {/* Step 1: Select Type */}
       <div className="space-y-2">
-        <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
           1. System Solution Category
         </label>
         <div className="grid grid-cols-2 gap-2">
@@ -60,8 +59,8 @@ export function EstimatorWidget() {
               onClick={() => setProjectType(t.label)}
               className={`px-3 py-2.5 rounded-xl text-xs font-semibold text-left transition-all border ${
                 projectType === t.label
-                  ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/50 shadow-md"
-                  : "bg-slate-900/60 text-slate-400 border-slate-800 hover:text-slate-200"
+                  ? "bg-amber-500/15 text-[#0a192f] border-amber-500 font-bold shadow-sm"
+                  : "bg-slate-50 text-slate-600 border-slate-200 hover:text-[#0a192f] hover:border-slate-300"
               }`}
             >
               {t.label}
@@ -72,7 +71,7 @@ export function EstimatorWidget() {
 
       {/* Step 2: Select Features */}
       <div className="space-y-2">
-        <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
           2. Required Capability Modules
         </label>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -85,34 +84,34 @@ export function EstimatorWidget() {
                 onClick={() => toggleFeature(f.label)}
                 className={`p-2.5 rounded-xl text-[11px] font-medium text-left transition-all border flex items-center justify-between gap-1.5 ${
                   isSelected
-                    ? "bg-cyan-500/15 text-cyan-300 border-cyan-500/40"
-                    : "bg-slate-900/40 text-slate-400 border-slate-800/80 hover:text-slate-300"
+                    ? "bg-amber-50 text-[#0a192f] border-amber-300 font-semibold shadow-sm"
+                    : "bg-slate-50 text-slate-600 border-slate-200 hover:text-[#0a192f]"
                 }`}
               >
                 <span>{f.label}</span>
-                {isSelected && <Check className="w-3.5 h-3.5 text-cyan-400 shrink-0" />}
+                {isSelected && <Check className="w-3.5 h-3.5 text-[#c5a059] shrink-0" />}
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* Result Card */}
-      <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+      {/* Result Card: Executive High-Contrast Slate-Navy Box */}
+      <div className="p-4 sm:p-5 rounded-2xl bg-[#0a192f] border border-amber-500/30 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
           <div className="text-xs text-slate-400">Estimated Investment Range</div>
           <div className="text-2xl sm:text-3xl font-extrabold text-white">
             ${totalMin.toLocaleString()} – ${totalMax.toLocaleString()}{" "}
             <span className="text-xs font-normal text-slate-400">USD</span>
           </div>
-          <div className="text-[11px] text-emerald-400 font-medium mt-0.5">
+          <div className="text-[11px] text-[#c5a059] font-medium mt-0.5">
             Est. Timeline: {projectType === "Rental Management" || projectType === "Inventory & Warehouse" ? "3–4 Weeks" : "2–3 Weeks"}
           </div>
         </div>
 
         <Link
           href={`/contact?type=${encodeURIComponent(projectType)}&budget=${encodeURIComponent(`$${totalMin.toLocaleString()} - $${totalMax.toLocaleString()}`)}`}
-          className="w-full sm:w-auto px-5 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-bold text-xs hover:opacity-95 transition-all text-center flex items-center justify-center gap-1.5 shrink-0"
+          className="w-full sm:w-auto px-5 py-3 rounded-xl bg-gradient-to-r from-[#c5a059] to-[#d4af37] text-slate-950 font-bold text-xs hover:opacity-95 transition-all text-center flex items-center justify-center gap-1.5 shrink-0 shadow-md shadow-[#c5a059]/20"
         >
           <span>Claim Proposal With Estimate</span>
           <ArrowRight className="w-4 h-4" />

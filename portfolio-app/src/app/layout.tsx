@@ -99,14 +99,14 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} dark`}>
+    <html lang="en" className={plusJakartaSans.variable}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="bg-[#09090b] text-[#f7f5f0] min-h-screen flex flex-col antialiased selection:bg-amber-400/25 selection:text-amber-200">
+      <body className="bg-white text-slate-800 min-h-screen flex flex-col antialiased selection:bg-amber-100 selection:text-amber-900">
         <Navbar />
         <main className="flex-1 pt-20">{children}</main>
         <Footer />

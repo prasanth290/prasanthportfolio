@@ -90,14 +90,14 @@ function ContactFormInner() {
 
   if (success) {
     return (
-      <div className="glass-card p-10 rounded-3xl border border-emerald-500/40 text-center space-y-6 bg-emerald-500/5 animate-in zoom-in-95">
-        <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
+      <div className="glass-card p-10 rounded-3xl border border-amber-500/30 text-center space-y-6 bg-amber-500/5 shadow-xl animate-in zoom-in-95">
+        <div className="w-16 h-16 rounded-full bg-amber-500/15 text-[#c5a059] flex items-center justify-center mx-auto">
           <CheckCircle2 className="w-8 h-8" />
         </div>
         <div className="space-y-2">
-          <h3 className="text-2xl font-bold text-white">Inquiry Received Successfully!</h3>
-          <p className="text-slate-300 text-sm max-w-md mx-auto">
-            Thank you, <strong className="text-emerald-400">{formData.name}</strong>. I have received your request for a <strong className="text-white">{formData.projectType}</strong> project and will reply within 12 hours.
+          <h3 className="text-2xl font-bold text-[#0a192f]">Inquiry Received Successfully!</h3>
+          <p className="text-slate-600 text-sm max-w-md mx-auto">
+            Thank you, <strong className="text-[#0a192f] font-semibold">{formData.name}</strong>. I have received your request for a <strong className="text-[#0a192f] font-semibold">{formData.projectType}</strong> project and will reply within 12 hours.
           </p>
         </div>
         <div className="pt-4">
@@ -119,7 +119,7 @@ function ContactFormInner() {
                 website_hp: "",
               });
             }}
-            className="px-6 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white text-xs font-semibold"
+            className="px-6 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-700 hover:text-[#0a192f] hover:border-[#c5a059] text-xs font-semibold shadow-sm transition-colors"
           >
             Submit Another Inquiry
           </button>
@@ -129,9 +129,9 @@ function ContactFormInner() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="glass-card p-8 sm:p-10 rounded-3xl border border-slate-800 space-y-6">
+    <form onSubmit={handleSubmit} className="glass-card p-8 sm:p-10 rounded-3xl border border-slate-200/90 shadow-xl space-y-6 bg-white/95">
       {error && (
-        <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
+        <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
           <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
@@ -140,7 +140,7 @@ function ContactFormInner() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {/* Name */}
         <div className="space-y-2">
-          <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
             Your Full Name *
           </label>
           <input
@@ -149,13 +149,13 @@ function ContactFormInner() {
             placeholder="John Doe"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#c5a059] focus:bg-white transition-colors"
           />
         </div>
 
         {/* Email */}
         <div className="space-y-2">
-          <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
             Email Address *
           </label>
           <input
@@ -164,7 +164,7 @@ function ContactFormInner() {
             placeholder="john@company.com"
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#c5a059] focus:bg-white transition-colors"
           />
         </div>
       </div>
@@ -172,7 +172,7 @@ function ContactFormInner() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {/* Phone */}
         <div className="space-y-2">
-          <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
             Phone / WhatsApp (Optional)
           </label>
           <input
@@ -180,19 +180,19 @@ function ContactFormInner() {
             placeholder="+1 (234) 567-8900"
             value={formData.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#c5a059] focus:bg-white transition-colors"
           />
         </div>
 
         {/* Project Type */}
         <div className="space-y-2">
-          <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
             Project Category *
           </label>
           <select
             value={formData.projectType}
             onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
-            className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#c5a059] focus:bg-white transition-colors"
           >
             <option value="Custom Web App">Custom Business Web App / Client Portal</option>
             <option value="Workflow Automation">Internal Operations & Workflow Automation</option>
@@ -206,13 +206,13 @@ function ContactFormInner() {
 
       {/* Budget range */}
       <div className="space-y-2">
-        <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
           Target Budget Range (USD)
         </label>
         <select
           value={formData.budgetRange}
           onChange={(e) => setFormData({ ...formData, budgetRange: e.target.value })}
-          className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors"
+          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#c5a059] focus:bg-white transition-colors"
         >
           <option value="$1,000 - $3,000">$1,000 – $3,000 (Small Starter App)</option>
           <option value="$3,000 - $5,000">$3,000 – $5,000 (Standard MVP System)</option>
@@ -223,7 +223,7 @@ function ContactFormInner() {
 
       {/* Message */}
       <div className="space-y-2">
-        <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
           Project Requirements & Vision *
         </label>
         <textarea
@@ -232,7 +232,7 @@ function ContactFormInner() {
           placeholder="Describe your current manual process, key features needed, and target timeline..."
           value={formData.message}
           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-          className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#c5a059] focus:bg-white transition-colors"
         />
       </div>
 
@@ -251,7 +251,7 @@ function ContactFormInner() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-bold text-sm hover:opacity-95 transition-all shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 disabled:opacity-50"
+        className="w-full py-4 rounded-xl bg-gradient-to-r from-[#c5a059] to-[#d4af37] text-slate-950 font-bold text-sm hover:opacity-95 transition-all shadow-lg shadow-[#c5a059]/20 flex items-center justify-center gap-2 disabled:opacity-50"
       >
         {loading ? (
           <>

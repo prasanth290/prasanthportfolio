@@ -12,20 +12,20 @@ export function Footer() {
   }
 
   return (
-    <footer className="bg-[#070709] border-t border-stone-850 pt-16 pb-12 text-stone-400">
+    <footer className="bg-slate-50 border-t border-slate-200 pt-16 pb-12 text-slate-600">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-stone-850">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-slate-200">
           {/* Brand Col */}
           <div className="md:col-span-1 space-y-4">
             <Link href="/" className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-200 flex items-center justify-center text-stone-950 font-bold shadow-md shadow-amber-500/20">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-200 flex items-center justify-center text-slate-950 font-bold shadow-md shadow-amber-500/20">
                 <Code2 className="w-5 h-5 stroke-[2.5]" />
               </div>
-              <span className="font-bold text-lg text-white">
-                Prasanth<span className="text-amber-400">.dev</span>
+              <span className="font-bold text-lg text-[#0a192f]">
+                Prasanth<span className="text-amber-600">.dev</span>
               </span>
             </Link>
-            <p className="text-sm text-stone-400 leading-relaxed">
+            <p className="text-sm text-slate-600 leading-relaxed">
               Engineering bespoke business software solutions — Rental Management Systems, Inventory Tracking, and high-performance custom web applications.
             </p>
             <div className="flex items-center gap-3 pt-2">
@@ -33,7 +33,7 @@ export function Footer() {
                 href="https://github.com/BloodHunt029"
                 target="_blank"
                 rel="noreferrer"
-                className="w-9 h-9 rounded-lg bg-stone-900 border border-stone-800 flex items-center justify-center text-stone-400 hover:text-white hover:border-amber-500/40 transition-colors"
+                className="w-9 h-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-[#0a192f] hover:border-amber-400 transition-colors shadow-sm"
                 aria-label="GitHub Profile"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -44,7 +44,7 @@ export function Footer() {
                 href="https://linkedin.com/in/prasanth-dev"
                 target="_blank"
                 rel="noreferrer"
-                className="w-9 h-9 rounded-lg bg-stone-900 border border-stone-800 flex items-center justify-center text-stone-400 hover:text-white hover:border-amber-500/40 transition-colors"
+                className="w-9 h-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-[#0a192f] hover:border-amber-400 transition-colors shadow-sm"
                 aria-label="LinkedIn Profile"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -53,7 +53,7 @@ export function Footer() {
               </a>
               <a
                 href="mailto:prasanth.dev.studio@gmail.com"
-                className="w-9 h-9 rounded-lg bg-stone-900 border border-stone-800 flex items-center justify-center text-stone-400 hover:text-white hover:border-amber-500/40 transition-colors"
+                className="w-9 h-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-[#0a192f] hover:border-amber-400 transition-colors shadow-sm"
                 aria-label="Email Prasanth"
               >
                 <Mail className="w-4 h-4" />
@@ -63,31 +63,31 @@ export function Footer() {
 
           {/* Quick Links */}
           <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-white uppercase tracking-wider">Navigation</h4>
+            <h4 className="text-sm font-bold text-[#0a192f] uppercase tracking-wider">Navigation</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/services" className="hover:text-amber-400 transition-colors">
+                <Link href="/services" className="hover:text-amber-600 transition-colors">
                   Services & Pricing
                 </Link>
               </li>
               <li>
-                <Link href="/projects" className="hover:text-amber-400 transition-colors">
+                <Link href="/projects" className="hover:text-amber-600 transition-colors">
                   Portfolio Projects
                 </Link>
               </li>
               <li>
-                <Link href="/demos" className="hover:text-amber-400 transition-colors flex items-center gap-1.5 text-amber-400 font-medium">
+                <Link href="/demos" className="hover:text-amber-700 transition-colors flex items-center gap-1.5 text-amber-700 font-semibold">
                   <span>Interactive Live Demos</span>
                   <ExternalLink className="w-3 h-3" />
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-amber-400 transition-colors">
+                <Link href="/about" className="hover:text-amber-600 transition-colors">
                   About & Process
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-amber-400 transition-colors">
+                <Link href="/contact" className="hover:text-amber-600 transition-colors">
                   Request a Free Quote
                 </Link>
               </li>
@@ -96,25 +96,25 @@ export function Footer() {
 
           {/* Core Specialties */}
           <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-white uppercase tracking-wider">Flagship Solutions</h4>
+            <h4 className="text-sm font-bold text-[#0a192f] uppercase tracking-wider">Flagship Solutions</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/projects/propflow-rental-management" className="hover:text-amber-300 transition-colors">
+                <Link href="/projects/propflow-rental-management" className="hover:text-amber-700 transition-colors">
                   Rental & Lease Systems
                 </Link>
               </li>
               <li>
-                <Link href="/projects/nexusstock-inventory-system" className="hover:text-amber-300 transition-colors">
+                <Link href="/projects/nexusstock-inventory-system" className="hover:text-amber-700 transition-colors">
                   Inventory & Stock Suites
                 </Link>
               </li>
               <li>
-                <Link href="/projects/omnibooking-platform" className="hover:text-amber-300 transition-colors">
+                <Link href="/projects/omnibooking-platform" className="hover:text-amber-700 transition-colors">
                   Appointment Booking Engines
                 </Link>
               </li>
               <li>
-                <Link href="/projects/pulseanalytics-saas-dashboard" className="hover:text-amber-300 transition-colors">
+                <Link href="/projects/pulseanalytics-saas-dashboard" className="hover:text-amber-700 transition-colors">
                   Executive CRM Dashboards
                 </Link>
               </li>
@@ -123,13 +123,13 @@ export function Footer() {
 
           {/* Technology Guarantee */}
           <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-white uppercase tracking-wider">Tech Guarantee</h4>
-            <div className="p-4 rounded-xl glass-card border border-stone-800 space-y-2">
-              <div className="flex items-center gap-2 text-xs font-semibold text-amber-400">
-                <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+            <h4 className="text-sm font-bold text-[#0a192f] uppercase tracking-wider">Tech Guarantee</h4>
+            <div className="p-4 rounded-xl glass-card border border-slate-200 space-y-2 shadow-sm">
+              <div className="flex items-center gap-2 text-xs font-bold text-amber-700">
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
                 100% Direct Developer Access
               </div>
-              <p className="text-xs text-stone-400 leading-relaxed">
+              <p className="text-xs text-slate-600 leading-relaxed">
                 Zero agency bloat. Enterprise Next.js, React, and TypeScript codebases built directly for your business operations.
               </p>
             </div>
@@ -137,16 +137,16 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-400 gap-4">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
           <p>© {new Date().getFullYear()} Prasanth Custom Web Studio. All rights reserved.</p>
           <div className="flex items-center gap-6">
-            <Link href="/privacy-policy" className="hover:text-stone-200 transition-colors">
+            <Link href="/privacy-policy" className="hover:text-[#0a192f] transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-stone-200 transition-colors">
+            <Link href="/terms" className="hover:text-[#0a192f] transition-colors">
               Terms & Conditions
             </Link>
-            <Link href="/contact" className="hover:text-stone-200 flex items-center gap-1 text-amber-400 font-medium">
+            <Link href="/contact" className="hover:text-amber-700 flex items-center gap-1 text-amber-700 font-semibold">
               <span>Direct Consultation</span>
             </Link>
           </div>

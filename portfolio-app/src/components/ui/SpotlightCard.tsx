@@ -13,8 +13,8 @@ interface SpotlightCardProps {
 export function SpotlightCard({
   children,
   className = "",
-  spotlightColor = "rgba(52, 211, 153, 0.15)", // Default emerald glow
-  borderColor = "rgba(52, 211, 153, 0.3)",
+  spotlightColor = "rgba(197, 160, 89, 0.12)", // Monaco Champagne Gold glow
+  borderColor = "rgba(197, 160, 89, 0.4)",
   onClick,
 }: SpotlightCardProps) {
   const divRef = useRef<HTMLDivElement>(null);
@@ -46,7 +46,7 @@ export function SpotlightCard({
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/60 backdrop-blur-xl transition-all duration-300 hover:shadow-2xl group ${className}`}
+      className={`relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 backdrop-blur-xl transition-all duration-300 hover:shadow-xl group ${className}`}
       style={{
         borderImageSource: opacity > 0 ? `radial-gradient(400px circle at ${position.x}px ${position.y}px, ${borderColor}, transparent 80%)` : undefined,
       }}

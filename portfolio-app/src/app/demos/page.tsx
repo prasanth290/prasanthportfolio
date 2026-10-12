@@ -19,31 +19,31 @@ export default async function DemosPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto space-y-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold">
-          <Sparkles className="w-3.5 h-3.5" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold">
+          <Sparkles className="w-3.5 h-3.5 text-amber-700" />
           <span>Interactive Sandbox Access</span>
         </div>
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-[#0a192f] tracking-tight">
           Test-Drive Live Business Systems
         </h1>
-        <p className="text-stone-400 text-base leading-relaxed">
+        <p className="text-slate-600 text-base leading-relaxed">
           No sign-up required. Toggle between Desktop, Tablet, and Mobile viewports below to test responsive layouts and launch real working web application sandboxes firsthand.
         </p>
       </div>
 
       {/* Grid of Demos */}
       {projectsWithDemos.length === 0 ? (
-        <div className="glass-card p-12 rounded-3xl text-center space-y-4 max-w-xl mx-auto border border-stone-800">
-          <div className="w-12 h-12 rounded-full bg-amber-500/10 text-amber-400 flex items-center justify-center mx-auto">
+        <div className="glass-card p-12 rounded-3xl text-center space-y-4 max-w-xl mx-auto border border-slate-200 shadow-sm">
+          <div className="w-12 h-12 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center mx-auto border border-amber-200">
             <Sparkles className="w-6 h-6" />
           </div>
-          <h3 className="text-xl font-bold text-white">No Live Demos Currently Listed</h3>
-          <p className="text-stone-400 text-xs leading-relaxed">
+          <h3 className="text-xl font-bold text-[#0a192f]">No Live Demos Currently Listed</h3>
+          <p className="text-slate-500 text-xs leading-relaxed">
             Live interactive project sandboxes will appear here once published from the Admin Dashboard with active demo URLs.
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 text-stone-950 font-bold text-xs hover:brightness-105 transition-all shadow-md shadow-amber-500/20"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-bold text-xs hover:brightness-105 transition-all shadow-md shadow-amber-500/20"
           >
             <span>Request a Private Demo Walkthrough</span>
             <ArrowRight className="w-4 h-4" />
