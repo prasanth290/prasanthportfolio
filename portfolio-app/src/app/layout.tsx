@@ -106,7 +106,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="bg-[#060b08] text-[#f5f7f5] min-h-screen flex flex-col antialiased selection:bg-emerald-600/30 selection:text-emerald-200">
+      <body className="bg-[#09090b] text-[#f7f5f0] min-h-screen flex flex-col antialiased selection:bg-amber-400/25 selection:text-amber-200">
         <Navbar />
         <main className="flex-1 pt-20">{children}</main>
         <Footer />

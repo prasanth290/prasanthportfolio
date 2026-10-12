@@ -28,21 +28,21 @@ export function Navbar() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-700 via-emerald-600 to-teal-500 flex items-center justify-center text-amber-200 font-bold border border-amber-400/40 shadow-lg shadow-emerald-950/60 group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-200 flex items-center justify-center text-stone-950 font-bold shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
               <Code2 className="w-5 h-5 stroke-[2.5]" />
             </div>
             <div className="flex flex-col">
               <span className="font-bold text-lg text-white tracking-tight leading-none group-hover:text-amber-300 transition-colors">
-                Prasanth<span className="text-emerald-400">.dev</span>
+                Prasanth<span className="text-amber-400">.dev</span>
               </span>
               <span className="text-xs text-stone-400 font-medium tracking-wide">
-                Bespoke Systems Studio
+                Custom Web Systems
               </span>
             </div>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1 bg-[#0a160f]/90 p-1.5 rounded-full border border-emerald-900/60 shadow-inner">
+          <nav className="hidden md:flex items-center gap-1 bg-stone-900/80 p-1.5 rounded-full border border-stone-800">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -51,10 +51,10 @@ export function Navbar() {
                   href={link.href}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 relative ${
                     isActive
-                      ? "text-amber-300 bg-emerald-950/90 border border-amber-400/40 shadow-sm"
+                      ? "text-amber-300 bg-stone-800/90 border border-amber-500/30 shadow-sm"
                       : link.highlight
-                      ? "text-emerald-400 hover:text-emerald-300 font-semibold"
-                      : "text-stone-300 hover:text-white hover:bg-emerald-950/40"
+                      ? "text-amber-400 hover:text-amber-300 font-semibold"
+                      : "text-stone-300 hover:text-white hover:bg-stone-800/40"
                   }`}
                 >
                   {link.highlight && (
@@ -70,10 +70,10 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-3">
             <Link
               href="/contact"
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-700 via-emerald-600 to-teal-700 text-amber-100 font-bold text-sm border border-amber-400/50 hover:border-amber-300 hover:brightness-110 transition-all shadow-md shadow-emerald-950/50 flex items-center gap-1.5 group"
+              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-600 text-stone-950 font-bold text-sm hover:brightness-105 transition-all shadow-md shadow-amber-500/25 flex items-center gap-1.5 group"
             >
               <span>Get Free Quote</span>
-              <ArrowUpRight className="w-4 h-4 text-amber-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Link>
           </div>
 
@@ -81,7 +81,7 @@ export function Navbar() {
           <div className="flex md:hidden items-center gap-2">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl text-stone-300 hover:text-white hover:bg-emerald-950/60 border border-emerald-900/60"
+              className="p-2 rounded-xl text-stone-300 hover:text-white hover:bg-stone-800 border border-stone-800"
               aria-label="Toggle Navigation"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -92,7 +92,7 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden glass-nav border-t border-emerald-900/60 px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2">
+        <div className="md:hidden glass-nav border-t border-stone-800/80 px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -100,23 +100,23 @@ export function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
               className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium ${
                 pathname === link.href
-                  ? "bg-emerald-950/80 text-amber-300 border border-amber-400/30"
-                  : "text-stone-200 hover:bg-emerald-950/50"
+                  ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
+                  : "text-stone-200 hover:bg-stone-800/60"
               }`}
             >
               <span>{link.name}</span>
               {link.highlight && (
-                <span className="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full">
                   Live
                 </span>
               )}
             </Link>
           ))}
-          <div className="pt-2 border-t border-emerald-900/60 flex flex-col gap-2">
+          <div className="pt-2 border-t border-stone-800 flex flex-col gap-2">
             <Link
               href="/contact"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full text-center px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-700 via-emerald-600 to-teal-700 text-amber-100 font-bold text-sm border border-amber-400/50 shadow-md shadow-emerald-950/40"
+              className="w-full text-center px-4 py-3 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-600 text-stone-950 font-bold text-sm shadow-md shadow-amber-500/20"
             >
               Get Free Consultation
             </Link>

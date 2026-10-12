@@ -35,28 +35,28 @@ export function DemoViewportSimulator({ project, priority = false }: { project: 
   };
 
   return (
-    <div className="glass-card rounded-3xl overflow-hidden border border-emerald-900/40 bg-[#0a1710]/70 p-6 space-y-6 flex flex-col justify-between">
+    <div className="glass-card rounded-3xl overflow-hidden border border-stone-800 p-6 space-y-6 flex flex-col justify-between">
       <div className="space-y-4">
         {/* Header & Viewport Switcher Controls */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-emerald-950/60">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-stone-800/80">
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-950/80 text-amber-300 border border-amber-400/30">
+            <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
               {project.category}
             </span>
             <div className="flex items-center gap-1.5 text-xs text-stone-400">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <ShieldCheck className="w-4 h-4 text-amber-400" />
               <span>Live Sandbox</span>
             </div>
           </div>
 
           {/* Device Viewport Toggle Buttons */}
-          <div className="flex items-center gap-1 bg-[#060b08] p-1 rounded-xl border border-emerald-950/60 self-start sm:self-auto">
+          <div className="flex items-center gap-1 bg-stone-950 p-1 rounded-xl border border-stone-800 self-start sm:self-auto">
             <button
               onClick={() => setDeviceMode("desktop")}
               className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
                 deviceMode === "desktop"
-                  ? "bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-600 text-stone-950 shadow-md font-bold"
-                  : "text-stone-400 hover:text-amber-200"
+                  ? "bg-gradient-to-r from-amber-400 to-yellow-500 text-stone-950 shadow-md font-bold"
+                  : "text-stone-400 hover:text-white"
               }`}
               title="Desktop Viewport (16:9)"
             >
@@ -68,8 +68,8 @@ export function DemoViewportSimulator({ project, priority = false }: { project: 
               onClick={() => setDeviceMode("tablet")}
               className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
                 deviceMode === "tablet"
-                  ? "bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-600 text-stone-950 shadow-md font-bold"
-                  : "text-stone-400 hover:text-amber-200"
+                  ? "bg-gradient-to-r from-amber-400 to-yellow-500 text-stone-950 shadow-md font-bold"
+                  : "text-stone-400 hover:text-white"
               }`}
               title="Tablet Viewport (4:3)"
             >
@@ -81,8 +81,8 @@ export function DemoViewportSimulator({ project, priority = false }: { project: 
               onClick={() => setDeviceMode("mobile")}
               className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
                 deviceMode === "mobile"
-                  ? "bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-600 text-stone-950 shadow-md font-bold"
-                  : "text-stone-400 hover:text-amber-200"
+                  ? "bg-gradient-to-r from-amber-400 to-yellow-500 text-stone-950 shadow-md font-bold"
+                  : "text-stone-400 hover:text-white"
               }`}
               title="Mobile Viewport (Portrait)"
             >
@@ -93,8 +93,8 @@ export function DemoViewportSimulator({ project, priority = false }: { project: 
         </div>
 
         {/* Viewport Device Simulator Frame */}
-        <div className="bg-[#060b08]/90 p-3 rounded-2xl border border-emerald-950/60">
-          <div className="flex items-center justify-between px-3 py-1.5 mb-2 bg-[#09150e] rounded-lg text-[11px] text-stone-400 font-mono border border-emerald-950/40">
+        <div className="bg-stone-950/80 p-3 rounded-2xl border border-stone-800">
+          <div className="flex items-center justify-between px-3 py-1.5 mb-2 bg-stone-900 rounded-lg text-[11px] text-stone-400 font-mono">
             <div className="flex items-center gap-1.5">
               <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
               <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
@@ -109,7 +109,7 @@ export function DemoViewportSimulator({ project, priority = false }: { project: 
           </div>
 
           <div
-            className={`relative rounded-xl overflow-hidden bg-[#07120b] border border-emerald-950/60 transition-all duration-500 ${getContainerWidthClass()}`}
+            className={`relative rounded-xl overflow-hidden bg-stone-900 border border-stone-800/80 transition-all duration-500 ${getContainerWidthClass()}`}
           >
             <Image
               src={project.coverImage}
@@ -119,16 +119,16 @@ export function DemoViewportSimulator({ project, priority = false }: { project: 
               priority={priority}
               className="object-cover transition-all duration-500"
             />
-            <div className="absolute inset-0 bg-[#060b08]/50 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+            <div className="absolute inset-0 bg-stone-950/40 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
               {project.demoUrl && (
                 <a
                   href={project.demoUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-700 via-emerald-600 to-teal-700 border border-amber-400/50 text-amber-100 font-bold text-xs shadow-xl shadow-emerald-950/60 hover:scale-105 transition-transform flex items-center gap-2"
+                  className="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-600 text-stone-950 font-bold text-xs shadow-xl shadow-amber-500/20 hover:scale-105 transition-transform flex items-center gap-2"
                 >
                   <span>Launch Live Demo</span>
-                  <ExternalLink className="w-4 h-4 text-amber-300" />
+                  <ExternalLink className="w-4 h-4" />
                 </a>
               )}
             </div>
@@ -143,7 +143,7 @@ export function DemoViewportSimulator({ project, priority = false }: { project: 
 
         {/* Demo Credentials Box */}
         {project.demoCredentials && (
-          <div className="p-4 rounded-xl bg-[#07130c] border border-amber-400/30 text-amber-300 space-y-2">
+          <div className="p-4 rounded-xl bg-stone-950 border border-amber-500/30 text-amber-300 space-y-2">
             <div className="flex items-center justify-between text-xs font-bold text-amber-200">
               <div className="flex items-center gap-1.5">
                 <KeyRound className="w-4 h-4 text-amber-400" />
@@ -157,10 +157,10 @@ export function DemoViewportSimulator({ project, priority = false }: { project: 
       </div>
 
       {/* Footer Details */}
-      <div className="pt-4 border-t border-emerald-950/60 flex items-center justify-between text-xs">
+      <div className="pt-4 border-t border-stone-800 flex items-center justify-between text-xs">
         <div className="flex flex-wrap gap-1">
           {techList.slice(0, 4).map((t: string, i: number) => (
-            <span key={i} className="px-2 py-0.5 rounded bg-[#07130c] text-emerald-200/80 border border-emerald-900/40 text-[10px]">
+            <span key={i} className="px-2 py-0.5 rounded bg-stone-900 text-stone-400 text-[10px]">
               {t}
             </span>
           ))}

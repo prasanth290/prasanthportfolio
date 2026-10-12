@@ -50,16 +50,16 @@ export function QuickContactWidget({
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
       {/* Expanded Popup Menu */}
       {isOpen && (
-        <div className="mb-3 w-80 glass-card p-5 rounded-3xl border border-amber-400/30 shadow-2xl shadow-emerald-950/60 space-y-4 animate-in slide-in-from-bottom-5 fade-in duration-200 bg-[#060b08]/95 backdrop-blur-xl">
+        <div className="mb-3 w-80 glass-card p-5 rounded-3xl border border-amber-500/30 shadow-2xl shadow-amber-950/40 space-y-4 animate-in slide-in-from-bottom-5 fade-in duration-200 bg-[#0c0c0f]/95 backdrop-blur-xl">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-emerald-950/60 pb-3">
+          <div className="flex items-center justify-between border-b border-stone-800 pb-3">
             <div className="flex items-center gap-2">
               <div className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
               <span className="text-xs font-bold text-white uppercase tracking-wider">Direct Developer Access</span>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1 rounded-lg text-stone-400 hover:text-white hover:bg-[#0a1710] transition-colors"
+              className="p-1 rounded-lg text-stone-400 hover:text-white hover:bg-stone-800 transition-colors"
               aria-label="Close menu"
             >
               <X className="w-4 h-4" />
@@ -77,10 +77,10 @@ export function QuickContactWidget({
               href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
-              className="p-3 rounded-2xl bg-emerald-950/70 hover:bg-emerald-900/60 border border-emerald-800/60 flex items-center justify-between group transition-all"
+              className="p-3 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 flex items-center justify-between group transition-all"
             >
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-r from-emerald-800 via-emerald-600 to-teal-600 border border-amber-400/40 text-amber-200 flex items-center justify-center font-bold shrink-0 shadow-md">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 text-stone-950 flex items-center justify-center font-bold shrink-0 shadow-md">
                   <MessageCircle className="w-5 h-5 fill-current" />
                 </div>
                 <div>
@@ -96,10 +96,10 @@ export function QuickContactWidget({
             {/* Direct Phone Call */}
             <a
               href={`tel:${cleanPhone}`}
-              className="p-3 rounded-2xl bg-[#0a1710] hover:bg-[#0e2116] border border-emerald-950/70 flex items-center justify-between group transition-all"
+              className="p-3 rounded-2xl bg-stone-900 hover:bg-stone-850 border border-stone-800 flex items-center justify-between group transition-all"
             >
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-[#07130c] text-amber-400 flex items-center justify-center font-bold shrink-0 border border-emerald-900/50">
+                <div className="w-9 h-9 rounded-xl bg-stone-800 text-amber-400 flex items-center justify-center font-bold shrink-0 border border-stone-700">
                   <Phone className="w-4 h-4" />
                 </div>
                 <div>
@@ -116,10 +116,10 @@ export function QuickContactWidget({
             <Link
               href="/contact"
               onClick={() => setIsOpen(false)}
-              className="p-3 rounded-2xl bg-[#0a1710] hover:bg-[#0e2116] border border-emerald-950/70 flex items-center justify-between group transition-all"
+              className="p-3 rounded-2xl bg-stone-900 hover:bg-stone-850 border border-stone-800 flex items-center justify-between group transition-all"
             >
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-[#07130c] text-amber-400 flex items-center justify-center font-bold shrink-0 border border-emerald-900/50">
+                <div className="w-9 h-9 rounded-xl bg-stone-800 text-amber-400 flex items-center justify-center font-bold shrink-0 border border-stone-700">
                   <MessageSquare className="w-4 h-4" />
                 </div>
                 <div>
@@ -140,15 +140,15 @@ export function QuickContactWidget({
         onClick={() => setIsOpen(!isOpen)}
         className={`px-4 py-3 rounded-full flex items-center gap-2.5 shadow-2xl transition-all duration-300 group ${
           isOpen
-            ? "bg-[#060b08] text-amber-300 border border-amber-400/40 hover:bg-[#0a1710]"
-            : "bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-700 border border-amber-400/50 text-amber-100 font-bold hover:shadow-emerald-900/50 hover:scale-105"
+            ? "bg-stone-900 text-white border border-stone-700 hover:bg-stone-800"
+            : "bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-600 text-stone-950 font-bold hover:shadow-amber-500/30 hover:scale-105"
         }`}
         aria-label="Contact Prasanth directly"
       >
         <div className="relative">
           <MessageCircle className="w-5 h-5 fill-current" />
           {!isOpen && (
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
+            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-300 animate-ping" />
           )}
         </div>
         <span className="text-xs font-extrabold tracking-wide hidden sm:inline">
