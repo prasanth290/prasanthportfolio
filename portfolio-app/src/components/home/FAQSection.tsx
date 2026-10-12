@@ -48,17 +48,17 @@ export function FAQSection({ items }: { items?: FAQItem[] }) {
   };
 
   return (
-    <section className="py-20 bg-slate-950/60 border-t border-slate-900">
+    <section className="py-20 bg-stone-950/60 border-t border-stone-850">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold uppercase tracking-wider">
             <HelpCircle className="w-4 h-4" />
             <span>Frequently Asked Questions</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
             Everything You Need to Know Before Starting
           </h2>
-          <p className="text-slate-400 text-sm max-w-xl mx-auto">
+          <p className="text-stone-400 text-sm max-w-xl mx-auto">
             Clear, transparent answers about source code ownership, timeline, payment milestones, and post-launch support.
           </p>
         </div>
@@ -69,18 +69,18 @@ export function FAQSection({ items }: { items?: FAQItem[] }) {
             return (
               <div
                 key={faq.id || index}
-                className="glass-card rounded-2xl border border-slate-800/80 overflow-hidden transition-all"
+                className="glass-card rounded-2xl border border-stone-800/80 overflow-hidden transition-all"
               >
                 <button
                   onClick={() => toggleFAQ(index)}
-                  className="w-full p-6 text-left flex items-center justify-between gap-4 hover:bg-slate-900/40 transition-colors"
+                  className="w-full p-6 text-left flex items-center justify-between gap-4 hover:bg-stone-900/40 transition-colors"
                 >
                   <span className="font-bold text-white text-base sm:text-lg">
                     {faq.question}
                   </span>
                   <div
-                    className={`w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 shrink-0 transition-transform duration-200 ${
-                      isOpen ? "rotate-180 text-emerald-400 border-emerald-500/40" : ""
+                    className={`w-8 h-8 rounded-full bg-stone-900 border border-stone-800 flex items-center justify-center text-stone-400 shrink-0 transition-transform duration-200 ${
+                      isOpen ? "rotate-180 text-amber-400 border-amber-500/40" : ""
                     }`}
                   >
                     <ChevronDown className="w-4 h-4" />
@@ -88,7 +88,7 @@ export function FAQSection({ items }: { items?: FAQItem[] }) {
                 </button>
 
                 {isOpen && (
-                  <div className="px-6 pb-6 pt-2 text-slate-300 text-sm leading-relaxed border-t border-slate-800/40">
+                  <div className="px-6 pb-6 pt-2 text-stone-300 text-sm leading-relaxed border-t border-stone-800/40">
                     {faq.answer}
                   </div>
                 )}
