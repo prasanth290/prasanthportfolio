@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import { getAdminSession } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { SiteSettingsForm } from "@/components/admin/SiteSettingsForm";
-
 import { DEFAULT_SITE_SETTINGS } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -31,8 +30,12 @@ export default async function AdminSettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Global Site & Studio Settings</h1>
-        <p className="text-xs text-slate-400">Configure studio contact info, social channels, lead notification alerts, and SEO settings.</p>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0a192f] tracking-tight">
+          Global Site & Studio Settings
+        </h1>
+        <p className="text-xs text-slate-500">
+          Configure studio contact info, social channels, lead notification alerts, and SEO settings.
+        </p>
       </div>
 
       <SiteSettingsForm initialSettings={settingsMap} />

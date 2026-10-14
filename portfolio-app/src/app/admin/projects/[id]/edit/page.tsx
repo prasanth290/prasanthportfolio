@@ -28,8 +28,12 @@ export default async function EditProjectPage({ params }: { params: Promise<{ id
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Edit Project Entry</h1>
-        <p className="text-xs text-slate-400">Update project details, live demo URL, or screenshots for "{project.title}".</p>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0a192f] tracking-tight">
+          Edit Project Entry
+        </h1>
+        <p className="text-xs text-slate-500">
+          Update project details, live demo URL, or screenshots for &ldquo;<span className="text-[#0a192f] font-semibold">{project.title}</span>&rdquo;.
+        </p>
       </div>
 
       <ProjectForm initialData={project} />

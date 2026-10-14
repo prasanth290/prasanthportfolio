@@ -16,8 +16,12 @@ export default async function AdminPagesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Custom Pages Management</h1>
-        <p className="text-xs text-slate-400">Create, edit, or delete custom content pages, privacy policy, and terms.</p>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0a192f] tracking-tight">
+          Custom Pages Management
+        </h1>
+        <p className="text-xs text-slate-500">
+          Create, edit, or delete custom content pages, privacy policy, and terms.
+        </p>
       </div>
 
       <PagesManager initialPages={pages} />

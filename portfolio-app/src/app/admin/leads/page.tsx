@@ -52,8 +52,12 @@ export default async function AdminLeadsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Inquiries & Leads Inbox</h1>
-        <p className="text-xs text-slate-400">View form submissions, update status, add notes, and export CSVs.</p>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0a192f] tracking-tight">
+          Inquiries & Leads Inbox
+        </h1>
+        <p className="text-xs text-slate-500">
+          View client requirements, update status, record notes, and export lead databases as CSV.
+        </p>
       </div>
 
       <LeadsInbox initialLeads={leads} />

@@ -21,10 +21,12 @@ export default async function AdminTestimonialsPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Client Testimonials CMS</h1>
-        <p className="text-xs text-slate-400">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0a192f] tracking-tight">
+          Client Testimonials CMS
+        </h1>
+        <p className="text-xs text-slate-500">
           Manage client quotes, star ratings, and company proof displayed on your homepage and case study pages.
         </p>
       </div>

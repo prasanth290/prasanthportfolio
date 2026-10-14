@@ -101,33 +101,42 @@ export function AdminTestimonialsClient({ initialTestimonials }: { initialTestim
   return (
     <div className="space-y-8">
       {success && (
-        <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 shrink-0" />
+        <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
           <span>{success}</span>
         </div>
       )}
 
       {error && (
-        <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
+        <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
           <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
-      {/* Testimonial Form */}
-      <form onSubmit={handleSubmit} className="glass-card p-8 rounded-3xl border border-slate-800 space-y-6 max-w-4xl">
-        <h3 className="text-base font-bold text-white border-b border-slate-800 pb-2 flex items-center justify-between">
-          <span>{isEditing ? "Edit Testimonial Entry" : "Add New Client Testimonial"}</span>
+      {/* Testimonial Form Card */}
+      <form onSubmit={handleSubmit} className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/90 shadow-xs space-y-6 max-w-4xl">
+        <div className="border-b border-slate-100 pb-3 flex items-center justify-between">
+          <div>
+            <h3 className="text-base font-extrabold text-[#0a192f]">
+              {isEditing ? "Edit Testimonial Entry" : "Add New Client Testimonial"}
+            </h3>
+            <p className="text-[11px] text-slate-500">Quotes appear directly on your homepage and project case studies</p>
+          </div>
           {isEditing && (
-            <button type="button" onClick={resetForm} className="text-xs text-slate-400 hover:text-white">
+            <button
+              type="button"
+              onClick={resetForm}
+              className="text-xs text-slate-500 hover:text-[#0a192f] font-semibold cursor-pointer"
+            >
               Cancel Edit
             </button>
           )}
-        </h3>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
               Client Name *
             </label>
             <input
@@ -136,12 +145,12 @@ export function AdminTestimonialsClient({ initialTestimonials }: { initialTestim
               placeholder="e.g. Subash / Twosomesty Founder"
               value={formData.clientName}
               onChange={(e) => setFormData({ ...formData, clientName: e.target.value })}
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-[#c5a059] focus:ring-2 focus:ring-[#c5a059]/20 transition-all"
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
               Role & Title *
             </label>
             <input
@@ -150,12 +159,12 @@ export function AdminTestimonialsClient({ initialTestimonials }: { initialTestim
               placeholder="e.g. Managing Director & Site Lead"
               value={formData.clientRole}
               onChange={(e) => setFormData({ ...formData, clientRole: e.target.value })}
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-[#c5a059] focus:ring-2 focus:ring-[#c5a059]/20 transition-all"
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
               Company Name *
             </label>
             <input
@@ -164,18 +173,18 @@ export function AdminTestimonialsClient({ initialTestimonials }: { initialTestim
               placeholder="e.g. Subash Build / Twosomesty"
               value={formData.company}
               onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-[#c5a059] focus:ring-2 focus:ring-[#c5a059]/20 transition-all"
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
               Rating (1 to 5 Stars)
             </label>
             <select
               value={formData.rating}
               onChange={(e) => setFormData({ ...formData, rating: Number(e.target.value) })}
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:bg-white focus:outline-none focus:border-[#c5a059] focus:ring-2 focus:ring-[#c5a059]/20 transition-all"
             >
               <option value={5}>⭐⭐⭐⭐⭐ (5 Stars)</option>
               <option value={4}>⭐⭐⭐⭐ (4 Stars)</option>
@@ -184,8 +193,8 @@ export function AdminTestimonialsClient({ initialTestimonials }: { initialTestim
           </div>
         </div>
 
-        <div className="space-y-2">
-          <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+        <div className="space-y-1.5">
+          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
             Testimonial Quote Text *
           </label>
           <textarea
@@ -194,17 +203,17 @@ export function AdminTestimonialsClient({ initialTestimonials }: { initialTestim
             placeholder="Prasanth delivered our custom management software in under 3 weeks. Communication was direct, code ownership is 100% ours..."
             value={formData.quote}
             onChange={(e) => setFormData({ ...formData, quote: e.target.value })}
-            className="w-full bg-slate-900 border border-slate-800 rounded-xl p-4 text-xs text-white focus:outline-none focus:border-emerald-500"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-[#c5a059] transition-all"
           />
         </div>
 
-        <div className="flex items-center justify-between pt-2">
-          <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+          <label className="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
             <input
               type="checkbox"
               checked={formData.isPublished}
               onChange={(e) => setFormData({ ...formData, isPublished: e.target.checked })}
-              className="rounded bg-slate-900 border-slate-800 text-emerald-500 focus:ring-emerald-500"
+              className="rounded bg-slate-100 border-slate-300 text-amber-600 focus:ring-amber-500"
             />
             <span>Publish on public homepage & case studies</span>
           </label>
@@ -212,7 +221,7 @@ export function AdminTestimonialsClient({ initialTestimonials }: { initialTestim
           <button
             type="submit"
             disabled={saving}
-            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-bold text-xs hover:opacity-95 transition-all shadow-md flex items-center gap-2 disabled:opacity-50"
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#c5a059] to-[#d4af37] text-slate-950 font-bold text-xs hover:opacity-95 transition-all shadow-md shadow-[#c5a059]/20 flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
           >
             {saving ? (
               <>
@@ -231,47 +240,62 @@ export function AdminTestimonialsClient({ initialTestimonials }: { initialTestim
 
       {/* Existing Testimonials List */}
       <div className="space-y-4 max-w-4xl">
-        <h3 className="text-base font-bold text-white">All Testimonials ({items.length})</h3>
+        <h3 className="text-base font-extrabold text-[#0a192f]">
+          All Testimonials ({items.length})
+        </h3>
 
         {items.length === 0 ? (
-          <div className="glass-card p-8 rounded-2xl border border-slate-800 text-center text-xs text-slate-400">
+          <div className="bg-white p-8 rounded-2xl border border-slate-200 text-center text-xs text-slate-400">
             No testimonials added yet. Fill the form above to add your first verified quote!
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {items.map((item) => (
-              <div key={item.id} className="glass-card p-6 rounded-2xl border border-slate-800 space-y-4 relative">
+              <div
+                key={item.id}
+                className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-md transition-shadow space-y-4 relative"
+              >
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-bold text-white text-sm">{item.clientName}</h4>
-                    <p className="text-xs text-emerald-400">{item.clientRole} • {item.company}</p>
+                    <h4 className="font-bold text-[#0a192f] text-sm">{item.clientName}</h4>
+                    <p className="text-xs text-[#c5a059] font-medium">{item.clientRole} • {item.company}</p>
                   </div>
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => handleEdit(item)}
-                      className="p-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+                      className="p-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 hover:text-[#0a192f] transition-colors cursor-pointer"
+                      title="Edit"
                     >
                       <Edit3 className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => handleDelete(item.id)}
-                      className="p-1.5 rounded-lg bg-slate-900 border border-slate-800 text-rose-400 hover:bg-rose-500/10"
+                      className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-600 transition-colors cursor-pointer"
+                      title="Delete"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
 
-                <p className="text-xs text-slate-300 italic leading-relaxed">"{item.quote}"</p>
+                <p className="text-xs text-slate-600 italic leading-relaxed">
+                  &ldquo;{item.quote}&rdquo;
+                </p>
 
-                <div className="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-800/60">
-                  <div className="flex text-amber-400">
+                <div className="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-100">
+                  <div className="flex text-amber-500">
                     {Array.from({ length: item.rating || 5 }).map((_, i) => (
                       <Star key={i} className="w-3 h-3 fill-current" />
                     ))}
                   </div>
-                  <span className={item.isPublished ? "text-emerald-400 font-medium" : "text-slate-500"}>
-                    {item.isPublished ? "Published" : "Draft / Hidden"}
+                  <span
+                    className={`font-semibold text-[10px] px-2 py-0.5 rounded-full ${
+                      item.isPublished
+                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                        : "bg-slate-100 text-slate-500"
+                    }`}
+                  >
+                    {item.isPublished ? "Published" : "Draft"}
                   </span>
                 </div>
               </div>

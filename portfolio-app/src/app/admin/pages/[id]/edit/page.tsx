@@ -29,8 +29,12 @@ export default async function EditPageAdmin({ params }: { params: Promise<{ id: 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Edit Page Entry</h1>
-        <p className="text-xs text-slate-400">Update page content, SEO metadata, or published status for "{page.title}".</p>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0a192f] tracking-tight">
+          Edit Page Entry
+        </h1>
+        <p className="text-xs text-slate-500">
+          Update page content, SEO metadata, or published status for &ldquo;<span className="text-[#0a192f] font-semibold">{page.title}</span>&rdquo;.
+        </p>
       </div>
 
       <PageForm initialData={page} />

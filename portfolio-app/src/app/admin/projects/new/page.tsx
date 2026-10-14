@@ -11,8 +11,12 @@ export default async function NewProjectPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Create New Project Entry</h1>
-        <p className="text-xs text-slate-400">Add a new custom software system or case study to your live portfolio.</p>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0a192f] tracking-tight">
+          Create New Project Entry
+        </h1>
+        <p className="text-xs text-slate-500">
+          Add a new custom software system or case study to your live portfolio.
+        </p>
       </div>
 
       <ProjectForm />

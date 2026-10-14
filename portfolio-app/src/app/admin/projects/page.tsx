@@ -16,8 +16,12 @@ export default async function AdminProjectsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Project & Portfolio Management</h1>
-        <p className="text-xs text-slate-400">Add, edit, reorder, or publish case studies and live demo links.</p>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0a192f] tracking-tight">
+          Project & Portfolio Management
+        </h1>
+        <p className="text-xs text-slate-500">
+          Add, edit, reorder, or publish case studies and live demo links across your portfolio.
+        </p>
       </div>
 
       <ProjectsManager initialProjects={projects} />
